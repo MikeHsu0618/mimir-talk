@@ -31,7 +31,7 @@
 }
 .footer-author {
   opacity: 0.75;
-  font-weight: 600;
+  font-weight: 500;
   flex-shrink: 0;
 }
 </style>

@@ -73,7 +73,7 @@ kicker: Sportybet 生產環境實錄
 footnote: 橫跨多個 Kubernetes 集群 · 這個規模讓我們踩到了所有 Thanos 會踩的坑
 ---
 
-<div class="grid grid-cols-2 gap-5 w-full max-w-3xl mx-auto">
+<div class="grid grid-cols-2 gap-5 w-full max-w-4xl mx-auto">
   <Stat value="17+" label="Prometheus Clusters" />
   <Stat value="~40M" label="Active Series" accent="sky" />
   <Stat value="~1.2M" label="Samples / sec" accent="blue" />

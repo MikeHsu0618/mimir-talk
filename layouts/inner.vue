@@ -15,7 +15,7 @@
 
 <style scoped>
 .inner-layout {
-  padding: 2.2rem 3.5rem 3rem !important;
+  padding: 3.2rem 3.5rem 3rem !important;
   display: flex !important;
   flex-direction: column;
   gap: 1.25rem;
@@ -25,16 +25,16 @@
 
 .head :deep(h1),
 .inner-layout > .head > h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 900;
   line-height: 1.15;
   letter-spacing: -0.025em;
   color: #0E3F4E;
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.8rem;
 }
 
 .head .kicker {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 500;
   color: #5296B8;
 }

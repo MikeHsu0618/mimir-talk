@@ -19,7 +19,7 @@
 
 <style scoped>
 .imgcap-layout {
-  padding: 2.2rem 3.5rem 3rem !important;
+  padding: 3.2rem 3.5rem 3rem !important;
   display: flex !important;
   flex-direction: column;
   gap: 1.25rem;
@@ -29,7 +29,7 @@
 
 .head :deep(h1),
 .imgcap-layout > .head > h1 {
-  font-size: 2.3rem;
+  font-size: 2.7rem;
   font-weight: 900;
   line-height: 1.15;
   letter-spacing: -0.025em;
