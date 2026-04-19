@@ -542,3 +542,155 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   font-size: 1.3rem;
   color: #F7A86B;
 }
+
+/* ── Pain-cards (p20 Kafka 三大痛點) ── */
+.pain-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.pain-card {
+  position: relative;
+  padding: 2rem 1.75rem 1.75rem;
+  border-radius: 18px;
+  border: 1.5px solid rgba(82, 150, 184, 0.28);
+  background: linear-gradient(160deg, rgba(82, 150, 184, 0.09) 0%, rgba(255, 250, 247, 0.6) 100%);
+  box-shadow: 0 4px 20px rgba(14, 63, 78, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pain-card__num {
+  font-size: 2.8rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #5296B8;
+  letter-spacing: -0.04em;
+  opacity: 0.85;
+  font-feature-settings: "tnum" 1;
+}
+
+.pain-card__kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #35738E;
+  margin-top: -0.2rem;
+}
+
+.pain-card__title {
+  font-size: 1.35rem !important;
+  font-weight: 800;
+  color: #0E3F4E !important;
+  margin: 0.25rem 0 0.55rem !important;
+  line-height: 1.3 !important;
+}
+
+.pain-card__body {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(14, 63, 78, 0.78);
+}
+
+/* ── Highlight template (p30 Parquet 三家 · p31 TSDB vs Parquet)
+   風格統一 .pain-card / .path-card — 無頂部色條 */
+.hl-grid {
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+}
+.hl-grid--2 { grid-template-columns: 1fr 1fr; }
+.hl-grid--3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.hl-card {
+  padding: 2rem 1.75rem 1.75rem;
+  border-radius: 18px;
+  border: 1.5px solid rgba(82, 150, 184, 0.28);
+  background: linear-gradient(160deg, rgba(82, 150, 184, 0.09) 0%, rgba(255, 250, 247, 0.6) 100%);
+  box-shadow: 0 4px 20px rgba(14, 63, 78, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.hl-card--pos {
+  border-color: rgba(247, 168, 107, 0.45);
+  background: linear-gradient(160deg, rgba(247, 168, 107, 0.14) 0%, rgba(255, 250, 247, 0.55) 100%);
+}
+
+.hl-card--neg {
+  border-color: rgba(242, 109, 79, 0.4);
+  background: linear-gradient(160deg, rgba(242, 109, 79, 0.1) 0%, rgba(255, 250, 247, 0.55) 100%);
+}
+
+.hl-card__num {
+  font-size: 2.8rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #5296B8;
+  letter-spacing: -0.04em;
+  opacity: 0.85;
+  font-feature-settings: "tnum" 1;
+}
+.hl-card--pos .hl-card__num { color: #F7A86B; }
+.hl-card--neg .hl-card__num { color: #F26D4F; }
+
+.hl-card__kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #35738E;
+  margin-top: -0.2rem;
+}
+.hl-card--pos .hl-card__kicker { color: #C97C3A; }
+.hl-card--neg .hl-card__kicker { color: #C0502E; }
+
+.hl-card__title {
+  font-size: 1.5rem !important;
+  font-weight: 800;
+  line-height: 1.25 !important;
+  letter-spacing: -0.01em;
+  color: #0E3F4E !important;
+  margin: 0.2rem 0 0.4rem !important;
+}
+.hl-card--pos .hl-card__title { color: #F7A86B !important; }
+.hl-card--neg .hl-card__title { color: #F26D4F !important; }
+
+.hl-card__sub {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: rgba(14, 63, 78, 0.78);
+}
+
+.hl-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.5rem;
+  border-radius: 14px;
+  background: rgba(82, 150, 184, 0.08);
+  border: 1px dashed rgba(82, 150, 184, 0.35);
+  color: #0E3F4E;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  margin-top: 0.5rem;
+}
+
+.hl-banner__icon {
+  font-size: 1.5rem;
+  color: #F7A86B;
+  flex-shrink: 0;
+}
+
+.hl-footer {
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #35738E;
+  padding: 0.5rem 1rem;
+}

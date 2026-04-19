@@ -52,7 +52,7 @@
 .cols {
   flex: 1;
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 7fr 5fr;
   gap: 2.5rem;
   align-items: center;
   min-height: 0;
@@ -68,7 +68,9 @@
 
 .col-image img {
   max-width: 100%;
-  max-height: 440px;
+  max-height: 500px;
+  width: 100%;
+  height: auto;
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 10px 28px rgba(14, 63, 78, 0.16);

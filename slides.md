@@ -437,14 +437,17 @@ image: /mimir3-decouple.png
 
 ::notes::
 
-<Callout type="win" title="設計哲學">
-<strong>讀取端掛了，寫入端依然健康</strong><br/>熱查詢爆炸不再會拖垮寫入
+<Callout type="info" title="Write Path">
+只到 Kafka 就結束<br/>不會被 query 端牽動
 </Callout>
 
-<div v-click class="text-[0.98rem] leading-relaxed" style="color:#35738E;">
-傳統 Mimir 2.x：Ingester 同時服務讀寫，heavy query 會打爆 Ingester；<br/><br/>
-Mimir 3.0：Write path 只到 Kafka 就結束，query 端問題不再變成寫入事件。
-</div>
+<Callout type="info" title="Read Path">
+獨立服務熱查詢<br/>爆炸也不會拖垮寫入
+</Callout>
+
+<Callout type="win" title="設計哲學">
+<strong>讀取端掛了，寫入端依然健康</strong><br/>query 端問題不再變成寫入事件
+</Callout>
 
 <!--
 - Write ✅ HEALTHY / Read ✗ UNHEALTHY
@@ -555,36 +558,24 @@ Kafka consumer 慢（根因其實在下游 Ingester）→ Kafka 堆積 → Distr
 -->
 
 ---
-layout: split
+layout: image-side
 title: Kafka 的下一個十年
-ratio: "1:1"
+image: /kip1150-xiaohongshu.png
 ---
 
-::left::
+::notes::
 
-<h3 style="color:#5296B8">KIP-1150 Diskless Topics</h3>
-
-<v-clicks>
-
-- 2025/4 提出 · **2026/3/2 正式通過**
-- 9 binding + 5 non-binding votes
-- Confluent / IBM / Aiven / Red Hat 共同背書
-- Broker 變成 stateless，state 下放 object storage
-- aiven/inkless 已有 fork 實作
-
-</v-clicks>
-
-<div v-click class="mt-4">
-
-<Callout type="info">
-<strong>社群共識</strong>：Kafka 的未來是 cloud-native
+<Callout type="info" title="KIP-1150 Diskless Topics">
+2025/4 提出<br/><strong>2026/3/2 正式通過</strong>
 </Callout>
 
-</div>
+<Callout type="info" title="社群背書">
+9 binding + 5 non-binding votes<br/>Confluent · IBM · Aiven · Red Hat
+</Callout>
 
-::right::
-
-<img src="/kip1150-xiaohongshu.png" />
+<Callout type="win" title="共識方向">
+Broker 變 stateless<br/>state 下放 <strong>object storage</strong>
+</Callout>
 
 <!--
 - Kafka 社群的重要時刻：Apache 官方承認要往 stateless 走
@@ -597,30 +588,33 @@ title: 傳統 Kafka 的三大痛點
 footnote: "重度使用過 Kafka 的朋友會秒懂 — 這三個是 Kafka 帳單上的主要項目"
 ---
 
-<div class="grid grid-cols-3 gap-5 w-full">
+<div class="pain-grid">
 
-<div class="rounded-xl p-5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase tracking-widest mb-2 font-bold">① 維運</div>
-  <h3 class="!text-lg mb-3">Broker 是有狀態的</h3>
-  <div class="text-sm opacity-80 leading-relaxed">
+<div class="pain-card">
+  <div class="pain-card__num">01</div>
+  <div class="pain-card__kicker">維運</div>
+  <h3 class="pain-card__title">Broker 是有狀態的</h3>
+  <div class="pain-card__body">
     Partition data 存在本地磁碟<br/>
     重啟 / 擴縮 / 修復都要搬資料
   </div>
 </div>
 
-<div class="rounded-xl p-5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase tracking-widest mb-2 font-bold">② 水平擴展</div>
-  <h3 class="!text-lg mb-3">Rebalance storm</h3>
-  <div class="text-sm opacity-80 leading-relaxed">
+<div class="pain-card">
+  <div class="pain-card__num">02</div>
+  <div class="pain-card__kicker">水平擴展</div>
+  <h3 class="pain-card__title">Rebalance storm</h3>
+  <div class="pain-card__body">
     加 broker / 縮 broker<br/>
     都會觸發大量 partition 遷移
   </div>
 </div>
 
-<div class="rounded-xl p-5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase tracking-widest mb-2 font-bold">③ 跨區流量</div>
-  <h3 class="!text-lg mb-3">大多數成本來源</h3>
-  <div class="text-sm opacity-80 leading-relaxed">
+<div class="pain-card">
+  <div class="pain-card__num">03</div>
+  <div class="pain-card__kicker">跨區流量</div>
+  <h3 class="pain-card__title">大多數成本來源</h3>
+  <div class="pain-card__body">
     Replication + producer/consumer<br/>
     <strong>跨 AZ 流量費是帳單主角</strong>
   </div>
@@ -655,13 +649,17 @@ image: /automq-zero-zone-router.png
 
 ::notes::
 
-<Callout type="win" title="神來一筆的設計">
-Producer 寫入 <strong>本地 AZ 的 broker</strong> → 透過 S3 路由到 leader partition → Consumer 從 <strong>本地 AZ 的 readonly replica</strong> 讀取 → 跨 AZ 流量歸零
+<Callout type="info" title="Producer">
+寫入<strong>本地 AZ</strong> 的 broker<br/>透過 S3 路由給 leader
 </Callout>
 
-<div class="text-sm mt-2" style="color:#35738E;">
-唯一的跨 AZ 流量是 broker ↔ S3，<strong>而 AWS 同 region 的 S3 是免費的</strong>。
-</div>
+<Callout type="info" title="Consumer">
+從本地 AZ 的<br/>readonly replica 讀取
+</Callout>
+
+<Callout type="win" title="結果">
+broker ↔ S3 同 region <strong>免費</strong><br/>跨 AZ 流量歸零
+</Callout>
 
 <!--
 Zero-Zone Router 分步講解：
@@ -721,7 +719,7 @@ parent: Thanos → Mimir 3.0
 layout: split
 title: 實測效能對比
 kicker: 8 種 query × 6 個時間範圍 = 48 組測試 · cache busting
-ratio: "3:2"
+ratio: "1:1"
 ---
 
 ::left::
@@ -730,7 +728,7 @@ ratio: "3:2"
 
 ::right::
 
-<div class="grid grid-cols-2 gap-3">
+<div class="grid grid-cols-2 gap-4">
   <Stat value="3.4×" label="平均查詢加速" accent="orange" />
   <Stat value="45/48" label="測試項目勝出" accent="sky" />
   <Stat value="16.7×" label="Cross-metric Join 30d" accent="red" />
@@ -865,40 +863,43 @@ title: 可觀測性 2.0 的訊號
 ---
 layout: inner
 title: PromCon 2026 — Parquet Gateway
+kicker: 三大社群聯合發聲
 ---
 
-<div class="grid grid-cols-3 gap-4 w-full">
+<div class="hl-grid hl-grid--3">
 
-<div class="rounded-lg p-4 bg-white/60 border border-amber-300/50 text-center">
-  <div class="text-xs uppercase opacity-60 mb-1">Grafana Labs</div>
-  <div class="font-bold text-lg" style="color:#F7A86B">Jesús Vázquez</div>
-  <div class="text-xs opacity-70 mt-1">Mimir 核心</div>
+<div class="hl-card">
+  <div class="hl-card__num">01</div>
+  <div class="hl-card__kicker">Grafana Labs</div>
+  <div class="hl-card__title">Jesús Vázquez</div>
+  <div class="hl-card__sub">Mimir 核心維護者</div>
 </div>
 
-<div class="rounded-lg p-4 bg-white/60 border border-cyan-300/50 text-center">
-  <div class="text-xs uppercase opacity-60 mb-1">AWS</div>
-  <div class="font-bold text-lg" style="color:#5296B8">Alan Protasio</div>
-  <div class="text-xs opacity-70 mt-1">Cortex / Amazon Managed Prometheus</div>
+<div class="hl-card">
+  <div class="hl-card__num">02</div>
+  <div class="hl-card__kicker">AWS</div>
+  <div class="hl-card__title">Alan Protasio</div>
+  <div class="hl-card__sub">Cortex · Amazon Managed Prometheus</div>
 </div>
 
-<div class="rounded-lg p-4 bg-white/60 border border-red-300/50 text-center">
-  <div class="text-xs uppercase opacity-60 mb-1">Cloudflare</div>
-  <div class="font-bold text-lg" style="color:#F26D4F">Michael Hoffmann</div>
-  <div class="text-xs opacity-70 mt-1">Thanos maintainer</div>
+<div class="hl-card">
+  <div class="hl-card__num">03</div>
+  <div class="hl-card__kicker">Cloudflare</div>
+  <div class="hl-card__title">Michael Hoffmann</div>
+  <div class="hl-card__sub">Thanos maintainer</div>
 </div>
-
-</div>
-
-<div v-click class="mt-5 w-full">
-
-<Callout type="info" title="三大社群聯合發聲">
-<strong>Cortex · Thanos · Mimir</strong> 的核心維護者同台 — 宣告下一代 Prometheus 長期儲存後端的共同方向：<strong style="color:#F7A86B">Parquet Gateway</strong>
-</Callout>
 
 </div>
 
-<div v-click class="text-center mt-4 text-base" style="color:#35738E;">
-  用 <strong style="color:#F7A86B">Parquet</strong>（columnar format）取代 Prometheus TSDB block · 彌補 TSDB 在 object storage 上的結構性缺陷
+<div v-click class="hl-banner">
+  <mdi-account-group class="hl-banner__icon" />
+  <div>
+    <strong>Cortex · Thanos · Mimir</strong> 三大社群核心維護者<strong style="color:#F7A86B">同台</strong>宣告下一代 Prometheus 長期儲存後端方向
+  </div>
+</div>
+
+<div v-click class="hl-footer">
+  用 <strong style="color:#F7A86B">Parquet</strong>（columnar format）取代 TSDB block<br/>彌補 TSDB 在 object storage 上的結構性缺陷
 </div>
 
 <!--
@@ -907,41 +908,42 @@ title: PromCon 2026 — Parquet Gateway
 -->
 
 ---
-layout: split
+layout: inner
 title: 為什麼 TSDB 不適合 Object Storage?
-ratio: "1:1"
+kicker: I/O 經濟學的根本差異
 footnote: "<strong style='color:#F7A86B'>Request 數量才是成本</strong>，不是 bytes 數量"
 ---
 
-::left::
+<div class="hl-grid hl-grid--2">
 
-<h3 style="color:#5296B8">I/O 經濟學的根本差異</h3>
-
-<v-clicks>
-
-- **SSD random read** 固定成本：`~100μs`
-- **S3 random read** 固定成本：`~10-50ms`
-- **差異：100-500×**
-
-</v-clicks>
-
-::right::
-
-<h3 style="color:#F26D4F">一個查詢的代價</h3>
-
-<v-clicks>
-
-<div class="rounded p-3 bg-red-500/10 border border-red-400/30 mb-2">
-  <div class="text-xs uppercase opacity-60">TSDB on S3</div>
-  <div class="text-2xl font-bold text-red-400">100+ random GETs</div>
+<div class="hl-card hl-card--neg">
+  <div class="hl-card__kicker">TSDB on S3</div>
+  <div class="hl-card__title">100+ <span class="text-[0.7em] font-bold opacity-80">random GETs</span></div>
+  <div class="hl-card__sub">
+    為本地 SSD 設計<br/>
+    每個 request 都是 HTTP round-trip<br/>
+    <strong>SSD ~100μs · S3 ~10-50ms</strong>
+  </div>
 </div>
 
-<div class="rounded p-3 bg-amber-500/10 border border-amber-400/40">
-  <div class="text-xs uppercase opacity-60">Parquet on S3</div>
-  <div class="text-2xl font-bold" style="color:#F7A86B">3-4 sequential reads</div>
+<div class="hl-card hl-card--pos">
+  <div class="hl-card__kicker">Parquet on S3</div>
+  <div class="hl-card__title">3-4 <span class="text-[0.7em] font-bold opacity-80">sequential reads</span></div>
+  <div class="hl-card__sub">
+    columnar 格式 + metadata 集中<br/>
+    多讀一點 bytes 沒關係<br/>
+    <strong>少發幾次 request 才是王道</strong>
+  </div>
 </div>
 
-</v-clicks>
+</div>
+
+<div v-click class="hl-banner">
+  <mdi-chart-line class="hl-banner__icon" />
+  <div>
+    實測：GetRange calls <strong style="color:#F7A86B">減少 90%</strong> · 查詢加速 <strong style="color:#F7A86B">80–90%</strong>
+  </div>
+</div>
 
 <!--
 first principles：
