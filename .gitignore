@@ -1,0 +1,8 @@
+node_modules
+.remote-assets
+components.d.ts
+.slidev
+dist
+*.local
+.DS_Store
+.idea

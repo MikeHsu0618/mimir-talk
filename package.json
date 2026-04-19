@@ -1,0 +1,17 @@
+{
+  "name": "mimir-talk",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export",
+    "export-pptx": "slidev export --format pptx"
+  },
+  "dependencies": {
+    "@slidev/cli": "^0.49.0",
+    "@slidev/theme-default": "latest",
+    "playwright-chromium": "^1.47.0",
+    "vue": "^3.5.0"
+  }
+}
