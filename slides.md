@@ -750,8 +750,8 @@ footnote: "Dec 8-28, 2025 · 同一生產環境 · 真實 AWS billing"
 ::left::
 
 <div class="text-center mb-3">
-  <span class="text-red-400 font-bold text-lg">Thanos</span>
-  <div class="text-4xl font-black text-red-400 mt-1">$32,525</div>
+  <span class="text-teal-400 font-bold text-lg">Thanos</span>
+  <div class="text-4xl font-black text-teal-400 mt-1">$32,525</div>
 </div>
 
 <img src="/cost-thanos.png" />
@@ -759,8 +759,8 @@ footnote: "Dec 8-28, 2025 · 同一生產環境 · 真實 AWS billing"
 ::right::
 
 <div class="text-center mb-3">
-  <span class="font-bold text-lg" style="color:#F7A86B">Mimir + AutoMQ</span>
-  <div class="text-4xl font-black mt-1" style="color:#F7A86B">$16,602</div>
+  <span class="font-bold text-lg text-red-400">Mimir + AutoMQ</span>
+  <div class="text-4xl font-black mt-1 text-red-400">$16,602</div>
 </div>
 
 <img src="/cost-mimir.png" />
@@ -774,19 +774,18 @@ footnote: "Dec 8-28, 2025 · 同一生產環境 · 真實 AWS billing"
 
 ---
 layout: inner
-title: 49% 更便宜
 align: center
 ---
 
 <div class="text-center w-full">
   <div class="text-xl opacity-70 mb-2">年度預估節省</div>
-  <div class="text-7xl font-black mb-12" style="color:#F7A86B;">$254,771</div>
+  <div class="text-7xl font-black mb-12 text-red-400">$254,771</div>
 
   <div class="text-xl opacity-70 mb-3">性價比總結</div>
   <div class="flex items-center justify-center gap-6 text-2xl">
     <span class="font-black" style="color:#F7A86B;">3.4× 更快</span>
     <span class="opacity-40">·</span>
-    <span class="font-black" style="color:#F7A86B;">49% 更便宜</span>
+    <span class="font-black ">49% 更便宜</span>
     <span class="opacity-40">·</span>
     <span class="font-black" style="color:#F7A86B;">6.6× 性價比</span>
   </div>
@@ -814,42 +813,46 @@ parent: Thanos → Mimir 3.0
 ---
 layout: inner
 title: 可觀測性 2.0 的訊號
+kicker: 資料庫派 vs Prometheus 派
 ---
 
-<div class="w-full">
+<div class="w-full flex flex-col gap-5">
 
-<Callout type="info" title="口號">
-把 <strong>logs / traces / metrics</strong> 全部倒進 <strong>data warehouse / data lake</strong>，用統一的查詢引擎交叉分析
-</Callout>
-
-<div class="grid grid-cols-2 gap-6 mt-6">
-
-<div>
-  <h3 style="color:#5296B8">支持者（資料庫廠商）</h3>
-  <v-clicks>
-
-  - ClickHouse — 大力鼓吹
-  - AWS Athena — 把 metrics 導進來吧
-  - 核心論點：**columnar 格式**對高基數資料超友善
-
-  </v-clicks>
+<div class="hl-banner">
+  <mdi-lightbulb-on class="hl-banner__icon" />
+  <div>
+    <strong>口號</strong> — 把 <strong>logs / traces / metrics</strong> 全倒進 <strong>data warehouse / data lake</strong>，用統一查詢引擎交叉分析
+  </div>
 </div>
 
-<div>
-  <h3 style="color:#F26D4F">為何不溫不火</h3>
-  <v-clicks>
+<div class="hl-grid hl-grid--2">
 
-  - PromQL 生態太大太穩
-  - SQL vs PromQL 轉換成本高
-  - Dashboards / alerts 生態綁死 Prom
+<div class="hl-card hl-card--pos">
+  <div class="hl-card__num">01</div>
+  <div class="hl-card__kicker">支持者 · 資料庫廠商</div>
+  <div class="hl-card__title">擁抱 columnar 儲存</div>
+  <ul>
+    <li><strong>ClickHouse</strong> 大力鼓吹</li>
+    <li><strong>AWS Athena</strong> — 把 metrics 倒進來</li>
+    <li>Columnar 對<strong>高基數</strong>資料超友善</li>
+  </ul>
+</div>
 
-  </v-clicks>
+<div class="hl-card hl-card--neg">
+  <div class="hl-card__num">02</div>
+  <div class="hl-card__kicker">為何不溫不火</div>
+  <div class="hl-card__title">PromQL 生態太穩</div>
+  <ul>
+    <li>PromQL 生態<strong>太大太穩</strong></li>
+    <li>SQL ↔ PromQL <strong>轉換成本高</strong></li>
+    <li>Dashboards / alerts <strong>綁死 Prom</strong></li>
+  </ul>
 </div>
 
 </div>
 
-<div v-click class="text-center mt-6 text-lg">
-  但 Prometheus 生態<span class="font-bold" style="color:#F7A86B;">沒有放棄</span>這個方向
+<div v-click class="hl-footer">
+  但 Prometheus 生態<strong>沒有放棄</strong>這個方向 — 下一頁看他們怎麼接招
 </div>
 
 </div>
