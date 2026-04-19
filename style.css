@@ -453,9 +453,9 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
 
 .path-card__ribbon {
   position: absolute;
-  top: -0.7rem;
-  right: 1rem;
-  padding: 0.3rem 0.8rem;
+  top: 0.85rem;
+  right: 0.85rem;
+  padding: 0.25rem 0.7rem;
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 700;
