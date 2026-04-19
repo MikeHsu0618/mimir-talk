@@ -543,6 +543,20 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   color: #F7A86B;
 }
 
+.path-card.is-danger {
+  border-color: rgba(242, 109, 79, 0.65);
+  background: linear-gradient(160deg, rgba(242, 109, 79, 0.18) 0%, rgba(255, 250, 247, 0.55) 100%);
+  box-shadow: 0 10px 30px rgba(242, 109, 79, 0.22);
+  opacity: 1;
+  transform: translateY(-6px);
+}
+.path-card.is-danger .path-card__num { color: #F26D4F; }
+.path-card.is-danger .path-card__title { color: #F26D4F; }
+.path-card.is-danger .path-card__foot {
+  font-weight: 700;
+  color: #F26D4F;
+}
+
 /* ── Pain-cards (p20 Kafka 三大痛點) ── */
 .pain-grid {
   display: grid;

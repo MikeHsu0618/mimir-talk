@@ -352,13 +352,13 @@ title: 我們考慮的三條路
   </div>
 </div>
 
-<div class="path-card" :class="{ 'is-rejected': $clicks >= 1 }">
+<div class="path-card" :class="{ 'is-rejected': $clicks === 1 || $clicks >= 3, 'is-danger': $clicks === 2 }">
   <div class="path-card__ribbon path-card__ribbon--warn" v-click="1">太激進</div>
   <div class="path-card__num">02</div>
   <div class="path-card__title">拔掉 Prom Server<br/>改用 Prometheus Agent</div>
   <div class="path-card__desc">所有 query 指向 Mimir<br/>對可靠性要求極嚴苛</div>
   <div class="path-card__foot" v-click="1">
-    <mdi-alert-octagon /> HPA/KEDA 斷線 = 業務掛掉
+    <mdi-alert-octagon /> HPA/KEDA 靠 metrics 作決策 · 不穩 = 業務直接掛掉
   </div>
 </div>
 
@@ -374,7 +374,7 @@ title: 我們考慮的三條路
 
 </div>
 
-<div v-click="2" class="path-conclusion">
+<div v-click="3" class="path-conclusion">
   <mdi-lightbulb-on class="path-conclusion__icon" />
   <div>
     選 ① 的關鍵：Prom Server <strong style="color:#F26D4F">單純穩定</strong> — 是 alert / autoscaling 的最後防線
