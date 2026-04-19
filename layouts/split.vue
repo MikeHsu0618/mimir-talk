@@ -13,7 +13,7 @@
       <div class="col col-right"><slot name="right" /></div>
     </div>
 
-    <div v-if="$frontmatter.footnote" class="footnote" v-html="$frontmatter.footnote" />
+    <div v-if="$frontmatter.footnote" v-click class="footnote" v-html="$frontmatter.footnote" />
   </div>
 </template>
 
@@ -97,6 +97,6 @@
 .footnote {
   text-align: center;
   font-size: 1rem;
-  color: #6BAEBE;
+  color: #0E3F4E;
 }
 </style>

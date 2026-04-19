@@ -456,17 +456,11 @@ image: /mimir3-decouple.png
 
 ::notes::
 
-<Callout type="info" title="Write Path">
-只到 Kafka 就結束<br/>不會被 query 端牽動
-</Callout>
-
-<Callout type="info" title="Read Path">
-獨立服務熱查詢<br/>爆炸也不會拖垮寫入
-</Callout>
-
-<Callout type="win" title="設計哲學">
-<strong>讀取端掛了，寫入端依然健康</strong><br/>query 端問題不再變成寫入事件
-</Callout>
+<div class="insight">
+  <div class="insight-label">設計哲學</div>
+  <div class="insight-text"><strong>讀取端掛了，<br/>寫入端依然健康</strong></div>
+  <p>query 端問題不再變成寫入事件</p>
+</div>
 
 <!--
 補充：
@@ -481,6 +475,7 @@ layout: split
 title: Mimir Query Engine (MQE) 效益
 kicker: 1h range query · 1000 series · sum() benchmark
 ratio: "3:2"
+footnote: "Grafana Cloud 實測：querier peak memory 降 <strong style='color:#F7A86B'>3×</strong>、peak CPU 降 <strong style='color:#F7A86B'>80%</strong> — 遷移完即送。"
 ---
 
 ::left::
@@ -491,10 +486,6 @@ ratio: "3:2"
 
 <Stat value="92%" label="Less memory vs Prometheus" accent="orange" />
 <Stat value="38%" label="Faster execution" accent="blue" />
-
-<div v-click class="text-sm leading-relaxed mt-2" style="color:#35738E;">
-Grafana Cloud 實測：querier peak memory 降 <strong style="color:#F7A86B">3×</strong>、peak CPU 降 <strong style="color:#F7A86B">80%</strong> — 遷移完即送。
-</div>
 
 <!--
 補充：
@@ -523,20 +514,27 @@ parent: Thanos → Mimir 3.0
 ---
 layout: inner
 title: "等等，加 Kafka 不就更複雜嗎？"
-align: center
 ---
 
-<div class="text-center w-full">
-  <div class="text-xl opacity-80 mb-6">很多人的第一反應：</div>
-
-  <div v-click class="inline-block rounded-xl p-6 bg-white/50 border border-cyan-200 text-2xl italic mb-12" style="color:#0E3F4E;">
-    「原本一個長期指標系統就夠複雜了，<br/>現在還要加 Kafka？」
-  </div>
-
-  <div v-click>
-    <div class="text-base opacity-70 mb-2">答案要從這個定理說起</div>
-    <div class="text-6xl font-black font-mono" style="color:#F7A86B;">L = λ · W</div>
-    <div class="text-sm opacity-60 mt-2">Little's Law · 李式定理</div>
+<div class="flex flex-col items-center gap-8 w-full text-center">
+  <div v-click class="text-xl" style="color:rgba(14,63,78,0.65);">複雜度不會憑空消失——你只是選擇<strong>把它放在哪裡</strong></div>
+  <div v-click class="flex flex-col items-center gap-5 w-full">
+    <div class="text-8xl font-black font-mono" style="color:#F7A86B;letter-spacing:-0.02em;">L = λ · W</div>
+    <div class="text-xs uppercase tracking-widest opacity-50">Little's Law · 李式定理</div>
+    <div class="grid grid-cols-3 gap-5 mt-2 w-full max-w-2xl">
+      <div class="flex flex-col items-center gap-2 rounded-2xl p-5" style="background:rgba(82,150,184,0.08);">
+        <div class="text-3xl font-black font-mono" style="color:#5296B8;">L</div>
+        <div class="text-sm opacity-65 leading-snug">Queue 中的<br/>平均任務數</div>
+      </div>
+      <div class="flex flex-col items-center gap-2 rounded-2xl p-5" style="background:rgba(247,168,107,0.10);">
+        <div class="text-3xl font-black font-mono" style="color:#F7A86B;">λ</div>
+        <div class="text-sm opacity-65 leading-snug">系統吞吐率<br/>(samples/s)</div>
+      </div>
+      <div class="flex flex-col items-center gap-2 rounded-2xl p-5" style="background:rgba(82,150,184,0.08);">
+        <div class="text-3xl font-black font-mono" style="color:#5296B8;">W</div>
+        <div class="text-sm opacity-65 leading-snug">每個任務的<br/>平均等待時間</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -727,16 +725,16 @@ footnote: "長期指標後端不在乎 · Alert / HPA / KEDA 仍然走 Prom Serv
 ::left::
 
 <div class="text-center">
-  <div class="text-xs uppercase tracking-widest opacity-60 mb-2">Traditional Kafka (EBS)</div>
-  <div class="text-8xl font-black" style="color:#5296B8;">~50<span class="text-3xl">ms</span></div>
+  <div class="inline-block text-md font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3" style="color:#5296B8;border:1.5px solid #5296B8;">Traditional Kafka (EBS)</div>
+  <div class="text-9xl font-black" style="color:#5296B8;">~50<span class="text-3xl">ms</span></div>
   <div class="text-base opacity-70 mt-2">P99 end-to-end</div>
 </div>
 
 ::right::
 
 <div class="text-center">
-  <div class="text-xs uppercase tracking-widest opacity-60 mb-2">AutoMQ S3Stream</div>
-  <div class="text-8xl font-black" style="color:#F7A86B;">~500<span class="text-3xl">ms</span></div>
+  <div class="inline-block text-md font-black uppercase tracking-widest px-3 py-1 rounded-full mb-3" style="color:#F7A86B;border:1.5px solid #F7A86B;">AutoMQ S3Stream</div>
+  <div class="text-9xl font-black" style="color:#F7A86B;">~500<span class="text-3xl">ms</span></div>
   <div class="text-base opacity-70 mt-2">P99 end-to-end</div>
 </div>
 
@@ -835,7 +833,7 @@ align: center
 
 <div class="text-center w-full">
 
-<h1 class="!text-7xl !font-black !mb-6" style="color:#F7A86B;letter-spacing:-0.04em;">49% 更便宜</h1>
+<h1 class="!text-8xl !mb-12" style="color:#F26D4F;letter-spacing:-0.04em;">49% 更便宜</h1>
 
 <div class="text-3xl opacity-80 mb-12">
   年度預估節省 <strong class="text-red-400">$254,771</strong>
@@ -979,39 +977,39 @@ kicker: 三大社群聯合發聲
 -->
 
 ---
-layout: inner
+layout: split
 title: 為什麼 TSDB 不適合 Object Storage?
 kicker: I/O 經濟學的根本差異
-footnote: "<strong style='color:#F7A86B'>Request 數量才是成本</strong>，不是 bytes 數量"
+ratio: "1:1"
+footnote: "<strong style='color:#F7A86B'>Request 數量才是成本</strong>，不是 bytes 數量 · GetRange calls 減少 <strong style='color:#F7A86B'>90%</strong> · 查詢加速 <strong style='color:#6BAEBE'>80–90%</strong>"
 ---
 
-<div class="hl-grid hl-grid--2">
+::left::
 
-<div class="hl-card hl-card--neg">
-  <div class="hl-card__kicker">TSDB on S3</div>
-  <div class="hl-card__title">100+ <span class="text-[0.7em] font-bold opacity-80">random GETs</span></div>
-  <div class="hl-card__sub">
-    為本地 SSD 設計<br/>
-    每個 request 都是 HTTP round-trip<br/>
-    <strong>SSD ~100μs · S3 ~10-50ms</strong>
-  </div>
+<div class="flex flex-col gap-3">
+  <div class="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full" style="color:#C0502E;border:1.5px solid #C0502E;width:fit-content;">TSDB on S3</div>
+  <div style="font-size:4.5rem;font-weight:900;line-height:1;letter-spacing:-0.04em;color:#F26D4F;">100+</div>
+  <div class="text-lg font-bold" style="color:#F26D4F;">random GETs</div>
+  <div class="w-12 h-0.5 rounded" style="background:#F26D4F;opacity:0.4;"></div>
+  <ul class="li-xl">
+    <li>為本地 SSD 設計</li>
+    <li>每個 request 都是 HTTP round-trip</li>
+    <li><strong>SSD ~100μs · S3 ~10–50ms</strong></li>
+  </ul>
 </div>
 
-<div class="hl-card hl-card--pos">
-  <div class="hl-card__kicker">Parquet on S3</div>
-  <div class="hl-card__title">3-4 <span class="text-[0.7em] font-bold opacity-80">sequential reads</span></div>
-  <div class="hl-card__sub">
-    columnar 格式 + metadata 集中<br/>
-    多讀一點 bytes 沒關係<br/>
-    <strong>少發幾次 request 才是王道</strong>
-  </div>
-</div>
+::right::
 
-</div>
-
-<div v-click class="grid grid-cols-2 gap-5 max-w-4xl mx-auto w-full">
-  <Stat value="-90%" label="GetRange calls 減少" accent="orange" />
-  <Stat value="80-90%" label="查詢加速" accent="sky" />
+<div class="flex flex-col gap-3">
+  <div class="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full" style="color:#35738E;border:1.5px solid #35738E;width:fit-content;">Parquet on S3</div>
+  <div style="font-size:4.5rem;font-weight:900;line-height:1;letter-spacing:-0.04em;color:#5296B8;">3–4</div>
+  <div class="text-lg font-bold" style="color:#5296B8;">sequential reads</div>
+  <div class="w-12 h-0.5 rounded" style="background:#5296B8;opacity:0.4;"></div>
+  <ul class="li-xl">
+    <li>columnar 格式 + metadata 集中</li>
+    <li>多讀一點 bytes 沒關係</li>
+    <li><strong>少發幾次 request 才是王道</strong></li>
+  </ul>
 </div>
 
 <!--

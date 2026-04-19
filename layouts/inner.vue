@@ -1,6 +1,6 @@
 <template>
   <div class="inner-layout slidev-layout">
-    <header v-if="$frontmatter.title || $frontmatter.kicker" class="head">
+    <header v-if="$frontmatter.title || $frontmatter.kicker" class="head" :class="{ 'head--center': $frontmatter.align === 'center' }">
       <h1 v-if="$frontmatter.title" v-html="$frontmatter.title" />
       <div v-if="$frontmatter.kicker" class="kicker">{{ $frontmatter.kicker }}</div>
     </header>
@@ -32,6 +32,8 @@
   color: #0E3F4E;
   margin: 0 0 0.8rem;
 }
+
+.head--center { text-align: center; }
 
 .head .kicker {
   font-size: 1.5rem;

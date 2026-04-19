@@ -52,7 +52,7 @@
 .cols {
   flex: 1;
   display: grid;
-  grid-template-columns: 7fr 5fr;
+  grid-template-columns: 8fr 4fr;
   gap: 2.5rem;
   align-items: center;
   min-height: 0;
@@ -79,10 +79,45 @@
 .col-notes {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 1rem;
   min-width: 0;
   font-size: 1.05rem;
   line-height: 1.7;
+}
+
+.col-notes :deep(.insight) {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.col-notes :deep(.insight-label) {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6BAEBE;
+}
+
+.col-notes :deep(.insight-text) {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1.25;
+  color: #0E3F4E;
+  letter-spacing: -0.02em;
+}
+
+.col-notes :deep(.insight-text strong) {
+  color: #F26D4F;
+  font-weight: 900;
+}
+
+.col-notes :deep(.insight p) {
+  font-size: 1rem;
+  color: rgba(14, 63, 78, 0.6);
+  margin: 0;
+  line-height: 1.6;
 }
 
 .col-notes :deep(h3) {
@@ -105,6 +140,6 @@
 .footnote {
   text-align: center;
   font-size: 1rem;
-  color: #6BAEBE;
+  color: #0E3F4E;
 }
 </style>
