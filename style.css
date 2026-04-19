@@ -314,6 +314,78 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   padding-left: 0;
 }
 
+/* ── p17: title-to-top animation ── */
+.p17-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+  text-align: center;
+}
+.p17-title {
+  font-size: 4rem !important;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  color: #0E3F4E;
+  line-height: 1.15;
+  margin: 0;
+  margin-top: 22%;
+  transition: margin-top 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.p17-wrap--on .p17-title { margin-top: 1.5rem; font-size: 3rem !important; }
+.p17-quote-block,
+.p17-formula-block {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
+  pointer-events: none;
+  width: 100%;
+}
+.p17-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+}
+.p17-quote-text {
+  position: relative;
+  font-size: 2rem;
+  font-weight: 900;
+  font-style: italic;
+  color: #0E3F4E;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  margin-top: 2.5rem;
+  padding: 0 1rem 0 3.5rem;
+  text-align: center;
+}
+.p17-quote-text::before {
+  content: "\201C";
+  /* position: absolute;
+  left: 0;
+  top: -0.3rem; */
+  font-size: 5rem;
+  font-weight: 900;
+  font-style: normal;
+  line-height: 1;
+  color: #5296B8;
+  opacity: 0.4;
+  font-family: Georgia, serif;
+}
+.p17-quote-text::after {
+  content: "\201D";
+  font-size: 5rem;
+  font-weight: 900;
+  font-style: normal;
+  line-height: 0;
+  vertical-align: -0.85em;
+  color: #5296B8;
+  opacity: 0.4;
+  font-family: Georgia, serif;
+  margin-left: 0.1em;
+}
+.p17-quote-text strong { color: #F26D4F; }
+
 /* ── Why-cards (p5 為什麼需要長期指標後端) ── */
 .why-card {
   display: flex;

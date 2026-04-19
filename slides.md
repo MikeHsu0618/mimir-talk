@@ -513,15 +513,19 @@ parent: Thanos → Mimir 3.0
 
 ---
 layout: inner
-title: "等等，加 Kafka 不就更複雜嗎？"
+align: start
+clicks: 2
 ---
 
-<div class="flex flex-col items-center gap-8 w-full text-center">
-  <div v-click class="text-xl" style="color:rgba(14,63,78,0.65);">複雜度不會憑空消失——你只是選擇<strong>把它放在哪裡</strong></div>
-  <div v-click class="flex flex-col items-center gap-5 w-full">
-    <div class="text-8xl font-black font-mono" style="color:#F7A86B;letter-spacing:-0.02em;">L = λ · W</div>
-    <div class="text-xs uppercase tracking-widest opacity-50">Little's Law · 李式定理</div>
-    <div class="grid grid-cols-3 gap-5 mt-2 w-full max-w-2xl">
+<div class="p17-wrap" :class="{ 'p17-wrap--on': $clicks >= 1 }">
+  <h1 class="p17-title">等等，加 Kafka不就更複雜嗎？</h1>
+  <div class="p17-quote-block" :class="{ 'p17-visible': $clicks >= 1 }">
+    <div class="p17-quote-text">複雜度不會憑空消失——你只是選擇<strong>把它放在哪裡</strong></div>
+  </div>
+  <div class="p17-formula-block" :class="{ 'p17-visible': $clicks >= 2 }">
+    <div style="font-size:4.5rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:#F7A86B;letter-spacing:-0.02em;margin-top:1.75rem;">L = λ · W</div>
+    <div class="text-xs uppercase tracking-widest opacity-50" style="margin-top:0.5rem;">Little's Law · 李式定理</div>
+    <div class="grid grid-cols-3 gap-5 w-full max-w-2xl mx-auto" style="margin-top:1.25rem;">
       <div class="flex flex-col items-center gap-2 rounded-2xl p-5" style="background:rgba(82,150,184,0.08);">
         <div class="text-3xl font-black font-mono" style="color:#5296B8;">L</div>
         <div class="text-sm opacity-65 leading-snug">Queue 中的<br/>平均任務數</div>
