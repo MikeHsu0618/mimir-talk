@@ -1,260 +1,298 @@
-/* ============================================
-   Observability-themed custom styles
-   靈感：Grafana 深色主題 + 工程簡報質感
-   ============================================ */
-
-:root {
-  --slidev-theme-primary: #f46800;        /* Grafana orange */
-  --accent-cyan: #42a5f5;                  /* Ingest path cyan */
-  --accent-green: #52c41a;                 /* Success / after */
-  --accent-red: #f5222d;                   /* Pain points / before */
-  --accent-purple: #a78bfa;                /* Kafka / AutoMQ */
-  --ink-900: #0b1020;                      /* Deep background */
-  --ink-800: #141a2e;
-  --ink-700: #1e2540;
-  --ink-100: #e7ebf3;
-  --ink-300: #94a0b8;
+#slidev-goto-dialog {
+  display: none !important;
 }
 
-/* Base body - observability dark feel */
+/* ── Design System ── */
+
 .slidev-layout {
-  background: linear-gradient(160deg, var(--ink-900) 0%, var(--ink-800) 100%);
-  color: var(--ink-100);
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
 }
 
-/* Cover slide - cinematic */
-.slidev-layout.cover,
-.slidev-layout.intro {
-  background:
-    radial-gradient(ellipse at 30% 20%, rgba(244, 104, 0, 0.15) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 80%, rgba(66, 165, 245, 0.12) 0%, transparent 55%),
-    linear-gradient(135deg, var(--ink-900) 0%, #050814 100%);
-}
-
-.slidev-layout.cover h1 {
-  font-size: 3.2em;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #fff 0%, #94a0b8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  line-height: 1.1;
-}
-
-/* Section dividers - bold chapter */
-.slidev-layout.section {
-  background: linear-gradient(135deg, var(--ink-900) 0%, var(--ink-700) 100%);
+/* 內容頁背景：右上 → 左下 的淺藍漸層 (template p.9 風格) */
+html:not(.dark) .slidev-layout {
   position: relative;
+  background:
+    radial-gradient(46% 55% at 96% 4%, rgba(130,198,224,0.55) 0%, rgba(162,206,230,0.26) 45%, transparent 72%),
+    radial-gradient(32% 42% at 4% 96%, rgba(162,206,230,0.42) 0%, rgba(194,229,245,0.18) 50%, transparent 74%),
+    #FFFAF7;
+  color: #0E3F4E;
+  isolation: isolate;
 }
 
-.slidev-layout.section::before {
-  content: "";
-  position: absolute;
-  left: 3rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 6px;
-  height: 60%;
-  background: var(--slidev-theme-primary);
-  border-radius: 3px;
-}
-
-.slidev-layout.section h1 {
-  font-size: 4em;
+/* H1：頁面標題，明顯放大 + 底部間距 (item 6) */
+html:not(.dark) .slidev-layout h1 {
+  color: #0E3F4E;
   font-weight: 900;
-  letter-spacing: -0.03em;
+  font-size: 2.6rem;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.6rem;
 }
 
-/* Fact / Statement - for big numbers */
-.slidev-layout.fact,
-.slidev-layout.statement {
-  background: var(--ink-900);
+/* H2：副標題，用更小字級 + 字重 + 淡色拉開層次 (item 6) */
+html:not(.dark) .slidev-layout h2 {
+  color: #5296B8;
+  font-weight: 500;
+  font-size: 1.1rem;
+  letter-spacing: 0.01em;
+  margin-top: -0.8rem;
+  margin-bottom: 1.4rem;
 }
 
-.slidev-layout.fact h1 {
-  font-size: 6em;
-  font-weight: 900;
-  background: linear-gradient(135deg, var(--slidev-theme-primary) 0%, #ff9b44 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Headings */
-.slidev-layout h1 {
-  color: #fff;
+html:not(.dark) .slidev-layout h3 {
+  color: #35738E;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: 1rem;
 }
 
-.slidev-layout h2 {
-  color: var(--slidev-theme-primary);
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  margin-bottom: 0.8em;
-}
-
-.slidev-layout h3 {
-  color: var(--accent-cyan);
-  font-weight: 600;
-}
-
-/* Code block refinement */
-.slidev-code,
-.shiki {
-  border-radius: 10px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-  font-size: 0.85em;
-}
-
-/* Inline code */
-:not(pre) > code {
-  background: rgba(244, 104, 0, 0.12);
-  color: var(--slidev-theme-primary);
-  padding: 0.12em 0.45em;
-  border-radius: 5px;
-  font-size: 0.85em;
-}
-
-/* Quote layout */
-.slidev-layout.quote {
-  background: var(--ink-900);
-  border-left: 6px solid var(--slidev-theme-primary);
-}
-
-/* Lists - subtle markers */
-.slidev-layout ul > li::marker {
-  color: var(--slidev-theme-primary);
-}
-
-/* Horizontal rule */
-.slidev-layout hr {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  margin: 1.5em 0;
+/* Horizontal rules */
+html:not(.dark) .slidev-layout hr {
+  border-color: #E4D8C8;
+  border-width: 1.5px;
 }
 
 /* Tables */
 .slidev-layout table {
-  font-size: 0.88em;
   border-collapse: collapse;
+  width: 100%;
 }
 
-.slidev-layout th {
-  color: var(--slidev-theme-primary);
-  border-bottom: 2px solid var(--slidev-theme-primary);
+html:not(.dark) .slidev-layout th {
+  border-bottom: 2px solid #C9BDA9;
+  padding: 0.5rem 1.25rem;
   text-align: left;
-  padding: 0.6em 1em;
-}
-
-.slidev-layout td {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 0.5em 1em;
-}
-
-/* Reusable custom classes */
-.pain-point {
-  background: rgba(245, 34, 45, 0.1);
-  border-left: 4px solid var(--accent-red);
-  padding: 1em 1.2em;
-  border-radius: 6px;
-  margin: 0.6em 0;
-}
-
-.win-point {
-  background: rgba(82, 196, 26, 0.1);
-  border-left: 4px solid var(--accent-green);
-  padding: 1em 1.2em;
-  border-radius: 6px;
-  margin: 0.6em 0;
-}
-
-.stat-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: var(--ink-800);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 1.5em 2em;
-}
-
-.stat-card .value {
-  font-size: 3.5em;
-  font-weight: 900;
-  line-height: 1;
-  background: linear-gradient(135deg, var(--slidev-theme-primary) 0%, #ff9b44 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.stat-card .label {
-  font-size: 0.9em;
-  color: var(--ink-300);
-  margin-top: 0.4em;
-  letter-spacing: 0.02em;
-}
-
-.before-after {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 1.5em;
-  align-items: center;
-  margin: 1em 0;
-}
-
-.before-after .before {
-  color: var(--accent-red);
-  text-decoration: line-through;
-  text-decoration-color: rgba(245, 34, 45, 0.5);
-  font-size: 1.8em;
   font-weight: 700;
-  text-align: right;
 }
 
-.before-after .arrow {
-  font-size: 1.5em;
-  color: var(--ink-300);
+html:not(.dark) .slidev-layout td {
+  border-bottom: 1px solid #E4D8C8;
+  padding: 0.5rem 1.25rem;
 }
 
-.before-after .after {
-  color: var(--accent-green);
-  font-size: 2.2em;
-  font-weight: 900;
-  text-align: left;
+/* ── Icon bullet lists (item 7: 三角形對齊) ── */
+html:not(.dark) .slidev-layout ul li {
+  list-style: none;
+  position: relative;
+  padding-left: 1.6em;
+  line-height: 1.75;
 }
 
+html:not(.dark) .slidev-layout ul li::before {
+  content: '';
+  position: absolute;
+  left: 0.15em;
+  top: 0.68em;
+  width: 0.55em;
+  height: 0.55em;
+  background: #5296B8;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  line-height: 1;
+}
+
+/* 嵌套 ul 的 bullet 顏色淡一階 */
+html:not(.dark) .slidev-layout ul ul li::before {
+  background: #A0CEE6;
+  width: 0.45em;
+  height: 0.45em;
+  top: 0.72em;
+}
+
+/* Don't double-dot when li already starts with an icon (iconify / svg) */
+.slidev-layout li:has(> svg:first-child)::before,
+.slidev-layout li:has(> p:first-child > svg:first-child)::before,
+.slidev-layout li.icon-li::before {
+  display: none !important;
+}
+
+.slidev-layout li:has(> svg:first-child),
+.slidev-layout li:has(> p:first-child > svg:first-child),
+.slidev-layout li.icon-li {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* Icon-bullet list helper (在 ul 加 class="icon-list"，每個 li 開頭用 <mdi-xxx />) */
+.slidev-layout ul.icon-list li {
+  padding-left: 0 !important;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65em;
+  margin-bottom: 0.45em;
+}
+.slidev-layout ul.icon-list li::before { display: none !important; }
+.slidev-layout ul.icon-list li svg {
+  flex-shrink: 0;
+  margin-top: 0.22em;
+  font-size: 1.15em;
+  color: #5296B8;
+}
+
+/* ── Tag badges ── */
 .tag {
   display: inline-block;
-  background: rgba(66, 165, 245, 0.15);
-  color: var(--accent-cyan);
-  padding: 0.15em 0.6em;
-  border-radius: 4px;
-  font-size: 0.7em;
+  padding: 0.15rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
+  background: rgba(14, 63, 78, 0.06);
+  color: #5296B8;
+  border: 1px solid #E4D8C8;
+}
+
+.tag.new {
+  background: #ECF5FA;
+  color: #5296B8;
+  border-color: #ADD3D8;
+}
+
+.tag.good {
+  background: rgba(173, 211, 216, 0.18);
+  color: #35738E;
+  border-color: #ADD3D8;
+}
+
+.tag.warn {
+  background: rgba(247, 168, 107, 0.12);
+  color: #C97C3A;
+  border-color: rgba(247, 168, 107, 0.4);
+}
+
+/* ── Color Overrides (light theme only) ── */
+
+/* Text */
+html:not(.dark) .slidev-layout .text-red-400,
+html:not(.dark) .slidev-layout .text-rose-400   { color: #F26D4F !important; }
+
+html:not(.dark) .slidev-layout .text-yellow-400,
+html:not(.dark) .slidev-layout .text-amber-400  { color: #F7A86B !important; }
+
+html:not(.dark) .slidev-layout .text-cyan-400   { color: #6BAEBE !important; }
+html:not(.dark) .slidev-layout .text-blue-400   { color: #5296B8 !important; }
+
+html:not(.dark) .slidev-layout .text-green-400,
+html:not(.dark) .slidev-layout .text-teal-400   { color: #35738E !important; }
+
+html:not(.dark) .slidev-layout .text-purple-400 { color: #5296B8 !important; }
+
+html:not(.dark) .slidev-layout .text-orange-400 { color: #F7A86B !important; }
+
+/* Dark-mode white utilities → light equivalents */
+html:not(.dark) .slidev-layout .text-white\/90 { color: #0E3F4E !important; }
+html:not(.dark) .slidev-layout .text-white\/80 { color: #35738E !important; }
+html:not(.dark) .slidev-layout .text-white\/70 { color: #5296B8 !important; }
+html:not(.dark) .slidev-layout .text-white\/60 { color: #6BAEBE !important; }
+
+/* Borders */
+html:not(.dark) .slidev-layout .border-red-400,
+html:not(.dark) .slidev-layout .border-rose-400  { border-color: #F26D4F !important; }
+
+html:not(.dark) .slidev-layout .border-amber-400,
+html:not(.dark) .slidev-layout .border-yellow-400 { border-color: #F7A86B !important; }
+
+html:not(.dark) .slidev-layout .border-cyan-400  { border-color: #6BAEBE !important; }
+html:not(.dark) .slidev-layout .border-blue-400  { border-color: #5296B8 !important; }
+
+html:not(.dark) .slidev-layout .border-teal-400,
+html:not(.dark) .slidev-layout .border-green-400 { border-color: #ADD3D8 !important; }
+
+html:not(.dark) .slidev-layout .border-purple-400 { border-color: #5296B8 !important; }
+html:not(.dark) .slidev-layout .border-slate-600  { border-color: #C9BDA9 !important; }
+
+/* Dark-mode border-white utilities */
+html:not(.dark) .slidev-layout .border-white\/10 { border-color: #E4D8C8 !important; }
+html:not(.dark) .slidev-layout .border-white\/12 { border-color: #E4D8C8 !important; }
+html:not(.dark) .slidev-layout .border-red-400\/30 { border-color: rgba(242, 109, 79, 0.35) !important; }
+html:not(.dark) .slidev-layout .border-green-400\/40 { border-color: rgba(53, 115, 142, 0.4) !important; }
+
+/* Card backgrounds — dark transparent-white → warm light */
+html:not(.dark) .slidev-layout .bg-white\/5  { background-color: rgba(14, 63, 78, 0.04) !important; }
+html:not(.dark) .slidev-layout .bg-white\/8  { background-color: rgba(14, 63, 78, 0.05) !important; }
+html:not(.dark) .slidev-layout .bg-white\/10 { background-color: rgba(14, 63, 78, 0.06) !important; }
+
+/* Inline card backgrounds */
+html:not(.dark) .slidev-layout .bg-blue-400\/10  { background-color: rgba(82, 150, 184, 0.08) !important; }
+html:not(.dark) .slidev-layout .bg-cyan-400\/10  { background-color: #ECF5FA !important; }
+html:not(.dark) .slidev-layout .bg-teal-400\/10  { background-color: rgba(53, 115, 142, 0.08) !important; }
+html:not(.dark) .slidev-layout .bg-amber-400\/10 { background-color: rgba(247, 168, 107, 0.10) !important; }
+html:not(.dark) .slidev-layout .bg-red-400\/10,
+html:not(.dark) .slidev-layout .bg-rose-400\/10  { background-color: rgba(242, 109, 79, 0.07) !important; }
+html:not(.dark) .slidev-layout .bg-purple-400\/10 { background-color: rgba(82, 150, 184, 0.08) !important; }
+html:not(.dark) .slidev-layout .bg-green-400\/10 { background-color: rgba(173, 211, 216, 0.12) !important; }
+html:not(.dark) .slidev-layout .bg-green-500\/10 { background-color: rgba(173, 211, 216, 0.12) !important; }
+html:not(.dark) .slidev-layout .bg-red-500\/8   { background-color: rgba(242, 109, 79, 0.07) !important; }
+html:not(.dark) .slidev-layout .bg-red-500\/10  { background-color: rgba(242, 109, 79, 0.08) !important; }
+
+/* Alert/highlight card backgrounds */
+html:not(.dark) .slidev-layout .bg-red-900\/30   { background-color: rgba(242, 109, 79, 0.08) !important; }
+html:not(.dark) .slidev-layout .bg-amber-900\/30 { background-color: rgba(247, 168, 107, 0.10) !important; }
+html:not(.dark) .slidev-layout .bg-green-900\/30 { background-color: rgba(173, 211, 216, 0.12) !important; }
+
+/* Neutral card backgrounds */
+html:not(.dark) .slidev-layout .bg-slate-700\/50 {
+  background-color: rgba(14, 63, 78, 0.05) !important;
+  color: #0E3F4E !important;
+}
+html:not(.dark) .slidev-layout .bg-slate-800 {
+  background-color: rgba(14, 63, 78, 0.04) !important;
+  color: #0E3F4E !important;
+}
+
+/* ── Shiki code blocks (item 5: 暗色底 + 米色字，解決灰字看不到) ── */
+.slidev-layout .shiki {
+  border-radius: 12px;
+  padding: 1.1rem 1.35rem !important;
+  background: #0E3F4E !important;
+  box-shadow:
+    0 10px 32px rgba(14, 63, 78, 0.18),
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  font-size: 0.85em;
+  line-height: 1.55;
+}
+
+/* 強制 shiki 的基礎文字改成米白 */
+.slidev-layout .shiki,
+.slidev-layout .shiki code,
+.slidev-layout .shiki span {
+  color: #F5E8D6 !important;
+}
+
+/* 語法高亮微調 - 保留彩色但把「預設灰」替換掉 */
+.slidev-layout .shiki .line > span[style*="color:#6A737D"],
+.slidev-layout .shiki .line > span[style*="color:#959DA5"],
+.slidev-layout .shiki .line > span[style*="color:#6e7681"],
+.slidev-layout .shiki .line > span[style*="color:#8b949e"],
+.slidev-layout .shiki .line > span[style*="color:#24292E"],
+.slidev-layout .shiki .line > span[style*="color:#24292e"] {
+  color: #F5E8D6 !important;
+}
+
+/* 行號若有啟用也用淡米色 */
+.slidev-layout .shiki .line-numbers-wrapper,
+.slidev-layout .slidev-code-line-numbers {
+  color: rgba(245, 232, 214, 0.35) !important;
+}
+
+/* 行內 code (比 block 大的字級、亮色) */
+.slidev-layout :not(pre) > code {
+  background: rgba(14, 63, 78, 0.08);
+  color: #0E3F4E;
+  padding: 0.1em 0.4em;
+  border-radius: 5px;
+  font-size: 0.88em;
+  font-weight: 600;
+}
+
+/* Carbon icon inline alignment */
+.slidev-layout svg[class*="i-carbon"] {
+  display: inline-block;
   vertical-align: middle;
-  margin-left: 0.5em;
 }
 
-.tag.warn { background: rgba(245, 34, 45, 0.15); color: var(--accent-red); }
-.tag.good { background: rgba(82, 196, 26, 0.15); color: var(--accent-green); }
-.tag.new  { background: rgba(167, 139, 250, 0.15); color: var(--accent-purple); }
-
-/* Mermaid diagram polish */
-.slidev-mermaid {
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 8px;
-  padding: 1em;
-}
-
-/* Drop-caps for statement style */
-.drop-cap::first-letter {
-  font-size: 3em;
-  font-weight: 900;
-  color: var(--slidev-theme-primary);
-  float: left;
-  line-height: 1;
-  margin-right: 0.1em;
+/* Remove dot-before when li starts with an icon */
+.slidev-layout li:has(> svg:first-child),
+.slidev-layout li:has(> p:first-child > svg:first-child) {
+  list-style: none;
+  padding-left: 0;
 }

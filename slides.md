@@ -14,7 +14,7 @@ transition: slide-left
 mdc: true
 aspectRatio: 16/9
 canvasWidth: 1280
-colorSchema: dark
+colorSchema: light
 fonts:
   sans: 'Inter'
   mono: 'JetBrains Mono'
@@ -26,18 +26,20 @@ seoMeta:
   ogDescription: 可觀測性後端遷移實戰分享
 defaults:
   transition: fade
+layout: cover-template
 ---
 
 # 從 Thanos<br/>到 Mimir 3.0
 
 ## 我們如何把可觀測性後端玩到極致
 
-<div class="mt-12 opacity-70 text-sm tracking-wider">
-  <div class="text-base font-medium text-white/90 mb-2">Mike Hsu · PromConf Taiwan 2026</div>
-  <div>Thanos 痛點 · Mimir 3.0 · AutoMQ · Parquet Gateway</div>
+<div class="mt-10 flex gap-2 items-center text-xs tracking-wider" style="color:#5296B8;">
+  <span>Mike Hsu</span>
+  <span style="color:#C9BDA9;">·</span>
+  <span>PromConf Taiwan 2026</span>
 </div>
 
-<div class="abs-br m-6 flex gap-2">
+<div class="abs-br m-8 flex gap-2">
   <span class="tag">40 min</span>
   <span class="tag new">Mimir 3.0</span>
   <span class="tag new">AutoMQ</span>
@@ -52,10 +54,11 @@ defaults:
 -->
 
 ---
-layout: statement
+layout: quote
+pre: "AI 原生時代下"
 ---
 
-# AI 時代下<br/>可觀測性基礎設施的<br/>全新挑戰
+# 可觀測性後端<br/>正在經歷一場<br/><span class="accent">根本性的重寫</span>
 
 <!--
 切入動機（用自己的口吻補充）：
@@ -94,7 +97,9 @@ layout: default
 -->
 
 ---
-layout: section
+layout: section-blue
+chapter: "01"
+parent: Thanos → Mimir 3.0
 ---
 
 # 長期指標後端<br/>架構介紹
@@ -356,14 +361,12 @@ flowchart TB
 
 <h3 class="!text-base !text-cyan-400 mb-2">結構性問題</h3>
 
-<v-clicks>
-
-- Bucket scan 是 `O(all_blocks)`
-- Index header 先下載才能查
-- Sharding **靜態**（硬切 relabel）
-- Cache 參數多 · 難調教
-
-</v-clicks>
+<ul class="icon-list">
+<li v-click><mdi-magnify-scan class="text-rose-400" /> Bucket scan 是 <code>O(all_blocks)</code></li>
+<li v-click><mdi-download-outline class="text-amber-400" /> Index header 先下載才能查</li>
+<li v-click><mdi-scissors-cutting class="text-orange-400" /> Sharding <strong>靜態</strong>（硬切 relabel）</li>
+<li v-click><mdi-tune-variant class="text-purple-400" /> Cache 參數多 · 難調教</li>
+</ul>
 
 <div v-click class="mt-4 text-sm opacity-70">
   → Mimir 用 per-tenant <strong class="text-green-400">Bucket Index</strong> + 動態 sharding 解決這些
@@ -429,7 +432,9 @@ layout: default
 -->
 
 ---
-layout: section
+layout: section-blue
+chapter: "02"
+parent: Thanos → Mimir 3.0
 ---
 
 # Mimir 3.0 架構
@@ -552,7 +557,9 @@ layout: default
 -->
 
 ---
-layout: section
+layout: section-blue
+chapter: "03"
+parent: Thanos → Mimir 3.0
 ---
 
 # Kafka 選型 — AutoMQ
@@ -847,7 +854,9 @@ layout: default
 -->
 
 ---
-layout: section
+layout: section-blue
+chapter: "04"
+parent: Thanos → Mimir 3.0
 ---
 
 # 成本效能實戰成果
@@ -948,7 +957,9 @@ layout: fact
 -->
 
 ---
-layout: section
+layout: section-blue
+chapter: "05"
+parent: Thanos → Mimir 3.0
 ---
 
 # 下一站 —<br/>可觀測性 2.0?
