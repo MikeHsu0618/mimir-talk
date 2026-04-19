@@ -26,11 +26,9 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 0 4rem 5.5rem;
+  padding: 0 4rem 5rem;
 }
 
-/* 左上小 blob + 右下大 blob，復刻 template p.4 */
 .blob-tl {
   position: absolute;
   top: -180px;
@@ -75,7 +73,6 @@
 .arrow-deco {
   font-size: 1.2rem;
   color: #5296B8;
-  letter-spacing: 0.05em;
 }
 
 .parent-name {
@@ -93,38 +90,30 @@
   color: #5296B8;
   letter-spacing: -0.04em;
   line-height: 0.95;
-  margin-top: 8rem;
-  margin-bottom: 10rem;
+  margin-top: 6rem;
   font-feature-settings: "tnum" 1;
 }
 
 .content {
   position: relative;
   z-index: 1;
+  margin-top: auto;
 }
 
 .section-blue-layout :deep(h1) {
-  font-size: 4.6rem !important;
+  font-size: 6.5rem !important;
   font-weight: 900 !important;
-  line-height: 1.04 !important;
-  letter-spacing: -0.03em !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.035em !important;
   color: #0E3F4E !important;
-  margin: 0 0 1rem !important;
-}
-
-.section-blue-layout :deep(h2) {
-  font-size: 1.05rem !important;
-  font-weight: 400 !important;
-  color: #6BAEBE !important;
-  letter-spacing: 0.02em !important;
-  margin: 0 !important;
+  margin: 0 0 0.8rem !important;
 }
 
 .section-blue-layout :deep(.content > div) {
-  font-size: 1.6rem;
-  font-weight: 500;
-  color: rgba(14, 63, 78, 0.7);
-  margin-top: 2.4rem !important;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: rgba(14, 63, 78, 0.6);
+  margin-top: 3rem !important;
   letter-spacing: 0.01em;
 }
 

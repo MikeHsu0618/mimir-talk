@@ -6,7 +6,13 @@
 
 .slidev-layout {
   font-family: 'Inter', sans-serif;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
+}
+
+/* Enable flex-column on default layout so flex-1 works in slide content */
+.slidev-layout.default {
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 /* 內容頁背景：右上 → 左下 的淺藍漸層 (template p.9 風格) */
@@ -32,24 +38,30 @@ html:not(.dark) .slidev-layout h1 {
 
 /* H2：副標題，用更小字級 + 字重 + 淡色拉開層次 (item 6) */
 html:not(.dark) .slidev-layout h2 {
-  color: #5296B8;
+  color: #6E9EAF;
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   letter-spacing: 0.01em;
   margin-top: -0.8rem;
   margin-bottom: 1.4rem;
 }
 
 html:not(.dark) .slidev-layout h3 {
-  color: #35738E;
-  font-weight: 700;
-  font-size: 1rem;
+  color: #5E8EA0;
+  font-weight: 600;
+  font-size: 1.05rem;
 }
 
 /* Horizontal rules */
 html:not(.dark) .slidev-layout hr {
   border-color: #E4D8C8;
   border-width: 1.5px;
+}
+
+/* Highlight: strong uses coral contrast color */
+html:not(.dark) .slidev-layout strong {
+  color: #F26D4F;
+  font-weight: 700;
 }
 
 /* Tables */
@@ -75,7 +87,8 @@ html:not(.dark) .slidev-layout ul li {
   list-style: none;
   position: relative;
   padding-left: 1.6em;
-  line-height: 1.75;
+  line-height: 1.85;
+  font-size: 1.05rem;
 }
 
 html:not(.dark) .slidev-layout ul li::before {

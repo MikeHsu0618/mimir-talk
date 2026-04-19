@@ -29,13 +29,15 @@ const accentClass = computed(() => {
 <style scoped>
 .stat-card {
   text-align: center;
-  padding: 1rem 0.5rem;
-  border-top: 2px solid #0E3F4E;
-  padding-top: 1.2rem;
+  padding: 2rem 1rem 1.8rem;
+  border: 1.5px solid rgba(173, 211, 216, 0.65);
+  border-radius: 16px;
+  background: rgba(255, 250, 247, 0.85);
+  box-shadow: 0 2px 18px rgba(14, 63, 78, 0.07);
 }
 
 .stat-value {
-  font-size: 3.2rem;
+  font-size: 5rem;
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -43,10 +45,10 @@ const accentClass = computed(() => {
 }
 
 .stat-label {
-  margin-top: 0.4rem;
-  font-size: 0.7rem;
+  margin-top: 0.6rem;
+  font-size: 0.65rem;
   color: #6BAEBE;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 

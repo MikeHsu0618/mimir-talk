@@ -1,6 +1,6 @@
 <template>
   <div class="quote-layout">
-    <div class="blob-right" />
+    <div class="blob-br" />
 
     <div class="pre-caption" v-if="$frontmatter.pre">{{ $frontmatter.pre }}</div>
 
@@ -11,7 +11,7 @@
 </template>
 
 <style scoped>
-/* 復刻 template.pdf p.8：大膽黑字引言 + 右側藍色雲朵 + 關鍵字橘色強調 */
+/* 復刻 template.pdf p.8：大膽黑字引言 + 右下藍色雲朵 + 關鍵字橘色強調 */
 .quote-layout {
   position: relative;
   width: 100%;
@@ -21,13 +21,14 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 0 5rem 5rem;
+  align-items: center;
+  padding: 4rem 5rem 5rem;
+  text-align: center;
 }
 
-.blob-right {
+.blob-br {
   position: absolute;
-  top: 8%;
+  bottom: -120px;
   right: -180px;
   width: 620px;
   height: 560px;
@@ -43,34 +44,50 @@
 .pre-caption {
   position: relative;
   z-index: 1;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 500;
   color: #0E3F4E;
   margin-bottom: 1.2rem;
-  max-width: 70%;
+  letter-spacing: 0.01em;
 }
 
 .content {
   position: relative;
   z-index: 1;
-  max-width: 80%;
+  max-width: 88%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .quote-layout :deep(h1),
 .quote-layout :deep(.q-headline) {
   font-size: 4.2rem !important;
   font-weight: 900 !important;
-  line-height: 1.08 !important;
-  letter-spacing: -0.025em !important;
+  line-height: 1.2 !important;
   color: #111111 !important;
   margin: 0 !important;
 }
 
-/* 在 headline 中的關鍵字強調：用 <span class="accent"> 或 <strong> */
-.quote-layout :deep(h1 strong),
+/* 關鍵字強調：顏色從 #111 → #F26D4F，由 v-click 觸發 */
 .quote-layout :deep(h1 .accent),
-.quote-layout :deep(.q-headline strong),
 .quote-layout :deep(.q-headline .accent) {
+  color: #111111;
+  font-weight: 900 !important;
+  transition: color 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  /* 覆蓋 v-click 預設的 opacity:0，保持文字始終可見 */
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.quote-layout :deep(h1 .accent:not(.slidev-vclick-hidden)),
+.quote-layout :deep(.q-headline .accent:not(.slidev-vclick-hidden)) {
+  color: #F26D4F !important;
+}
+
+.quote-layout :deep(h1 strong),
+.quote-layout :deep(.q-headline strong) {
   color: #F26D4F !important;
   font-weight: 900 !important;
 }

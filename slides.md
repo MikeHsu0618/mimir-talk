@@ -56,7 +56,7 @@ layout: quote
 pre: "AI 原生時代下"
 ---
 
-# 可觀測性後端<br/>正在經歷一場<br/><span class="accent">根本性的重寫</span>
+# 可觀測性後端<br/>正在經歷一場<br/><span v-click class="accent">根本性的重寫</span>
 
 <!--
 切入動機（用自己的口吻補充）：
@@ -73,7 +73,9 @@ layout: default
 
 # 我們面對的量級
 
-<div class="grid grid-cols-4 gap-5 mt-12">
+<div class="flex-1 flex flex-col justify-center gap-8">
+
+<div class="grid grid-cols-2 gap-5">
 
 <Stat value="17+" label="Prometheus Clusters" />
 <Stat value="~40M" label="Active Series" accent="cyan" />
@@ -82,8 +84,10 @@ layout: default
 
 </div>
 
-<div class="mt-12 text-center text-base opacity-80">
-  Sportybet 生產環境 · 跨多個 Kubernetes 集群
+<div class="text-center text-sm" style="color:#6BAEBE;">
+  以上數字來自 <strong style="color:#5296B8;">Sportybet</strong> 生產環境，橫跨多個 Kubernetes 集群
+</div>
+
 </div>
 
 <!--
@@ -116,41 +120,47 @@ layout: default
 
 # 為什麼需要長期指標後端？
 
-<div class="grid grid-cols-2 gap-8 mt-10">
+<div class="flex-1 flex flex-col justify-center gap-5">
 
-<div>
+<div class="grid grid-cols-2 gap-5">
 
-<h3 class="!text-base !text-cyan-400">Prometheus 本身的限制</h3>
+<div class="rounded-2xl border border-red-400/30 bg-red-400/10 p-5">
+  <div class="flex items-center gap-2 mb-4">
+    <mdi-alert-circle class="text-rose-400 text-xl flex-shrink-0" />
+    <span class="font-bold text-sm tracking-widest uppercase" style="color:#F26D4F">Prometheus 本身的限制</span>
+  </div>
+  <ul class="icon-list text-sm">
+    <li><mdi-clock-alert-outline class="text-rose-400" /> 預設本地保留 <strong>15 天</strong></li>
+    <li><mdi-database-off-outline class="text-rose-400" /> 單機儲存、單點失敗</li>
+    <li><mdi-magnify-close class="text-rose-400" /> 無法跨集群統一查詢</li>
+  </ul>
+</div>
 
-<v-clicks>
-
-- 預設本地保留 **15 天**
-- 單機儲存、單點失敗
-- 無法跨集群統一查詢
-
-</v-clicks>
+<div class="rounded-2xl border border-blue-400/30 bg-cyan-400/10 p-5">
+  <div class="flex items-center gap-2 mb-4">
+    <mdi-lightbulb-on-outline class="text-blue-400 text-xl flex-shrink-0" />
+    <span class="font-bold text-sm tracking-widest uppercase" style="color:#5296B8">工程師的真實需求</span>
+  </div>
+  <ul class="icon-list text-sm">
+    <li><mdi-history class="text-cyan-400" /> 「上個月的 baseline 是什麼？」</li>
+    <li><mdi-chart-timeline-variant class="text-cyan-400" /> 「黑五 vs 平日負載對比」</li>
+    <li><mdi-trophy-outline class="text-cyan-400" /> 「SLO 的年度達成率」</li>
+    <li><mdi-robot-outline class="text-cyan-400" /> AI agents 的大量歷史回溯查詢</li>
+  </ul>
+</div>
 
 </div>
 
-<div>
-
-<h3 class="!text-base !text-cyan-400">工程師的真實需求</h3>
-
-<v-clicks>
-
-- 「上個月的 baseline 是什麼？」
-- 「黑五 vs 平日負載對比」
-- 「SLO 的年度達成率」
-- AI agents 的大量歷史回溯查詢
-
-</v-clicks>
-
+<div v-click class="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4 flex items-center justify-center gap-1 text-base">
+  <span style="color:#5296B8">需要一個</span>
+  <span class="font-black text-xl px-2" style="color:#F7A86B">高吞吐</span>
+  <span style="color:#ADD3D8">·</span>
+  <span class="font-black text-xl px-2" style="color:#F7A86B">低延遲</span>
+  <span style="color:#ADD3D8">·</span>
+  <span class="font-black text-xl px-2" style="color:#F7A86B">便宜</span>
+  <span style="color:#5296B8">的後端</span>
 </div>
 
-</div>
-
-<div v-click class="mt-12 text-center opacity-80">
-  需要一個<span class="text-orange-400 font-bold">高吞吐 · 低延遲 · 便宜</span>的後端
 </div>
 
 <!--
