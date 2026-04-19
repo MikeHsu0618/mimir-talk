@@ -1,11 +1,7 @@
 <template>
   <footer class="slide-footer">
-    <span class="footer-left">
-      <span>PromConf Taiwan 2026</span>
-      <span class="pip"></span>
-      <span>Mike Hsu</span>
-    </span>
-    <span></span>
+    <span class="footer-title">PromConf Taiwan 2026</span>
+    <span class="footer-author">Mike Hsu</span>
   </footer>
 </template>
 
@@ -13,26 +9,29 @@
 .slide-footer {
   position: fixed;
   bottom: 0.5rem;
-  left: 1rem;
-  right: 2.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
   display: flex;
   justify-content: space-between;
-  font-size: 0.65rem;
-  color: #C9BDA9;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.68rem;
+  color: #0E3F4E;
   font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
   pointer-events: none;
   z-index: 100;
 }
-.footer-left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.footer-title {
+  opacity: 0.65;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.pip {
-  width: 5px;
-  height: 5px;
-  border-radius: 999px;
-  background: #5296B8;
+.footer-author {
+  opacity: 0.75;
+  font-weight: 600;
   flex-shrink: 0;
 }
 </style>

@@ -694,3 +694,25 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   color: #35738E;
   padding: 0.5rem 1rem;
 }
+
+/* ── End / Closing page ── */
+.end-page__contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.95rem;
+  color: #35738E;
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  background: rgba(82, 150, 184, 0.08);
+  border: 1px solid rgba(82, 150, 184, 0.25);
+}
+.end-page__contact svg { color: #5296B8; font-size: 1.1rem; }
+.end-page__contact code {
+  background: transparent !important;
+  color: #0E3F4E !important;
+  font-weight: 600;
+  padding: 0 !important;
+  font-size: 0.95rem !important;
+}
+.end-page__dot { opacity: 0.4; }
