@@ -11,16 +11,19 @@ import { computed } from 'vue'
 const props = defineProps<{
   value: string
   label: string
-  accent?: 'default' | 'cyan' | 'green' | 'orange' | 'red' | 'purple'
+  accent?: 'default' | 'blue' | 'ink' | 'sky' | 'orange' | 'red' | 'cyan' | 'green' | 'purple'
 }>()
 
 const accentClass = computed(() => {
   const map: Record<string, string> = {
-    cyan: 'accent-cyan',
-    green: 'accent-green',
+    blue: 'accent-blue',
+    ink: 'accent-ink',
+    sky: 'accent-sky',
     orange: 'accent-orange',
     red: 'accent-red',
-    purple: 'accent-purple',
+    cyan: 'accent-sky',
+    green: 'accent-ink',
+    purple: 'accent-blue',
   }
   return props.accent ? (map[props.accent] ?? '') : ''
 })
@@ -52,9 +55,9 @@ const accentClass = computed(() => {
   text-transform: uppercase;
 }
 
-.accent-cyan   { color: #6BAEBE; }
-.accent-green  { color: #35738E; }
+.accent-sky    { color: #6BAEBE; }
+.accent-ink    { color: #35738E; }
+.accent-blue   { color: #5296B8; }
 .accent-orange { color: #F7A86B; }
 .accent-red    { color: #F26D4F; }
-.accent-purple { color: #5296B8; }
 </style>

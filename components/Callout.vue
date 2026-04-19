@@ -14,9 +14,9 @@ defineProps<{
 
 <style scoped>
 .callout {
-  border-radius: 8px;
-  padding: 0.85rem 1.1rem;
-  font-size: 0.9rem;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  font-size: 1.02rem;
   line-height: 1.6;
   border: 1px solid transparent;
   color: #0E3F4E;
@@ -24,10 +24,10 @@ defineProps<{
 
 .callout-title {
   font-weight: 700;
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   text-transform: uppercase;
-  letter-spacing: 0.07em;
-  margin-bottom: 0.4rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
 }
 
 .callout-info {

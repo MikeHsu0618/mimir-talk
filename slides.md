@@ -59,43 +59,30 @@ pre: "AI 原生時代下"
 # 可觀測性後端<br/>正在經歷一場<br/><span v-click class="accent">根本性的重寫</span>
 
 <!--
-切入動機（用自己的口吻補充）：
+切入動機：
 - 以前 metrics 是給 SRE 早上喝咖啡時看 dashboard 用的
-- 現在組織裡越來越多人建立自己的 agent — SRE agent、DB agent、service agent
-- 一個人消化資訊的能力有限，AI agent 可以一秒內消化大量資料
-- 我們原本的 metrics 基礎設施 (Thanos) 每天被這些 agent 嚴峻考驗
-- 這就是為什麼我們要認真重新審視整個長期指標後端
+- 現在組織裡越來越多 agent — SRE agent、DB agent、service agent
+- AI agent 可以一秒內消化大量資料
+- 我們原本的 metrics 基礎設施被這些 agent 嚴峻考驗
 -->
 
 ---
-layout: default
+layout: inner
+title: 我們面對的量級
+kicker: Sportybet 生產環境實錄
+footnote: 橫跨多個 Kubernetes 集群 · 這個規模讓我們踩到了所有 Thanos 會踩的坑
 ---
 
-# 我們面對的量級
-
-<div class="flex-1 flex flex-col justify-center gap-8">
-
-<div class="grid grid-cols-2 gap-5">
-
-<Stat value="17+" label="Prometheus Clusters" />
-<Stat value="~40M" label="Active Series" accent="cyan" />
-<Stat value="~1.2M" label="Samples / sec" accent="purple" />
-<Stat value="2 年" label="Thanos 服役時間" accent="red" />
-
-</div>
-
-<div class="text-center text-sm" style="color:#6BAEBE;">
-  以上數字來自 <strong style="color:#5296B8;">Sportybet</strong> 生產環境，橫跨多個 Kubernetes 集群
-</div>
-
+<div class="grid grid-cols-2 gap-5 w-full max-w-3xl mx-auto">
+  <Stat value="17+" label="Prometheus Clusters" />
+  <Stat value="~40M" label="Active Series" accent="sky" />
+  <Stat value="~1.2M" label="Samples / sec" accent="blue" />
+  <Stat value="2 年" label="Thanos 服役時間" accent="red" />
 </div>
 
 <!--
-補充（自由發揮）：
 - 簡短介紹 Sportybet 的業務規模
 - 當初選 Thanos 是 2023 年最成熟的開源方案
-- 這個規模讓我們踩到了所有 Thanos 會踩的坑
-- 數字可根據公開允許程度調整
 -->
 
 ---
@@ -110,78 +97,78 @@ parent: Thanos → Mimir 3.0
 
 <!--
 進入第一大段：架構介紹
-不要花太多時間科普，我們團隊內部都熟悉 Prometheus 生態
-這段的目的是讓聽眾跟著我的思路建立對比架構
 -->
 
 ---
-layout: default
+layout: inner
+title: 為什麼需要長期指標後端？
 ---
 
-# 為什麼需要長期指標後端？
+<div class="w-full flex flex-col gap-6">
 
-<div class="flex-1 flex flex-col justify-center gap-5">
+<div class="grid grid-cols-2 gap-6 items-stretch">
 
-<div class="grid grid-cols-2 gap-5">
-
-<div class="rounded-2xl border border-red-400/30 bg-red-400/10 p-5">
-  <div class="flex items-center gap-2 mb-4">
-    <mdi-alert-circle class="text-rose-400 text-xl flex-shrink-0" />
-    <span class="font-bold text-sm tracking-widest uppercase" style="color:#F26D4F">Prometheus 本身的限制</span>
+<div class="why-card why-card--red">
+  <div class="why-card__head">
+    <mdi-alert-circle class="why-card__icon" />
+    <div>
+      <div class="why-card__kicker">問題</div>
+      <div class="why-card__title">Prometheus 本身的限制</div>
+    </div>
   </div>
-  <ul class="icon-list text-sm">
-    <li><mdi-clock-alert-outline class="text-rose-400" /> 預設本地保留 <strong>15 天</strong></li>
-    <li><mdi-database-off-outline class="text-rose-400" /> 單機儲存、單點失敗</li>
-    <li><mdi-magnify-close class="text-rose-400" /> 無法跨集群統一查詢</li>
+  <ul class="why-list">
+    <li><mdi-clock-alert-outline class="why-list__icon" /><span>預設本地保留 <strong>15 天</strong></span></li>
+    <li><mdi-database-off-outline class="why-list__icon" /><span>單機儲存、單點失敗</span></li>
+    <li><mdi-magnify-close class="why-list__icon" /><span>無法跨集群統一查詢</span></li>
   </ul>
 </div>
 
-<div class="rounded-2xl border border-blue-400/30 bg-cyan-400/10 p-5">
-  <div class="flex items-center gap-2 mb-4">
-    <mdi-lightbulb-on-outline class="text-blue-400 text-xl flex-shrink-0" />
-    <span class="font-bold text-sm tracking-widest uppercase" style="color:#5296B8">工程師的真實需求</span>
+<div class="why-card why-card--blue">
+  <div class="why-card__head">
+    <mdi-lightbulb-on-outline class="why-card__icon" />
+    <div>
+      <div class="why-card__kicker">需求</div>
+      <div class="why-card__title">工程師 & Agent 真實使用場景</div>
+    </div>
   </div>
-  <ul class="icon-list text-sm">
-    <li><mdi-history class="text-cyan-400" /> 「上個月的 baseline 是什麼？」</li>
-    <li><mdi-chart-timeline-variant class="text-cyan-400" /> 「黑五 vs 平日負載對比」</li>
-    <li><mdi-trophy-outline class="text-cyan-400" /> 「SLO 的年度達成率」</li>
-    <li><mdi-robot-outline class="text-cyan-400" /> AI agents 的大量歷史回溯查詢</li>
+  <ul class="why-list">
+    <li><mdi-history class="why-list__icon" /><span>上個月的 baseline 是什麼？</span></li>
+    <li><mdi-chart-timeline-variant class="why-list__icon" /><span>黑五 vs 平日負載對比</span></li>
+    <li><mdi-trophy-outline class="why-list__icon" /><span>SLO 的年度達成率</span></li>
+    <li><mdi-robot-outline class="why-list__icon" /><span>AI agents 的大量歷史回溯</span></li>
   </ul>
 </div>
 
 </div>
 
-<div v-click class="rounded-2xl border border-amber-400/30 bg-amber-400/10 p-4 flex items-center justify-center gap-1 text-base">
-  <span style="color:#5296B8">需要一個</span>
-  <span class="font-black text-xl px-2" style="color:#F7A86B">高吞吐</span>
-  <span style="color:#ADD3D8">·</span>
-  <span class="font-black text-xl px-2" style="color:#F7A86B">低延遲</span>
-  <span style="color:#ADD3D8">·</span>
-  <span class="font-black text-xl px-2" style="color:#F7A86B">便宜</span>
-  <span style="color:#5296B8">的後端</span>
+<div v-click class="why-conclusion">
+  <span class="why-conclusion__label">需要一個</span>
+  <div class="why-conclusion__pills">
+    <span>高吞吐</span>
+    <span>低延遲</span>
+    <span>便宜</span>
+  </div>
+  <span class="why-conclusion__label">的後端</span>
 </div>
 
 </div>
 
 <!--
-- 這張快速過，聽眾都懂
-- 重點是最後一個 bullet：AI agent 的歷史回溯 — 這是現在新出現的需求
-- 強調這跟以往的「偶爾查看 dashboard」是不同量級的
+- 重點：AI agent 的歷史回溯 — 這是新出現的需求
 -->
 
 ---
-layout: default
+layout: split
+title: 兩種整合模式
+ratio: "1:1"
+footnote: "我們原本用的是 <strong style='color:#F26D4F'>Sidecar Mode</strong> — 這是個很天才的設計"
 ---
 
-# 兩種整合模式
+::left::
 
-<div class="mt-6 grid grid-cols-2 gap-6">
+<h3 class="text-center" style="color:#F26D4F">Sidecar Mode</h3>
 
-<div>
-
-<h3 class="!text-base !text-orange-400 mb-2 text-center">Sidecar Mode</h3>
-
-```mermaid {theme: 'dark', scale: 0.75}
+```mermaid {theme: 'dark', scale: 0.7}
 flowchart TB
     subgraph Pod["Prometheus Pod"]
       direction LR
@@ -193,50 +180,33 @@ flowchart TB
     style SC fill:#f4680033,stroke:#f46800
 ```
 
-<div class="text-xs text-center opacity-70 mt-2">
-  Sidecar 寄生於 Prom Pod<br/>直接上傳 TSDB block
-</div>
+<p class="text-center text-sm opacity-70">Sidecar 寄生於 Prom Pod · 直接上傳 TSDB block</p>
 
-</div>
+::right::
 
-<div>
+<h3 class="text-center" style="color:#5296B8">Remote-Write Mode</h3>
 
-<h3 class="!text-base !text-cyan-400 mb-2 text-center">Remote-Write Mode</h3>
-
-```mermaid {theme: 'dark', scale: 0.75}
+```mermaid {theme: 'dark', scale: 0.7}
 flowchart TB
     P2[Prometheus] ==>|remote_write<br/>protobuf| B[Long-term<br/>Backend]
     B ==>|壓縮 + index| S3[(S3)]
     style B fill:#42a5f533,stroke:#42a5f5
 ```
 
-<div class="text-xs text-center opacity-70 mt-2">
-  Prom push 給後端<br/>後端負責壓縮與 index
-</div>
-
-</div>
-
-</div>
-
-<div v-click class="mt-6 text-center text-base opacity-80">
-  我們原本用的是 <strong class="text-orange-400">Sidecar Mode</strong> · 這是個很天才的設計
-</div>
+<p class="text-center text-sm opacity-70">Prom push 給後端 · 後端負責壓縮與 index</p>
 
 <!--
-補充：
-- Sidecar 是 Thanos 的標誌性設計，跟 Cortex/Mimir 的 remote_write 哲學不同
+- Sidecar 是 Thanos 的標誌性設計
 - 兩者各有優缺點，先看 Sidecar 的妙處
 -->
 
 ---
-layout: default
+layout: split
+title: Sidecar Mode 的巧妙之處
+ratio: "3:2"
 ---
 
-# Sidecar Mode 的巧妙之處
-
-<div class="mt-6 grid grid-cols-5 gap-4 items-center">
-
-<div class="col-span-3">
+::left::
 
 ```mermaid {theme: 'dark', scale: 0.85}
 flowchart LR
@@ -248,52 +218,32 @@ flowchart LR
     B --> LD[(Local Disk)]
     B -.->|Sidecar<br/>原封不動 upload| S3[(S3)]
     style B fill:#f4680033,stroke:#f46800,stroke-width:2px
-    style Prom fill:#1e2540,stroke:#42a5f5
 ```
 
-</div>
-
-<div class="col-span-2">
+::right::
 
 <Callout type="win" title="關鍵洞察">
 <strong>S3 上的 block 和本地 disk 完全一樣</strong><br/>
 Sidecar 不做任何運算
 </Callout>
 
-<div v-click class="mt-4">
-
-<Callout type="info" title="對比 Remote-write">
-Backend 要解 protobuf →<br/>
-重新壓縮 → 建 index<br/>
+<Callout v-click type="info" title="對比 Remote-write">
+Backend 要解 protobuf → 重新壓縮 → 建 index<br/>
 相當於把運算做了兩次
 </Callout>
 
-</div>
-
-</div>
-
-</div>
-
-<div v-click class="mt-6 text-center text-sm opacity-80">
-  理論上 Sidecar 避免了後端重新壓縮運算的浪費
-</div>
-
 <!--
-補充（重要）：
-- 這張是為了鋪陳「Sidecar 不是笨設計，它有它的巧妙」
-- 這樣接下來的痛點討論才誠實
-- 讓聽眾知道我們不是盲目換掉 Sidecar，是因為遇到了 Sidecar 架構的結構性問題
+- Sidecar 不是笨設計，有它的巧妙
+- 讓聽眾知道我們不是盲目換掉 Sidecar，是遇到了結構性問題
 -->
 
 ---
-layout: default
+layout: split
+title: "痛點 ① — 短期查詢放大 Prometheus 垂直瓶頸"
+ratio: "3:2"
 ---
 
-# 但是——痛點 ①<br/><span class="text-red-400 text-3xl">短期查詢放大 Prometheus 的垂直瓶頸</span>
-
-<div class="mt-6 grid grid-cols-5 gap-6 items-center">
-
-<div class="col-span-3">
+::left::
 
 ```mermaid {theme: 'dark', scale: 0.75}
 flowchart LR
@@ -306,43 +256,32 @@ flowchart LR
     style SC fill:#f4680033,stroke:#f46800
 ```
 
-<div class="text-xs text-center opacity-70 mt-2">
-  短期查詢的壓力<strong class="text-red-400">全部打回 Prometheus</strong>
-</div>
+<p class="text-center text-sm opacity-70">短期查詢壓力<strong class="text-red-400">全部打回 Prometheus</strong></p>
 
-</div>
+::right::
 
-<div class="col-span-2 text-center">
-
-<div v-click class="rounded-2xl p-6 bg-red-500/10 border-2 border-red-400/50">
-  <div class="text-xs uppercase tracking-widest opacity-60 mb-2">Our Production</div>
-  <div class="text-8xl font-black text-red-400">512</div>
-  <div class="text-lg mt-1 opacity-90">GiB / Pod</div>
-  <div class="text-xs mt-2 opacity-60">Prom + Sidecar 垂直到極限</div>
-</div>
-
-</div>
-
+<div v-click class="text-center">
+  <div class="rounded-2xl p-6 bg-red-500/10 border-2 border-red-400/50">
+    <div class="text-xs uppercase tracking-widest opacity-60 mb-2">Our Production</div>
+    <div class="text-7xl font-black text-red-400">512</div>
+    <div class="text-lg mt-1 opacity-90">GiB / Pod</div>
+    <div class="text-xs mt-3 opacity-60">Prom + Sidecar 垂直到極限</div>
+  </div>
 </div>
 
 <!--
-這是整場第一個 money shot。
-補充（自由發揮）：
-- 512 GiB 聽起來很誇張，但那是我們真實的 production 數字
-- 我們的 Prometheus 已經在單一節點 vertical 到這個程度
-- 繼續往下走只剩兩條路：買更大的機器 / 或換架構
-- 這個數字是我們決定遷移的第一個導火線
+這是整場第一個 money shot
+- 512 GiB 是我們真實的 production 數字
+- 繼續往下走只剩兩條路：買更大機器 / 換架構
 -->
 
 ---
-layout: default
+layout: split
+title: "痛點 ② — 長期查詢 Store Gateway 掙扎"
+ratio: "3:2"
 ---
 
-# 痛點 ②<br/><span class="text-red-400 text-3xl">長期查詢 Store Gateway 掙扎</span>
-
-<div class="mt-4 grid grid-cols-5 gap-6">
-
-<div class="col-span-3">
+::left::
 
 ```mermaid {theme: 'dark', scale: 0.7}
 flowchart TB
@@ -359,84 +298,69 @@ flowchart TB
     style S3 fill:#f5222d22,stroke:#f5222d
 ```
 
-<div class="text-xs text-center opacity-70 mt-2">
-  每個 Store Gateway 都要掃<strong>整個</strong> bucket · Querier fan-out 到所有 SG
-</div>
+::right::
 
-</div>
-
-<div class="col-span-2">
-
-<h3 class="!text-base !text-cyan-400 mb-2">結構性問題</h3>
+<h3 style="color:#5296B8">結構性問題</h3>
 
 <ul class="icon-list">
-<li v-click><mdi-magnify-scan class="text-rose-400" /> Bucket scan 是 <code>O(all_blocks)</code></li>
-<li v-click><mdi-download-outline class="text-amber-400" /> Index header 先下載才能查</li>
-<li v-click><mdi-scissors-cutting class="text-orange-400" /> Sharding <strong>靜態</strong>（硬切 relabel）</li>
-<li v-click><mdi-tune-variant class="text-purple-400" /> Cache 參數多 · 難調教</li>
+<li v-click><mdi-magnify /> Bucket scan 是 <code>O(all_blocks)</code></li>
+<li v-click><mdi-download /> Index header 先下載才能查</li>
+<li v-click><mdi-content-cut /> Sharding <strong>靜態</strong>（硬切 relabel）</li>
+<li v-click><mdi-tune /> Cache 參數多 · 難調教</li>
 </ul>
 
-<div v-click class="mt-4 text-sm opacity-70">
-  → Mimir 用 per-tenant <strong class="text-green-400">Bucket Index</strong> + 動態 sharding 解決這些
-</div>
-
-</div>
-
+<div v-click class="mt-2 text-sm" style="color:#35738E;">
+→ Mimir 用 per-tenant <strong style="color:#F7A86B">Bucket Index</strong> + 動態 sharding 解決
 </div>
 
 <!--
-補充：
-- 這段不要深講 11 維度的比較，聽眾會消化不下
-- 重點讓聽眾感受：Mimir Store-Gateway 是為大規模多租戶設計的，Thanos 是從 Prometheus 長出來的
-- 兩者的設計前提不同，不是誰對誰錯
+- 不要深講 11 維度比較
+- 重點：Mimir Store-Gateway 是為大規模多租戶設計的
 -->
 
 ---
-layout: default
+layout: inner
+title: 我們考慮的三條路
 ---
 
-# 我們考慮的三條路
+<div class="flex flex-col gap-3 w-full">
 
-<div class="mt-8 space-y-4">
-
-<div class="rounded-lg p-4 bg-white/5 border border-white/10 relative">
-  <div class="flex items-baseline gap-3">
-    <span class="text-2xl font-black text-orange-400">①</span>
+<div class="rounded-lg p-4 border border-amber-400/40 bg-amber-400/10 flex items-baseline gap-3">
+  <span class="text-3xl font-black" style="color:#F7A86B">①</span>
+  <div class="flex-1">
     <strong class="text-lg">保留 Prometheus Server + 切 remote_write 到 Mimir</strong>
-    <span class="tag good ml-auto">選這條</span>
+    <div class="text-sm mt-1 opacity-75">省掉 Sidecar，Prom Server 繼續扮演 alert / HPA / KEDA 的可靠來源</div>
   </div>
-  <div class="text-sm opacity-80 mt-2 ml-9">省掉 Sidecar，Prom Server 繼續扮演 alert / HPA / KEDA 的可靠來源</div>
+  <span class="tag good">選這條</span>
 </div>
 
-<div class="rounded-lg p-4 bg-white/5 border border-white/10">
-  <div class="flex items-baseline gap-3">
-    <span class="text-2xl font-black opacity-40">②</span>
-    <strong class="text-lg opacity-70">拔掉 Prom Server，改用 Prometheus Agent</strong>
-    <span class="tag warn ml-auto">太激進</span>
+<div class="rounded-lg p-4 border border-cyan-200 bg-white/50 flex items-baseline gap-3">
+  <span class="text-3xl font-black opacity-40" style="color:#5296B8">②</span>
+  <div class="flex-1 opacity-70">
+    <strong class="text-lg">拔掉 Prom Server，改用 Prometheus Agent</strong>
+    <div class="text-sm mt-1 opacity-75">所有 query 指向 Mimir，對可靠性要求極嚴苛 — HPA/KEDA 斷線 = 業務掛掉</div>
   </div>
-  <div class="text-sm opacity-60 mt-2 ml-9">所有 query 指向 Mimir，對可靠性要求極嚴苛 — HPA/KEDA 斷線 = 業務掛掉</div>
+  <span class="tag warn">太激進</span>
 </div>
 
-<div class="rounded-lg p-4 bg-white/5 border border-white/10">
-  <div class="flex items-baseline gap-3">
-    <span class="text-2xl font-black opacity-40">③</span>
-    <strong class="text-lg opacity-70">繼續用 Thanos + 補強</strong>
-    <span class="tag warn ml-auto">治標</span>
+<div class="rounded-lg p-4 border border-cyan-200 bg-white/50 flex items-baseline gap-3">
+  <span class="text-3xl font-black opacity-40" style="color:#5296B8">③</span>
+  <div class="flex-1 opacity-70">
+    <strong class="text-lg">繼續用 Thanos + 補強</strong>
+    <div class="text-sm mt-1 opacity-75">短期緩解，但結構性問題沒解決，只是推延</div>
   </div>
-  <div class="text-sm opacity-60 mt-2 ml-9">短期緩解，但結構性問題沒解決，只是推延</div>
+  <span class="tag warn">治標</span>
 </div>
 
+<div v-click class="text-center mt-3" style="color:#35738E;">
+  選 ① 的關鍵：Prom Server <strong style="color:#F26D4F">單純穩定</strong>，是 alert / autoscaling 的最後防線
 </div>
 
-<div v-click class="mt-8 text-center opacity-80">
-  選 ① 的關鍵：Prom Server <strong class="text-orange-400">單純穩定</strong>，是 alert / autoscaling 的最後防線
 </div>
 
 <!--
-補充（重要）：
-- 這張展示我們的選型不是拍腦袋決定
-- 特別強調 ②（Prom Agent）的風險：HPA/KEDA 依賴 metrics 作決策，如果 metrics backend 不穩，business 會受直接影響
-- 所以保留 Prom Server 是一個「保險」決策 — 未來想切 Prom Agent，這條路還能走
+- 這張展示選型不是拍腦袋決定
+- ②（Prom Agent）風險：HPA/KEDA 依賴 metrics 作決策
 -->
 
 ---
@@ -451,43 +375,27 @@ parent: Thanos → Mimir 3.0
 
 <!--
 進入 Mimir 3.0 介紹段
-先給大畫面 (官方圖)，再拆解
 -->
 
 ---
-layout: default
+layout: image-caption
+title: Mimir 3.0 的三大賣點
+image: /mimir3-3benefits.png
+caption: "<strong style='color:#F7A86B'>Ingest Storage</strong> · <strong style='color:#F7A86B'>Mimir Query Engine</strong> · 全新設計的架構"
 ---
-
-# Mimir 3.0 的三大賣點
-
-<div class="mt-6 flex justify-center">
-  <img src="/mimir3-3benefits.png" class="rounded-lg shadow-2xl max-h-[380px]" />
-</div>
-
-<div class="mt-6 text-center text-sm opacity-70">
-  <span class="text-yellow-400 font-bold">Ingest Storage</span> · 
-  <span class="text-yellow-400 font-bold">Mimir Query Engine</span> · 
-  全新設計的架構
-</div>
 
 <!--
-補充：
-- 這是 Grafana Labs 官方簡報的一張
+- Grafana Labs 官方簡報的一張
 - 三個關鍵字：Reliability / Performance / Cost
-- 接下來我會拆這兩個支柱講
 -->
 
 ---
-layout: default
+layout: image-side
+title: Ingest Storage — Kafka 化的寫入路徑
+image: /mimir3-ingest-storage.png
 ---
 
-# Ingest Storage — Kafka 化的寫入路徑
-
-<div class="mt-4 flex justify-center">
-  <img src="/mimir3-ingest-storage.png" class="rounded-lg shadow-2xl max-h-[340px]" />
-</div>
-
-<div class="mt-6 grid grid-cols-3 gap-4 text-sm">
+::notes::
 
 <Callout type="info" title="Distributors">
 無狀態，專注寫入接收與 sharding
@@ -498,70 +406,59 @@ layout: default
 </Callout>
 
 <Callout type="info" title="Ingester">
-變成 Kafka consumer，**從 offset 重建狀態**
+變成 Kafka consumer<br/><strong>從 offset 重建狀態</strong>
 </Callout>
 
-</div>
-
 <!--
-補充：
-- 這是 Mimir 3.0 架構的核心改變
-- 傳統 Mimir 2.x 是 Distributor 直接 push 到 Ingester (gRPC)，Ingester 有狀態 (in-memory TSDB)
-- 現在 Distributor 只需要 produce 到 Kafka，Ingester 變成 consumer
+- Mimir 3.0 核心改變：Ingester 變 Kafka consumer
 - Ingester 重啟只要從 Kafka offset 追回，不怕 gap
-- 這個設計的核心：Ingester + Partition 綁定，每個 partition 都是一份完整的資料
 -->
 
 ---
-layout: default
+layout: image-side
+title: Write/Read Path 完全解耦
+image: /mimir3-decouple.png
 ---
 
-# Write/Read Path 完全解耦
-
-<div class="mt-6 flex justify-center">
-  <img src="/mimir3-decouple.png" class="rounded-lg shadow-2xl max-h-[360px]" />
-</div>
-
-<div v-click class="mt-6 text-center">
+::notes::
 
 <Callout type="win" title="設計哲學">
-<strong>讀取端掛了，寫入端依然健康</strong> — 熱查詢爆炸不再會拖垮寫入
+<strong>讀取端掛了，寫入端依然健康</strong><br/>熱查詢爆炸不再會拖垮寫入
 </Callout>
 
+<div v-click class="text-[0.98rem] leading-relaxed" style="color:#35738E;">
+傳統 Mimir 2.x：Ingester 同時服務讀寫，heavy query 會打爆 Ingester；<br/><br/>
+Mimir 3.0：Write path 只到 Kafka 就結束，query 端問題不再變成寫入事件。
 </div>
 
 <!--
-補充：
-- 這張圖視覺效果很強：Write ✅ HEALTHY / Read ✗ UNHEALTHY
-- 傳統 Mimir 2.x：Ingester 同時服務寫入和讀取，heavy query 會打爆 Ingester
-- 現在：Write path 只到 Kafka 就結束了
-- 這對運維的意義：query 端的問題不會變成寫入事件
+- Write ✅ HEALTHY / Read ✗ UNHEALTHY
+- 對運維的意義：query 端問題不會變成寫入事件
 -->
 
 ---
-layout: default
+layout: split
+title: Mimir Query Engine (MQE) 效益
+kicker: 1h range query · 1000 series · sum() benchmark
+ratio: "3:2"
 ---
 
-# Mimir Query Engine (MQE) 效益
+::left::
 
-<div class="mt-4 flex justify-center">
-  <img src="/mimir3-mqe-benchmark.png" class="rounded-lg shadow-2xl max-h-[360px]" />
-</div>
+<img src="/mimir3-mqe-benchmark.png" />
 
-<div class="mt-4 grid grid-cols-2 gap-6 max-w-3xl mx-auto">
+::right::
 
-<Stat value="92%" label="Less memory vs Prometheus" accent="green" />
-<Stat value="38%" label="Faster execution" accent="cyan" />
+<Stat value="92%" label="Less memory vs Prometheus" accent="orange" />
+<Stat value="38%" label="Faster execution" accent="blue" />
 
+<div v-click class="text-sm leading-relaxed mt-2" style="color:#35738E;">
+Grafana Cloud 實測：querier peak memory 降 <strong style="color:#F7A86B">3×</strong>、peak CPU 降 <strong style="color:#F7A86B">80%</strong> — 遷移完即送。
 </div>
 
 <!--
-補充：
 - MQE 在 Mimir 3.0 是 default
-- 相比舊的 Prometheus engine，streaming execution + optimization framework
-- 這張 benchmark 是官方 1h range query 1000 series 的 sum() 測試
-- 實際 Grafana Cloud 跑下來 querier peak memory 降 3x、peak CPU 降 80%
-- 這個是「我們遷移後立刻拿到的」好處，不需要做什麼
+- streaming execution + optimization framework
 -->
 
 ---
@@ -575,47 +472,43 @@ parent: Thanos → Mimir 3.0
 <div class="mt-6 opacity-60">多一個元件，是不是要把自己搞死？</div>
 
 <!--
-進入 Kafka / AutoMQ 章節 — 整場演講的重頭戲
-開場用這句話引出下一張
+進入 Kafka / AutoMQ 章節 — 整場演講重頭戲
 -->
 
 ---
-layout: default
+layout: inner
+title: "等等，加 Kafka 不就更複雜嗎？"
+align: center
 ---
 
-# 等等，加 Kafka 不就更複雜嗎？
+<div class="text-center w-full">
+  <div class="text-xl opacity-80 mb-6">很多人的第一反應：</div>
 
-<div class="mt-10 text-xl text-center opacity-90">
-  很多人的第一反應：
-</div>
-
-<div v-click class="mt-6 text-center">
-  <div class="inline-block rounded-xl p-6 bg-white/5 border border-white/10 text-2xl italic opacity-90">
+  <div v-click class="inline-block rounded-xl p-6 bg-white/50 border border-cyan-200 text-2xl italic mb-12" style="color:#0E3F4E;">
     「原本一個長期指標系統就夠複雜了，<br/>現在還要加 Kafka？」
+  </div>
+
+  <div v-click>
+    <div class="text-base opacity-70 mb-2">答案要從這個定理說起</div>
+    <div class="text-6xl font-black font-mono" style="color:#F7A86B;">L = λ · W</div>
+    <div class="text-sm opacity-60 mt-2">Little's Law · 李式定理</div>
   </div>
 </div>
 
-<div v-click class="mt-12 text-center">
-  <div class="text-base opacity-70 mb-2">答案要從這個定理說起</div>
-  <div class="text-5xl font-black text-orange-400 font-mono">L = λ · W</div>
-  <div class="text-sm opacity-60 mt-2">Little's Law · 李式定理</div>
-</div>
-
 <!--
-補充：
-- 我當初跟主管討論時也被問過這個問題
-- 加一個元件 = 多一份複雜度，這是直覺
-- 但實際上複雜度不會憑空消失，你只是選擇把它放在哪裡
-- 李式定理告訴我們的是：系統吞吐的本質
+- 加一個元件 = 多一份複雜度
+- 但複雜度不會憑空消失，只是選擇放在哪裡
+- 李式定理告訴我們系統吞吐的本質
 -->
 
 ---
-layout: default
+layout: split
+title: 雖然可靠——但真實經驗是...
+ratio: "3:2"
+footnote: "虛線 = 回堵方向 · 任何一環節的 W 變大都會一路反噬到最上游"
 ---
 
-# 雖然可靠——但真實經驗是...
-
-<div class="mt-4">
+::left::
 
 ```mermaid {theme: 'dark', scale: 0.82}
 flowchart LR
@@ -631,48 +524,30 @@ flowchart LR
     style K fill:#a78bfa33,stroke:#a78bfa
 ```
 
-<div class="text-xs text-center opacity-70 mt-1">
-  虛線 = 回堵方向 · 任何一環節的 W 變大都會一路反噬到最上游
-</div>
-
-</div>
-
-<div class="mt-4 grid grid-cols-2 gap-5">
+::right::
 
 <Callout type="warn" title="真實踩坑">
-Kafka consumer 慢（根因其實在下游 Ingester）<br/>
-→ Kafka 堆積 → Distributor produce timeout<br/>
-→ Prom queue full → 全環境噴 alert
+Kafka consumer 慢（根因其實在下游 Ingester）→ Kafka 堆積 → Distributor produce timeout → Prom queue full → 全環境噴 alert
 </Callout>
 
 <Callout type="info" title="學到的事">
-加 Kafka 不是免費的午餐<br/>
-<strong>你接受了這個複雜度</strong>，換來上層的解耦<br/>
-所以選型要算清楚這筆帳
+加 Kafka 不是免費的午餐<br/><strong>你接受了這個複雜度</strong>，換來上層的解耦
 </Callout>
 
-</div>
-
 <!--
-重要（誠實調性）：
-- 這段是我想表達的核心態度：不盲目推薦
-- 分享真實踩坑：有一次 Kafka consumer 變慢，根因追到 Ingester
-- 但當下看到的是「Prom 噴 queue full alert」
+- 真實踩坑：Kafka consumer 慢，根因在 Ingester
 - 這種跨元件 debug 是 Kafka 架構的固有複雜度
-- 我們接受了這個，因為換來的好處夠大（下面會講）
 -->
 
 ---
-layout: default
+layout: split
+title: Kafka 的下一個十年
+ratio: "1:1"
 ---
 
-# Kafka 的下一個十年
+::left::
 
-<div class="mt-4 grid grid-cols-2 gap-6">
-
-<div>
-
-<h3 class="!text-base !text-purple-400 mb-3">KIP-1150 Diskless Topics</h3>
+<h3 style="color:#5296B8">KIP-1150 Diskless Topics</h3>
 
 <v-clicks>
 
@@ -684,7 +559,7 @@ layout: default
 
 </v-clicks>
 
-<div v-click class="mt-6">
+<div v-click class="mt-4">
 
 <Callout type="info">
 <strong>社群共識</strong>：Kafka 的未來是 cloud-native
@@ -692,52 +567,45 @@ layout: default
 
 </div>
 
-</div>
+::right::
 
-<div class="flex justify-center items-start">
-  <img src="/kip1150-xiaohongshu.png" class="rounded-lg shadow-2xl max-h-[420px]" />
-</div>
-
-</div>
+<img src="/kip1150-xiaohongshu.png" />
 
 <!--
-補充：
-- 這張配上小紅書截圖，非常有「真實截圖感」
-- 這是 Kafka 社群的重要時刻：連 Apache 官方都承認要往 stateless 走
-- AutoMQ 不是一個冒險的選擇，是走在社群共識的前面
-- 小紅書那張是 Aiven 的 Josep 和 Greg（Diskless 主力推手）的消息
+- Kafka 社群的重要時刻：Apache 官方承認要往 stateless 走
+- AutoMQ 不是冒險選擇，是走在社群共識前面
 -->
 
 ---
-layout: default
+layout: inner
+title: 傳統 Kafka 的三大痛點
+footnote: "重度使用過 Kafka 的朋友會秒懂 — 這三個是 Kafka 帳單上的主要項目"
 ---
 
-# 傳統 Kafka 的三大痛點
+<div class="grid grid-cols-3 gap-5 w-full">
 
-<div class="mt-10 grid grid-cols-3 gap-5">
-
-<div class="rounded-lg p-5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase tracking-widest mb-2">① 維運</div>
-  <h3 class="!text-base mb-3">Broker 是有狀態的</h3>
-  <div class="text-sm opacity-80">
+<div class="rounded-xl p-5 bg-red-500/8 border border-red-400/30">
+  <div class="text-red-400 text-xs uppercase tracking-widest mb-2 font-bold">① 維運</div>
+  <h3 class="!text-lg mb-3">Broker 是有狀態的</h3>
+  <div class="text-sm opacity-80 leading-relaxed">
     Partition data 存在本地磁碟<br/>
     重啟 / 擴縮 / 修復都要搬資料
   </div>
 </div>
 
-<div class="rounded-lg p-5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase tracking-widest mb-2">② 水平擴展</div>
-  <h3 class="!text-base mb-3">Rebalance storm</h3>
-  <div class="text-sm opacity-80">
+<div class="rounded-xl p-5 bg-red-500/8 border border-red-400/30">
+  <div class="text-red-400 text-xs uppercase tracking-widest mb-2 font-bold">② 水平擴展</div>
+  <h3 class="!text-lg mb-3">Rebalance storm</h3>
+  <div class="text-sm opacity-80 leading-relaxed">
     加 broker / 縮 broker<br/>
     都會觸發大量 partition 遷移
   </div>
 </div>
 
-<div class="rounded-lg p-5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase tracking-widest mb-2">③ 跨區流量</div>
-  <h3 class="!text-base mb-3">大多數成本來源</h3>
-  <div class="text-sm opacity-80">
+<div class="rounded-xl p-5 bg-red-500/8 border border-red-400/30">
+  <div class="text-red-400 text-xs uppercase tracking-widest mb-2 font-bold">③ 跨區流量</div>
+  <h3 class="!text-lg mb-3">大多數成本來源</h3>
+  <div class="text-sm opacity-80 leading-relaxed">
     Replication + producer/consumer<br/>
     <strong>跨 AZ 流量費是帳單主角</strong>
   </div>
@@ -745,120 +613,79 @@ layout: default
 
 </div>
 
-<div v-click class="mt-10 text-center opacity-80">
-  重度使用過 Kafka 的朋友會秒懂 — 這三個是 Kafka 帳單上的主要項目
-</div>
-
 <!--
-補充（誠實聊成本）：
 - 第 ③ 項跨區流量通常被低估
-- 我們 AWS 帳單上，Kafka 的 cross-AZ data transfer 有時比 EC2 還貴
-- 原因：producer-broker / broker-broker replication / broker-consumer 都可能跨 AZ
-- 這就是 AutoMQ 最能打的地方
+- 我們 AWS 帳單上 Kafka cross-AZ 有時比 EC2 還貴
 -->
 
 ---
-layout: default
+layout: image-caption
+title: AutoMQ — Shared Storage 架構
+image: /automq-shared-storage.png
+caption: "核心：<strong style='color:#F7A86B'>Storage 與 Compute 徹底分離</strong> · Broker 變 stateless · P99 &lt; 10ms"
 ---
-
-# AutoMQ — Shared Storage 架構
-
-<div class="mt-4 flex justify-center">
-  <img src="/automq-shared-storage.png" class="rounded-lg shadow-2xl max-h-[400px]" />
-</div>
-
-<div v-click class="mt-4 text-center text-sm opacity-80">
-  核心：<strong class="text-green-400">Storage 與 Compute 徹底分離</strong> · Broker 變 stateless · P99 < 10ms
-</div>
 
 <!--
-補充：
-- 這張是 AutoMQ 官方對比圖
-- 左邊是傳統 Kafka (Shared Nothing)：每個 broker 有自己的 disk + replication
-- 右邊是 AutoMQ (Shared Storage)：所有 broker 共享 object storage
-- 核心優勢：
-  1. Storage 和 Compute 分離
-  2. Zero partition data replication (因為 S3 本身就是多副本)
-  3. Low latency on S3 (P99 < 10ms)
-- Kafka API 100% 相容 — 這是關鍵，不用改 client
+- 左：傳統 Kafka (Shared Nothing) 每個 broker 有自己的 disk + replication
+- 右：AutoMQ (Shared Storage) 所有 broker 共享 object storage
+- 核心：Storage/Compute 分離 · Zero partition replication · Low latency on S3
+- Kafka API 100% 相容 — 不用改 client
 -->
 
 ---
-layout: default
+layout: image-side
+title: Zero-Zone Router — 跨區流量歸零
+image: /automq-zero-zone-router.png
 ---
 
-# Zero-Zone Router — 跨區流量歸零
-
-<div class="mt-4 flex justify-center">
-  <img src="/automq-zero-zone-router.png" class="rounded-lg shadow-2xl max-h-[380px]" />
-</div>
-
-<div v-click class="mt-4 text-center">
+::notes::
 
 <Callout type="win" title="神來一筆的設計">
-Producer 寫入 <strong>本地 AZ 的 broker</strong> → 透過 S3 路由到 leader partition →<br/>
-Consumer 從 <strong>本地 AZ 的 readonly replica</strong> 讀取 → 跨 AZ 流量歸零
+Producer 寫入 <strong>本地 AZ 的 broker</strong> → 透過 S3 路由到 leader partition → Consumer 從 <strong>本地 AZ 的 readonly replica</strong> 讀取 → 跨 AZ 流量歸零
 </Callout>
 
+<div class="text-sm mt-2" style="color:#35738E;">
+唯一的跨 AZ 流量是 broker ↔ S3，<strong>而 AWS 同 region 的 S3 是免費的</strong>。
 </div>
 
 <!--
-補充（Zero-Zone Router 分步講解，這頁可以講 2-3 分鐘）：
-1. Producer 在 AZ2 寫入，它只需要寫到 AZ2 的 broker（本地）
-2. AZ2 的 Rack-aware Router 把資料透過 S3 「路由」給 AZ1（leader partition 所在地）
-3. AZ1 從 S3 讀取資料完成寫入
-4. 所有其他 AZ 透過 S3 複製拿到 readonly 副本
-5. Consumer 在 AZ2 讀取，只需從 AZ2 的 readonly replica 讀（本地）
-結果：Producer ↔ Broker / Consumer ↔ Broker 全部 in-AZ
-唯一的跨 AZ 流量：broker ↔ S3，而這在 AWS 同 region 的 S3 是免費的
+Zero-Zone Router 分步講解：
+1. Producer 在 AZ2 只寫到 AZ2 的 broker
+2. AZ2 Rack-aware Router 透過 S3 路由給 AZ1
+3. 其他 AZ 透過 S3 複製拿到 readonly 副本
+4. Consumer 在 AZ2 從本地 readonly replica 讀
 -->
 
 ---
-layout: default
+layout: split
+title: 延遲的哲學取捨
+kicker: 10 倍延遲差異 — 我們在乎嗎？
+ratio: "1:1"
+footnote: "長期指標後端不在乎 · Alert / HPA / KEDA 仍然走 Prom Server"
 ---
 
-# 延遲的哲學取捨
-
-<div class="mt-10 grid grid-cols-2 gap-8 items-center">
+::left::
 
 <div class="text-center">
-
-<div class="text-xs uppercase tracking-widest opacity-60 mb-2">Traditional Kafka (EBS)</div>
-<div class="text-7xl font-black text-cyan-400">~50<span class="text-3xl">ms</span></div>
-<div class="text-sm opacity-70 mt-2">P99 end-to-end</div>
-
+  <div class="text-xs uppercase tracking-widest opacity-60 mb-2">Traditional Kafka (EBS)</div>
+  <div class="text-8xl font-black" style="color:#5296B8;">~50<span class="text-3xl">ms</span></div>
+  <div class="text-base opacity-70 mt-2">P99 end-to-end</div>
 </div>
+
+::right::
 
 <div class="text-center">
-
-<div class="text-xs uppercase tracking-widest opacity-60 mb-2">AutoMQ S3Stream</div>
-<div class="text-7xl font-black text-purple-400">~500<span class="text-3xl">ms</span></div>
-<div class="text-sm opacity-70 mt-2">P99 end-to-end</div>
-
-</div>
-
-</div>
-
-<div v-click class="mt-12 text-center">
-
-<div class="text-xl opacity-90 mb-3">10 倍延遲差異——我們在乎嗎？</div>
-
-<div class="inline-block rounded-xl p-5 bg-green-500/10 border border-green-400/40">
-<div class="text-lg font-bold text-green-400">長期指標後端不在乎</div>
-<div class="text-sm opacity-80 mt-1">Alert / HPA / KEDA 仍然走 Prom Server<br/>Mimir 是秒級的 long-term storage</div>
-</div>
-
+  <div class="text-xs uppercase tracking-widest opacity-60 mb-2">AutoMQ S3Stream</div>
+  <div class="text-8xl font-black" style="color:#F7A86B;">~500<span class="text-3xl">ms</span></div>
+  <div class="text-base opacity-70 mt-2">P99 end-to-end</div>
 </div>
 
 <!--
-補充（關鍵洞察）：
-- 這張呼應前面「為什麼保留 Prom Server」的選型決策
 - 關鍵決策鏈條：
   - 保留 Prom Server → 短期查詢走 Prom（毫秒級）
   - 長期查詢走 Mimir → 可以接受 500ms
-  - Alert / HPA / KEDA 繼續用 Prom → 業務不受 AutoMQ 延遲影響
-- 所以 50ms → 500ms 的代價，換來 10+ 倍成本降低和運維解放
-- 這是典型的 engineering tradeoff：知道自己在意什麼，就能做出聰明選擇
+  - Alert / HPA / KEDA 繼續用 Prom
+- 50ms → 500ms 代價，換來 10+ 倍成本降低和運維解放
 -->
 
 ---
@@ -873,95 +700,88 @@ parent: Thanos → Mimir 3.0
 
 <!--
 進入成果展示段
-這段要放輕鬆一點，讓聽眾有「哇」的反應
 -->
 
 ---
-layout: default
+layout: split
+title: 實測效能對比
+kicker: 8 種 query × 6 個時間範圍 = 48 組測試 · cache busting
+ratio: "3:2"
 ---
 
-# 實測效能對比
+::left::
 
-<div class="mt-6 flex justify-center">
-  <img src="/eval-summary.png" class="rounded-lg shadow-2xl max-h-[380px]" />
-</div>
+<img src="/eval-summary.png" />
 
-<div class="mt-4 grid grid-cols-4 gap-3 max-w-4xl mx-auto">
+::right::
 
-<Stat value="3.4×" label="平均查詢加速" accent="green" />
-<Stat value="45/48" label="測試項目勝出" accent="cyan" />
-<Stat value="16.7×" label="Cross-metric Join 30d" accent="orange" />
-<Stat value="8.4×" label="High-cardinality 1h" accent="purple" />
-
+<div class="grid grid-cols-2 gap-3">
+  <Stat value="3.4×" label="平均查詢加速" accent="orange" />
+  <Stat value="45/48" label="測試項目勝出" accent="sky" />
+  <Stat value="16.7×" label="Cross-metric Join 30d" accent="red" />
+  <Stat value="8.4×" label="High-cardinality 1h" accent="blue" />
 </div>
 
 <!--
-補充：
-- 這是我們跑的 8 種 query × 6 個時間範圍 = 48 組測試
-- 用 cache busting 確保測真實效能不是 cache hit rate
 - 最有趣的發現：長期查詢 Mimir 的優勢反而更大（30d = 6.3x）
-- 完全顛覆「Thanos 擅長長期查詢」的迷思
+- 顛覆「Thanos 擅長長期查詢」的迷思
 -->
 
 ---
-layout: default
+layout: split
+title: 3 週 AWS 成本實測
+ratio: "1:1"
+footnote: "Dec 8-28, 2025 · 同一生產環境 · 真實 AWS billing"
 ---
 
-# 3 週 AWS 成本實測
+::left::
 
-<div class="mt-6 grid grid-cols-2 gap-5">
-
-<div>
-  <div class="text-center mb-2">
-    <span class="text-red-400 font-bold text-lg">Thanos</span>
-    <div class="text-3xl font-black text-red-400 mt-1">$32,525</div>
-  </div>
-  <img src="/cost-thanos.png" class="rounded-lg shadow-2xl border border-red-400/30" />
+<div class="text-center mb-3">
+  <span class="text-red-400 font-bold text-lg">Thanos</span>
+  <div class="text-4xl font-black text-red-400 mt-1">$32,525</div>
 </div>
 
-<div>
-  <div class="text-center mb-2">
-    <span class="text-green-400 font-bold text-lg">Mimir + AutoMQ</span>
-    <div class="text-3xl font-black text-green-400 mt-1">$16,602</div>
-  </div>
-  <img src="/cost-mimir.png" class="rounded-lg shadow-2xl border border-green-400/30" />
+<img src="/cost-thanos.png" />
+
+::right::
+
+<div class="text-center mb-3">
+  <span class="font-bold text-lg" style="color:#F7A86B">Mimir + AutoMQ</span>
+  <div class="text-4xl font-black mt-1" style="color:#F7A86B">$16,602</div>
 </div>
 
-</div>
-
-<div v-click class="mt-4 text-center text-sm opacity-80">
-  Dec 8-28, 2025 · 同一生產環境 · 真實 AWS billing
-</div>
+<img src="/cost-mimir.png" />
 
 <!--
-補充：
-- 這是 AWS Cost Explorer 的真實截圖，不是我編造的數字
-- Thanos 這邊 EC2 instance 就吃了 $18,058 — 因為 Thanos 的 Store Gateway 要大量 compute
-- Mimir 這邊 EC2 instance 只要 $6,132 — MQE + Ingest Storage 的效率
-- Data transfer cost Mimir 反而高一點 $9,054 — 因為有 Kafka traffic
-- 但整體還是便宜 49%
+- 真實 AWS Cost Explorer 截圖
+- Thanos EC2 $18,058（Store Gateway 要大量 compute）
+- Mimir EC2 只要 $6,132
+- Data transfer Mimir 較高 $9,054（Kafka traffic）但整體便宜 49%
 -->
 
 ---
-layout: fact
+layout: inner
+title: 49% 更便宜
+align: center
 ---
 
-# 49% 更便宜
+<div class="text-center w-full">
+  <div class="text-xl opacity-70 mb-2">年度預估節省</div>
+  <div class="text-7xl font-black mb-12" style="color:#F7A86B;">$254,771</div>
 
-<div class="mt-4 text-3xl opacity-80 font-normal">
-  年度預估節省 $254,771
-</div>
-
-<div class="mt-10 text-xl opacity-60 font-normal">
-  <span class="text-orange-400 font-bold">3.4× 更快</span> · 
-  <span class="text-orange-400 font-bold">49% 更便宜</span> · 
-  <span class="text-orange-400 font-bold">6.6× 性價比</span>
+  <div class="text-xl opacity-70 mb-3">性價比總結</div>
+  <div class="flex items-center justify-center gap-6 text-2xl">
+    <span class="font-black" style="color:#F7A86B;">3.4× 更快</span>
+    <span class="opacity-40">·</span>
+    <span class="font-black" style="color:#F7A86B;">49% 更便宜</span>
+    <span class="opacity-40">·</span>
+    <span class="font-black" style="color:#F7A86B;">6.6× 性價比</span>
+  </div>
 </div>
 
 <!--
-這張是「成果段的 money shot」
+成果段的 money shot
 講的時候要慢，讓數字在空氣中停留
-可以補一句：「這個 ROI 讓我把遷移提案推上去時非常好講」
 -->
 
 ---
@@ -975,131 +795,112 @@ parent: Thanos → Mimir 3.0
 <div class="mt-6 opacity-60">PromCon 2026 帶回來的新東西</div>
 
 <!--
-進入最後一段
-這段是「帶禮物回家」的段落
-讓聽眾覺得「我學到新東西，還想回去研究」
+進入最後一段，「帶禮物回家」段落
 -->
 
 ---
-layout: default
+layout: inner
+title: 可觀測性 2.0 的訊號
 ---
 
-# 可觀測性 2.0 的訊號
-
-<div class="mt-8">
+<div class="w-full">
 
 <Callout type="info" title="口號">
-把 <strong>logs / traces / metrics</strong> 全部倒進 <strong>data warehouse / data lake</strong>，<br/>
-用統一的查詢引擎交叉分析
+把 <strong>logs / traces / metrics</strong> 全部倒進 <strong>data warehouse / data lake</strong>，用統一的查詢引擎交叉分析
 </Callout>
 
-</div>
-
-<div class="mt-8 grid grid-cols-2 gap-6">
+<div class="grid grid-cols-2 gap-6 mt-6">
 
 <div>
+  <h3 style="color:#5296B8">支持者（資料庫廠商）</h3>
+  <v-clicks>
 
-<h3 class="!text-base !text-cyan-400 mb-2">支持者（資料庫廠商）</h3>
+  - ClickHouse — 大力鼓吹
+  - AWS Athena — 把 metrics 導進來吧
+  - 核心論點：**columnar 格式**對高基數資料超友善
 
-<v-clicks>
-
-- ClickHouse — 大力鼓吹
-- AWS Athena — 把 metrics 導進來吧
-- 核心論點：**columnar 格式**對高基數資料超友善
-
-</v-clicks>
-
+  </v-clicks>
 </div>
 
 <div>
+  <h3 style="color:#F26D4F">為何不溫不火</h3>
+  <v-clicks>
 
-<h3 class="!text-base !text-red-400 mb-2">為何不溫不火</h3>
+  - PromQL 生態太大太穩
+  - SQL vs PromQL 轉換成本高
+  - Dashboards / alerts 生態綁死 Prom
 
-<v-clicks>
-
-- PromQL 生態太大太穩
-- SQL vs PromQL 轉換成本高
-- Dashboards / alerts 生態綁死 Prom
-
-</v-clicks>
-
+  </v-clicks>
 </div>
 
 </div>
 
-<div v-click class="mt-8 text-center opacity-80">
-  但 Prometheus 生態<span class="text-orange-400 font-bold">沒有放棄</span>這個方向
+<div v-click class="text-center mt-6 text-lg">
+  但 Prometheus 生態<span class="font-bold" style="color:#F7A86B;">沒有放棄</span>這個方向
+</div>
+
 </div>
 
 <!--
-補充：
-- 可觀測性 2.0 是一個 buzzword 但背後有真實的技術洞察
-- 問題是轉換成本太高，PromQL 生態太大
-- 重點：Prom 生態內部也在吸收這些 columnar 的好處
+- 可觀測性 2.0 是 buzzword 但有真實技術洞察
+- 問題是轉換成本太高
+- 重點：Prom 生態內部也在吸收 columnar 的好處
 -->
 
 ---
-layout: default
+layout: inner
+title: PromCon 2026 — Parquet Gateway
 ---
 
-# PromCon 2026 — Parquet Gateway
+<div class="grid grid-cols-3 gap-4 w-full">
 
-<div class="mt-6 grid grid-cols-3 gap-4">
-
-<div class="rounded-lg p-4 bg-white/5 border border-white/10 text-center">
+<div class="rounded-lg p-4 bg-white/60 border border-amber-300/50 text-center">
   <div class="text-xs uppercase opacity-60 mb-1">Grafana Labs</div>
-  <div class="font-bold text-orange-400">Jesús Vázquez</div>
+  <div class="font-bold text-lg" style="color:#F7A86B">Jesús Vázquez</div>
   <div class="text-xs opacity-70 mt-1">Mimir 核心</div>
 </div>
 
-<div class="rounded-lg p-4 bg-white/5 border border-white/10 text-center">
+<div class="rounded-lg p-4 bg-white/60 border border-cyan-300/50 text-center">
   <div class="text-xs uppercase opacity-60 mb-1">AWS</div>
-  <div class="font-bold text-cyan-400">Alan Protasio</div>
+  <div class="font-bold text-lg" style="color:#5296B8">Alan Protasio</div>
   <div class="text-xs opacity-70 mt-1">Cortex / Amazon Managed Prometheus</div>
 </div>
 
-<div class="rounded-lg p-4 bg-white/5 border border-white/10 text-center">
+<div class="rounded-lg p-4 bg-white/60 border border-red-300/50 text-center">
   <div class="text-xs uppercase opacity-60 mb-1">Cloudflare</div>
-  <div class="font-bold text-purple-400">Michael Hoffmann</div>
+  <div class="font-bold text-lg" style="color:#F26D4F">Michael Hoffmann</div>
   <div class="text-xs opacity-70 mt-1">Thanos maintainer</div>
 </div>
 
 </div>
 
-<div v-click class="mt-8">
+<div v-click class="mt-5 w-full">
 
 <Callout type="info" title="三大社群聯合發聲">
-<strong>Cortex · Thanos · Mimir</strong> 的核心維護者同台<br/>
-宣告下一代 Prometheus 長期儲存後端的共同方向：<strong class="text-orange-400">Parquet Gateway</strong>
+<strong>Cortex · Thanos · Mimir</strong> 的核心維護者同台 — 宣告下一代 Prometheus 長期儲存後端的共同方向：<strong style="color:#F7A86B">Parquet Gateway</strong>
 </Callout>
 
 </div>
 
-<div v-click class="mt-6 text-center text-sm opacity-70">
-  用 <strong class="text-orange-400">Parquet</strong>（columnar format）取代 Prometheus TSDB block<br/>
-  彌補 TSDB 在 object storage 上的結構性缺陷
+<div v-click class="text-center mt-4 text-base" style="color:#35738E;">
+  用 <strong style="color:#F7A86B">Parquet</strong>（columnar format）取代 Prometheus TSDB block · 彌補 TSDB 在 object storage 上的結構性缺陷
 </div>
 
 <!--
-補充：
-- 這個三家同台的畫面本身就是 message
-- 過去三個社群是互相競爭的，現在共同發聲
-- 背後的源起是 Shopify 的 Filip Petkovski 在 Thanos 提的 Parquet PoC
-- Cloudflare 的 parquet-tsdb-poc 是最早的實作
-- 最終匯流到 prometheus-community/parquet-common 的共享 library
+- 三家同台的畫面本身就是 message
+- 過去三個社群互相競爭，現在共同發聲
 -->
 
 ---
-layout: default
+layout: split
+title: 為什麼 TSDB 不適合 Object Storage?
+ratio: "1:1"
+footnote: "<strong style='color:#F7A86B'>Request 數量才是成本</strong>，不是 bytes 數量"
 ---
 
-# 為什麼 TSDB 不適合 Object Storage?
+::left::
 
-<div class="mt-6 grid grid-cols-2 gap-6 items-center">
-
-<div>
-
-<h3 class="!text-base !text-cyan-400 mb-3">I/O 經濟學的根本差異</h3>
+<h3 style="color:#5296B8">I/O 經濟學的根本差異</h3>
 
 <v-clicks>
 
@@ -1109,11 +910,9 @@ layout: default
 
 </v-clicks>
 
-</div>
+::right::
 
-<div>
-
-<h3 class="!text-base !text-orange-400 mb-3">一個查詢的代價</h3>
+<h3 style="color:#F26D4F">一個查詢的代價</h3>
 
 <v-clicks>
 
@@ -1122,61 +921,48 @@ layout: default
   <div class="text-2xl font-bold text-red-400">100+ random GETs</div>
 </div>
 
-<div class="rounded p-3 bg-green-500/10 border border-green-400/30">
+<div class="rounded p-3 bg-amber-500/10 border border-amber-400/40">
   <div class="text-xs uppercase opacity-60">Parquet on S3</div>
-  <div class="text-2xl font-bold text-green-400">3-4 sequential reads</div>
+  <div class="text-2xl font-bold" style="color:#F7A86B">3-4 sequential reads</div>
 </div>
 
 </v-clicks>
 
-</div>
-
-</div>
-
-<div v-click class="mt-8 text-center">
-
-<div class="text-base opacity-90">
-  <strong class="text-orange-400">Request 數量才是成本</strong>，不是 bytes 數量
-</div>
-
-</div>
-
 <!--
-補充（first principles）：
-- 這是整個 Parquet 故事最核心的 insight
-- TSDB 是為本地 SSD 設計的，random read 便宜
+first principles：
+- TSDB 為本地 SSD 設計，random read 便宜
 - S3 上每個 request 都是 HTTP round-trip
-- 所以設計哲學要改：「多讀一點 bytes 沒關係，但少發幾次 request」
-- 這就是 columnar + sequential read 的威力
+- 設計哲學要改：多讀一點 bytes 沒關係，但少發幾次 request
 - 實測：GetRange calls 減少 90%，查詢加速 80-90%
 -->
 
 ---
-layout: end
+layout: inner
+align: center
 ---
 
-<div class="text-center">
+<div class="text-center w-full">
 
-<h1 class="!text-6xl !font-black">謝謝聆聽</h1>
+<h1 class="!text-6xl !font-black !mb-4">謝謝聆聽</h1>
 
-<div class="mt-6 text-lg opacity-80">
+<div class="text-lg opacity-80">
   Thanos → Mimir 3.0 → AutoMQ → Parquet ?
 </div>
 
 <div class="mt-14 grid grid-cols-3 gap-6 text-sm max-w-3xl mx-auto">
 
 <div>
-  <div class="text-orange-400 font-bold mb-1">選型</div>
+  <div class="font-bold mb-1" style="color:#F7A86B">選型</div>
   <div class="opacity-80">理解瓶頸在哪裡<br/>比追新技術重要</div>
 </div>
 
 <div>
-  <div class="text-purple-400 font-bold mb-1">架構</div>
+  <div class="font-bold mb-1" style="color:#F26D4F">架構</div>
   <div class="opacity-80">Stateless 是<br/>運維自由的基礎</div>
 </div>
 
 <div>
-  <div class="text-cyan-400 font-bold mb-1">心態</div>
+  <div class="font-bold mb-1" style="color:#5296B8">心態</div>
   <div class="opacity-80">Time-sensitive selection<br/>永遠在演進</div>
 </div>
 
@@ -1198,10 +984,7 @@ layout: end
 </div>
 
 <!--
-結語：
 - 三個 takeaway 是整場演講的精華
-- "time-sensitive selection" 這個 takeaway 很重要
-- 我們 2024-2025 年選 Mimir 是對的，但 2027 年的最優解可能是 Parquet-based 的什麼
-- 保持學習、保持懷疑、保持實驗
+- "time-sensitive selection" 很重要
 - QA 時間
 -->
