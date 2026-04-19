@@ -401,3 +401,144 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(247, 168, 107, 0.35);
 }
+
+/* ── Path-cards (p10 三條路選型) ── */
+.path-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.25rem;
+  align-items: stretch;
+  transition: grid-template-columns 0.5s ease;
+}
+
+.path-grid:has(.is-chosen) {
+  grid-template-columns: 1.25fr 1fr 1fr;
+}
+
+.path-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem 1.5rem 1.25rem;
+  border-radius: 18px;
+  border: 1.5px solid rgba(82, 150, 184, 0.28);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 2px 12px rgba(14, 63, 78, 0.05);
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    border-color 0.5s ease,
+    background 0.5s ease,
+    box-shadow 0.5s ease,
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.path-card.is-chosen {
+  border-color: rgba(247, 168, 107, 0.6);
+  background: linear-gradient(160deg, rgba(247, 168, 107, 0.18) 0%, rgba(247, 168, 107, 0.05) 100%);
+  box-shadow: 0 10px 30px rgba(247, 168, 107, 0.22);
+  transform: translateY(-6px);
+}
+
+.path-card.is-rejected {
+  border-color: rgba(82, 150, 184, 0.15);
+  background: rgba(255, 250, 247, 0.45);
+  opacity: 0.55;
+}
+
+.path-card__ribbon {
+  position: absolute;
+  top: -0.7rem;
+  right: 1rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  background: #F7A86B;
+  color: #FFFAF7;
+  box-shadow: 0 4px 12px rgba(247, 168, 107, 0.35);
+}
+
+.path-card__ribbon--warn {
+  background: rgba(82, 150, 184, 0.12);
+  color: #5E8EA0;
+  border: 1px solid rgba(82, 150, 184, 0.25);
+  box-shadow: none;
+  font-weight: 600;
+}
+
+.path-card__num {
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #5296B8;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.9rem;
+  font-feature-settings: "tnum" 1;
+  transition: color 0.5s ease;
+}
+
+.path-card.is-chosen .path-card__num {
+  color: #F7A86B;
+}
+
+.path-card.is-rejected .path-card__num {
+  color: rgba(82, 150, 184, 0.5);
+}
+
+.path-card__title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: #0E3F4E;
+  margin-bottom: 0.75rem;
+  transition: color 0.5s ease;
+}
+
+.path-card.is-rejected .path-card__title {
+  color: rgba(14, 63, 78, 0.7);
+}
+
+.path-card__desc {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(14, 63, 78, 0.7);
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.path-card__foot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(14, 63, 78, 0.1);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #F7A86B;
+}
+
+.path-card.is-rejected .path-card__foot {
+  color: rgba(82, 150, 184, 0.75);
+  font-weight: 500;
+}
+
+.path-conclusion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  background: rgba(82, 150, 184, 0.08);
+  border: 1px dashed rgba(82, 150, 184, 0.35);
+  color: #35738E;
+  font-size: 1rem;
+}
+
+.path-conclusion__icon {
+  font-size: 1.3rem;
+  color: #F7A86B;
+}

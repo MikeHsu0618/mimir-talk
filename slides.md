@@ -323,40 +323,55 @@ layout: inner
 title: 我們考慮的三條路
 ---
 
-<div class="flex flex-col gap-3 w-full">
+<div class="w-full flex flex-col gap-5">
 
-<div class="rounded-lg p-4 border border-amber-400/40 bg-amber-400/10 flex items-baseline gap-3">
-  <span class="text-3xl font-black" style="color:#F7A86B">①</span>
-  <div class="flex-1">
-    <strong class="text-lg">保留 Prometheus Server + 切 remote_write 到 Mimir</strong>
-    <div class="text-sm mt-1 opacity-75">省掉 Sidecar，Prom Server 繼續扮演 alert / HPA / KEDA 的可靠來源</div>
+<div class="path-grid">
+
+<div class="path-card" :class="{ 'is-chosen': $clicks >= 1 }">
+  <div class="path-card__ribbon" v-click="1">選這條</div>
+  <div class="path-card__num">01</div>
+  <div class="path-card__title">保留 Prometheus Server<br/>+ remote_write 到 Mimir</div>
+  <div class="path-card__desc">省掉 Sidecar，Prom Server 繼續扮演 alert / HPA / KEDA 的可靠來源</div>
+  <div class="path-card__foot" v-click="1">
+    <mdi-check-circle /> 風險最低、收益最大
   </div>
-  <span class="tag good">選這條</span>
 </div>
 
-<div class="rounded-lg p-4 border border-cyan-200 bg-white/50 flex items-baseline gap-3">
-  <span class="text-3xl font-black opacity-40" style="color:#5296B8">②</span>
-  <div class="flex-1 opacity-70">
-    <strong class="text-lg">拔掉 Prom Server，改用 Prometheus Agent</strong>
-    <div class="text-sm mt-1 opacity-75">所有 query 指向 Mimir，對可靠性要求極嚴苛 — HPA/KEDA 斷線 = 業務掛掉</div>
+<div class="path-card" :class="{ 'is-rejected': $clicks >= 1 }">
+  <div class="path-card__ribbon path-card__ribbon--warn" v-click="1">太激進</div>
+  <div class="path-card__num">02</div>
+  <div class="path-card__title">拔掉 Prom Server<br/>改用 Prometheus Agent</div>
+  <div class="path-card__desc">所有 query 指向 Mimir<br/>對可靠性要求極嚴苛</div>
+  <div class="path-card__foot" v-click="1">
+    <mdi-alert-octagon /> HPA/KEDA 斷線 = 業務掛掉
   </div>
-  <span class="tag warn">太激進</span>
 </div>
 
-<div class="rounded-lg p-4 border border-cyan-200 bg-white/50 flex items-baseline gap-3">
-  <span class="text-3xl font-black opacity-40" style="color:#5296B8">③</span>
-  <div class="flex-1 opacity-70">
-    <strong class="text-lg">繼續用 Thanos + 補強</strong>
-    <div class="text-sm mt-1 opacity-75">短期緩解，但結構性問題沒解決，只是推延</div>
+<div class="path-card" :class="{ 'is-rejected': $clicks >= 1 }">
+  <div class="path-card__ribbon path-card__ribbon--warn" v-click="1">治標不治本</div>
+  <div class="path-card__num">03</div>
+  <div class="path-card__title">繼續用 Thanos<br/>+ 補強現有架構</div>
+  <div class="path-card__desc">短期緩解結構性問題<br/>但遲早還是要還</div>
+  <div class="path-card__foot" v-click="1">
+    <mdi-clock-outline /> 只是推延，不是解決
   </div>
-  <span class="tag warn">治標</span>
-</div>
-
-<div v-click class="text-center mt-3" style="color:#35738E;">
-  選 ① 的關鍵：Prom Server <strong style="color:#F26D4F">單純穩定</strong>，是 alert / autoscaling 的最後防線
 </div>
 
 </div>
+
+<div v-click="2" class="path-conclusion">
+  <mdi-lightbulb-on class="path-conclusion__icon" />
+  <div>
+    選 ① 的關鍵：Prom Server <strong style="color:#F26D4F">單純穩定</strong> — 是 alert / autoscaling 的最後防線
+  </div>
+</div>
+
+</div>
+
+<!--
+- 這張展示選型不是拍腦袋決定
+- ②（Prom Agent）風險：HPA/KEDA 依賴 metrics 作決策
+-->
 
 <!--
 - 這張展示選型不是拍腦袋決定
