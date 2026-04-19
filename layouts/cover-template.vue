@@ -96,19 +96,19 @@
   line-height: 1.02;
   letter-spacing: -0.03em;
   color: #0E3F4E;
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.8rem;
 }
 
 .cover-layout :deep(h2) {
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 1.8rem;
+  font-weight: 500;
   color: #5296B8;
   letter-spacing: 0.02em;
-  margin: 0;
+  margin: 0.4rem 0 0;
 }
 
 .cover-layout :deep(p) {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #6BAEBE;
   margin: 0.4rem 0 0;
 }

@@ -33,10 +33,8 @@ layout: cover-template
 
 ## 我們如何把可觀測性後端玩到極致
 
-<div class="mt-10 flex gap-2 items-center text-xs tracking-wider" style="color:#5296B8;">
+<div class="mt-10 flex gap-2 items-center tracking-wider" style="color:#5296B8;font-size:1.15rem;font-weight:500;">
   <span>Mike Hsu</span>
-  <span style="color:#C9BDA9;">·</span>
-  <span>PromConf Taiwan 2026</span>
 </div>
 
 <div class="abs-br m-8 flex gap-2">

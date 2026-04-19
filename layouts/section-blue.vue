@@ -121,9 +121,11 @@
 }
 
 .section-blue-layout :deep(.content > div) {
-  font-size: 1rem;
-  color: rgba(14, 63, 78, 0.6);
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: rgba(14, 63, 78, 0.7);
   margin-top: 2.4rem !important;
+  letter-spacing: 0.01em;
 }
 
 .section-blue-layout :deep(p) {

@@ -12,8 +12,8 @@
 <style scoped>
 .slide-footer {
   position: fixed;
-  bottom: 1.2rem;
-  left: 2.5rem;
+  bottom: 0.5rem;
+  left: 1rem;
   right: 2.5rem;
   display: flex;
   justify-content: space-between;
