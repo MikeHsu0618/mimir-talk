@@ -15,11 +15,11 @@
 | 2 | 長期指標後端架構介紹 | 4 | 5 min |
 | 3 | 痛點 + 選型 | 5 | 6 min |
 | 4 | Mimir 3.0 架構 | 7 | 8 min |
-| 5 | Kafka 選型 — AutoMQ | 10 | 11 min |
+| 5 | Kafka 選型 — AutoMQ | 10 | 10 min |
 | 6 | 成本效能實戰成果 | 3 | 4 min |
 | 7 | 下一站 · 可觀測性 2.0 | 4 | 3 min |
 | | **結語** | 1 | 1 min |
-| | **合計** | **38 張** | **41 min** |
+| | **合計** | **38 張** | **40 min** |
 
 ---
 
@@ -444,7 +444,25 @@
 
 ---
 
-## Slide 25 · Kafka 的下一個十年 · Diskless Wars
+## Slide 25 · 獨白 · 為什麼我們還是選 Kafka?
+
+**Layout**: statement
+**時間**: ~45 sec
+
+**畫面構成**
+- 主標（置中大字）：「但如果只是這樣 — 我們不會貿然踏上這條不歸路」
+- 副標：「Kafka 是許多 on-call 工程師的噩夢 — 那我們為什麼還是選它？」
+- v-click 揭曉：「因為我們賭的不是『今天的 Kafka』，是『明天的 Kafka』」
+
+**口吻提示**
+- 講慢、留停頓，讓前一頁「踩坑清單」的重量落地
+- 坦白：這些坑我們都真的踩過 — 如果只是要「解耦」，沒必要跳進這個坑
+- 轉折：我們願意踩下去，是因為社群的下一個十年已經悄悄改寫了 Kafka
+- 無縫接到下一頁 Diskless Wars 時間軸
+
+---
+
+## Slide 26 · Kafka 的下一個十年 · Diskless Wars
 
 **Layout**: default（5 欄 grid：左 3 時間軸 · 右 2 社群合圖）
 **時間**: ~1.5 min
@@ -471,35 +489,34 @@
 
 ---
 
-## Slide 26 · 傳統 Kafka 的三大痛點
+## Slide 27 · AutoMQ · 最小改動的 Diskless Kafka 分支
 
-**Layout**: default（3 欄紅卡片）
-**時間**: ~1 min
-
-**畫面構成**
-三張紅邊卡片：
-- **① 維運** · Broker 有狀態 · partition 綁本地 disk · 每次重啟 / 擴縮 / 修復都要搬資料
-- **② 水平擴展** · Rebalance Storm · 加/縮 broker 都觸發大量遷移 · 每次擴縮都是風險
-- **③ 跨區流量** · 帳單主角 · Replication + producer + consumer 跨 AZ · **大叢集佔成本 60–70%**
-
-底部：「重度用過 Kafka 的人會秒懂 — 這三個是每張 AWS 帳單上的主角」
-
----
-
-## Slide 27 · AutoMQ · 重新設計的 Kafka
-
-**Layout**: default（架構圖 + 3 win callout）
-**時間**: ~1.5 min
+**Layout**: default（5 欄 grid：左 3 架構圖 · 右 2 痛點 + 解法；下 win callout）
+**時間**: ~2 min
 
 **畫面構成**
-- 上：`automq-architecture.png`（Kafka PageCache+LocalDisk vs AutoMQ WAL+MessageCache+ObjectStorage）
-- 下三 callout：
-  - **Storage / Compute 分離** · Broker 本地不存 partition data · 全部寫 S3 · broker stateless
-  - **Zero Partition Replication** · S3 本身多副本 · 不用 broker 互相 copy · replication 流量歸零
-  - **100% Kafka API** · Protocol 原生支援 · Producer / Consumer 不用改 · 切換零遷移成本
+- 頁首 subtitle：「不重寫 Kafka · 只替換 **Store / Fetch 介面** — 把本地 disk 換成 object storage · 其他一律不動」
+- 左（3/5）：`kafka-vs-automq.png`（傳統 Kafka PageCache + LocalDisk vs AutoMQ WAL + MessageCache + ObjectStorage）
+- 右（2/5）：
+  - 紅框「傳統 Kafka 的三痛」：
+    - Broker 有狀態（綁 local disk · 每次重啟都搬資料）
+    - Rebalance storm（加/縮 broker 觸發 partition 大遷移）
+    - 跨 AZ 流量佔大叢集 60-70% 成本
+  - 綠框「AutoMQ 換介面 → 全解」：
+    - Broker → stateless（spot-friendly · 秒級 rebalance）
+    - S3 本身多副本 → broker 間 zero replication
+    - 100% Kafka API · Producer / Consumer 0 改動
+- 底部 win callout：「最小介面替換 · 最大紅利 — 賭的不是『新 Kafka』，是『store / fetch 該住哪』」
 
-**口吻提示**
-關鍵：100% Kafka API 相容 — 我們的 Prom distributor / Mimir ingester 完全不用改。
+**口吻提示**（這頁是 AutoMQ 段的核心論述）
+- 先點明 AutoMQ 的設計哲學：**不重寫 Kafka，只做 surgical replacement**
+- 傳統 Kafka：PageCache + Local Disk → Consumer（Zero Copy）
+- AutoMQ：Producer → WAL + Message Cache → S3；Consumer 從 S3 / Cache 拉
+- 關鍵訊息：
+  - 風險小（不是賭新 broker 實作）
+  - 零遷移成本（Kafka API 100% 相容，Mimir / Prom 完全不用改）
+  - 紅利大（broker stateless · zero replication · 跨 AZ 歸零）
+- 下一頁深入跨 AZ 那條，因為那是三痛裡最狠的
 
 ---
 
@@ -639,62 +656,113 @@ Apache Kafka over-provision 是因為 broker 搬資料需要小時。AutoMQ part
 **Layout**: section
 **時間**: ~15 sec
 
-「下一站 — 可觀測性 2.0?」+ 副標「PromConf 2026 帶回來的新東西」
+「下一站 — 可觀測性 2.0?」+ 副標「PromConf 2025 帶回來的新東西」
 
 ---
 
-## Slide 35 · 可觀測性 2.0 的訊號
+## Slide 36 · 可觀測性 2.0 的訊號
 
-**Layout**: default（info callout + 2 欄對比）
-**時間**: ~1 min
-
-**畫面構成**
-- 上 info callout：「把 logs / traces / metrics 全部倒進 data warehouse / data lake，用統一查詢引擎交叉分析」
-- 下 2 欄：
-  - 青 **支持者（資料庫廠商）**：ClickHouse 大力鼓吹 · AWS Athena 倒進 Iceberg · 核心論點 **columnar 對高基數友善**
-  - 紅 **為何不溫不火**：PromQL 生態太大太穩 · SQL ↔ PromQL 轉換成本高 · Dashboards / alerts 綁死 Prom
-- 底部：「但 Prometheus 生態**內部**也在吸收 columnar 的好處 → 下一頁」
-
----
-
-## Slide 36 · PromCon 2026 · Parquet Gateway
-
-**Layout**: default（3 講者卡片 + info callout + Mermaid）
+**Layout**: default（核心主張 callout + 2 欄對比 + 橋段）
 **時間**: ~1.5 min
 
 **畫面構成**
-- 上 3 卡片：Grafana Labs **Jesús Vázquez** / AWS **Alan Protasio** / Cloudflare **Michael Hoffmann**
-- 中 info callout：「**三大社群聯合發聲** · Cortex · Thanos · Mimir 核心維護者同台 · 宣告下一代 Prometheus 長期儲存共同方向：**Parquet Gateway**」
-- 下 Mermaid（Cortex 設計圖）：Ingester → TSDB Blocks → Parquet Converter → Parquet Files (S3) · Query Frontend → Parquet Querier → Parquet Files
-- 底部：「Parquet Querier 直讀 S3 · **不再需要 Store Gateway 的 index header**」
+上方 **核心主張 callout**：「單一事實來源 = Wide Events（富語境結構化事件）· metrics / logs / traces 全部從同一份 event 推導」
+- 來源：Charity Majors (Honeycomb CTO) · 原型是 Meta Scuba (VLDB 2013) · 2024 正式命名 *Observability 2.0*
+
+左欄（青・真正在動的勢頭）：
+- **Honeycomb** — wide events 派先驅，商用化 Scuba 理念
+- **ClickHouse / ClickStack** — OTel-native 開源 stack · 2025 上 ClickHouse Cloud
+- **ClickHouse 自家** observability 平台撐到 **100 PB+**，部分場景用 wide events 取代 OTel
+- **GreptimeDB · Pinot · DuckDB · InfluxDB IOx** — OLAP 為底的新玩家
+- **Iceberg / Delta Lake** — open lake format 成匯流點
+
+右欄（紅・為什麼 Prom 生態沒被取代）：
+- PromQL + dashboards + alerts + HPA / KEDA 整個生態**綁得太深**
+- SQL ↔ PromQL 心智模型不同 · 換一次 = **所有 runbook 重寫**
+- OpenTelemetry semantic conventions 仍在 stabilize · wide event schema 還未定型
+- 多數團隊**先解 cost，再談 paradigm**
+- Prom 的 alert / HPA / KEDA 穩定性 SLA 還沒有 OLAP 引擎能完整取代
+
+底部 win callout：「但 Prom 生態**內部**也在吸收 wide-event / columnar 的核心價值 → 下一頁 Parquet Gateway」
 
 **口吻提示**
-- 三家同台本身就是 message — 過去是競爭關係，現在合流
-- Parquet 格式自帶 row-group index → 省掉 Store Gateway 維護 index header 的角色
-- 參考：cortexmetrics.io/docs/proposals/parquet-storage/
+- 這頁要有「我做過功課」的氣場 — 不是憑印象
+- 術語溯源講清楚：Scuba (2013) → Honeycomb → Charity Majors → Observability 2.0 (2024)
+- 勢頭 ≠ 全面取代 · 阻力點要誠實：PromQL 生態的深度不只是 query，是 alerting / scaling / runbook 全綁
+- 結尾收線：Prom 不是被外部吃掉，是**自己吸收** → Parquet Gateway
+- 參考：charity.wtf · honeycomb.io/blog · ClickHouse engineering blog
 
 ---
 
-## Slide 37 · 為什麼 TSDB 不適合 Object Storage?
+## Slide 37 · PromCon 2025 · Parquet Gateway
 
-**Layout**: default（2 欄 first-principles）
-**時間**: ~1.5 min
+**Layout**: default（5 欄 grid：左 2 講者合照 · 右 3 文字；下排 4 Stat）
+**時間**: ~2 min
 
 **畫面構成**
-- 左 **I/O 經濟學根本差異**：SSD random read ~100μs vs S3 random read ~10-50ms → **差異 100–500×**
-- 右 **一個查詢的代價**：紅框 TSDB on S3 = **100+ random GETs** / 綠框 Parquet on S3 = **3–4 sequential reads**
-- 底部 win callout：「**Request 數量才是成本，不是 bytes 數量** · GetRange calls ↓90% · 查詢加速 80-90%」
+- 左側（2/5）：`parquet-gateway-speakers.png` 三位 maintainer 合照（Jesús Vázquez · Michael Hoffmann · Alan Protasio）· caption「Grafana · Cloudflare · AWS 同台」
+- 右側（3/5）：
+  - info callout：三大社群聯合發聲 · Cortex · Thanos · Mimir 核心 maintainer 首次同台
+  - 綠框「共同 Artifact」：`prometheus-community/parquet-common`
+    - Passes **100%** PromQL acceptance tests ✅
+    - Built-in Queryable implementation
+    - TSDB block → Parquet schema converter
+- 下方 4 張 Stat（Parquet Common 實測進展，April → 現今）：
+  - **83.6%** Faster queries
+  - **89.3%** Less bucket GET-range
+  - **72.4%** Less memory
+  - **41.6%** Fewer allocations
 
-**口吻提示**（first-principles）
-- TSDB 為本地 SSD 設計，random read 便宜
-- S3 每個 request 都是 HTTP round-trip
-- 設計哲學要改：「多讀點 bytes 沒關係，但少發幾次 request」 — columnar + sequential 的威力
+**口吻提示**
+- 三家同台的「畫面本身」就是 message — 過去是競爭關係，現在合流
+- 關鍵 artifact = `prometheus-community/parquet-common` 共享 library
+- 100% PromQL acceptance 意思是「既有 PromQL 原汁原味，不是新語法」
+- 4 個百分比是這半年 Parquet Common 的實測進展 · 數字夠具體夠狠
+- 源頭：Shopify Filip Petkovski 的 Thanos Parquet PoC → Cloudflare parquet-tsdb-poc → 匯流到 parquet-common
+- 下一頁接 First-principles：為什麼 TSDB 在 S3 上天生不對
+
+---
+
+## Slide 38 · 為什麼 TSDB 不適合 Object Storage?
+
+**Layout**: default（上排 3 欄 I/O 事實 · 下排 2 欄結構性不對）
+**時間**: ~2 min
+
+**畫面構成**
+上排三張對比卡片：
+- 青 **I/O 經濟學** · SSD random read ~100μs vs S3 random read ~10-50ms · **差異 100-500×**
+- 紅 **TSDB on S3** · **100+ random GETs** · 每個 GET 都是 HTTP round-trip
+- 綠 **Parquet on S3** · **3-4 sequential reads** · Row-group index + columnar skip
+
+下排兩張紅框：
+- 左 **TSDB 的結構性不對**：
+  - S3 本質：高 TTFB + 高 throughput（適合大塊順讀、怕小塊隨讀）
+  - TSDB 強制按 timeseries sequential materialize
+  - 資料有序，但排序方向不利於跳讀
+  - 退化成大量小 random reads
+  - → Store Gateway 被迫 stateful 攤平 lookup
+- 右 **Store Gateway 的連鎖代價**：
+  - 昂貴的本地 disk cost（index header / cache）
+  - Sync 時間長（restart / scale 都要等）
+  - 可用性風險（disk 壞 = 段查詢掛）
+  - 為保險只能過度配置
+  - 三家（Cortex / Thanos / Mimir）都有一樣的痛
+
+底部 win callout：「**Request 數量才是成本，不是 bytes 數量** · Parquet + 無狀態 querier → Store Gateway 的四項代價一次解掉」
+
+**口吻提示**（first-principles + 三家共痛）
+- 先講 I/O 經濟學：S3 TTFB 高（~ms 級）、throughput 高；天生適合順讀大塊、怕小塊隨讀
+- TSDB 為本地 SSD 設計的 random-friendly 資料；搬到 S3 就變每次 HTTP round-trip
+- 100+ GETs vs 3-4 sequential — Parquet 快 80-90% 的根源在這
+- Store Gateway 之所以 stateful 不是因為它想，是因為 TSDB 在 S3 上不得不攤平 lookup
+- 三家（Cortex / Thanos / Mimir）都在吃這個苦，所以才會聯手推 Parquet Gateway
+- Michael Hoffmann 在 PromCon 原話：「gateways have to be stateful to amortize some lookups」— 這不是 bug，是 TSDB 格式搬錯家的結果
 
 ---
 
 # 結語
 
-## Slide 38 · 謝謝聆聽
+## Slide 39 · 謝謝聆聽
 
 **Layout**: end
 **時間**: ~1 min + QA
@@ -725,6 +793,11 @@ Apache Kafka over-provision 是因為 broker 搬資料需要小時。AutoMQ part
 - [Cortex Parquet Storage Proposal](https://cortexmetrics.io/docs/proposals/parquet-storage/)
 - [AutoMQ architecture](https://www.automq.com/)
 - [Thanos Life of a Sample](https://thanos.io/blog/2023-11-20-life-of-a-sample-part-1/)
+- [Observability 2.0 — charity.wtf](https://charity.wtf/tag/observability-2-0/)
+- [Honeycomb — It's Time to Version Observability](https://www.honeycomb.io/blog/time-to-version-observability-signs-point-to-yes)
+- [ClickStack — ClickHouse Observability](https://clickhouse.com/use-cases/observability)
+- [ClickHouse — Scaling Observability beyond 100PB](https://clickhouse.com/blog/scaling-observability-beyond-100pb-wide-events-replacing-otel)
+- [Scuba: Diving into Data at Facebook (VLDB 2013)](https://research.facebook.com/publications/scuba-diving-into-data-at-facebook/)
 
 ## 素材清單（對應 Obsidian 筆記）
 
@@ -741,14 +814,19 @@ Apache Kafka over-provision 是因為 broker 搬資料需要小時。AutoMQ part
 
 | 檔名 | 來源 | 用於 Slide |
 |------|------|----------|
+| mimir3-architecture-official.png | Grafana 官方 | 16 |
 | mimir3-decouple.png | Grafana 官方 | 18 |
 | mimir3-mqe-benchmark.png | Grafana 官方 | 20 |
-| mimir3-cpu-before-after.png | 自家 dashboard | 21 |
-| mimir3-memory-before-after.png | 自家 dashboard | 21 |
-| automq-architecture.png | AutoMQ 官方 | 27 |
+| mimir3-ingester-cpu.png | 自家 dashboard | 21 |
+| mimir3-ingester-memory.png | 自家 dashboard | 21 |
+| mimir3-querier-cpu.png | 自家 dashboard | 21 |
+| mimir3-querier-memory.png | 自家 dashboard | 21 |
+| mimir-kafka-architecture.png | 小紅書 + Apache 郵件 | 26 |
+| kafka-vs-automq.png | AutoMQ 官方 | 27 |
 | kafka-inter-zone.png | AutoMQ 官方 | 28 |
-| automq-zero-zone-router.png | AutoMQ 官方 | 28 |
-| automq-elastic-capacity.png | AutoMQ 官方 | 29 |
+| automq-zero-zone-router.png | AutoMQ 官方 | 29 |
+| automq-elastic-capacity.png | AutoMQ 官方 | 30 |
+| parquet-gateway-speakers.png | PromCon 2025 截圖 | 37 |
 
 ## 時間分配檢查
 
@@ -758,19 +836,19 @@ Apache Kafka over-provision 是因為 broker 搬資料需要小時。AutoMQ part
 | §2 架構介紹 (5-8) | 4 | 7:45 |
 | §3 痛點與選型 (9-13) | 5 | 14:00 |
 | §4 Mimir 3.0 (14-21) | 8 | 22:45 |
-| §5 Kafka / AutoMQ (22-30) | 9 | 33:30 |
-| §6 成本效能 (31-33) | 3 | 36:15 |
-| §7 可觀測性 2.0 (34-37) | 4 | 39:45 |
-| 結語 (38) | 1 | 40:45 |
+| §5 Kafka / AutoMQ (22-31) | 10 | 34:15 |
+| §6 成本效能 (32-34) | 3 | 37:00 |
+| §7 可觀測性 2.0 (35-38) | 4 | 40:30 |
+| 結語 (39) | 1 | 41:30 |
 
-留 1-2 分鐘彈性給 pacing / QA。
+總時長約 40-41 分鐘 · 剛好留 1 分鐘給 pacing / QA。
 
 ## 關鍵節奏檢查
 
 整場三個 **money shot** 必須講慢、讓數字落地：
 1. **Slide 10** · 「512 GiB / Pod」— 第一次讓聽眾感受到結構性問題
-2. **Slide 30** · 「500ms–2s 延遲 · 我們敢接受」— 伏筆回收 · 整場 aha moment
-3. **Slide 33** · 「~49% 更便宜」— 投資報酬結論
+2. **Slide 31** · 「500ms–2s 延遲 · 我們敢接受」— 伏筆回收 · 整場 aha moment
+3. **Slide 34** · 「~49% 更便宜」— 投資報酬結論
 
 ---
 

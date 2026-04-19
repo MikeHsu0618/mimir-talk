@@ -35,7 +35,7 @@ defaults:
 </div>
 
 <div class="mt-10 opacity-70 text-sm tracking-wider">
-  <div class="text-base font-medium text-white/90 mb-2">Mike Hsu · PromConf Taiwan 2026</div>
+  <div class="text-base font-medium text-white/90 mb-2">Mike Hsu · Observability Day 2026</div>
   <div>AI Agents · Mimir 3.0 · AutoMQ · Parquet Gateway</div>
 </div>
 
@@ -961,7 +961,7 @@ layout: default
 
 <div v-click class="mt-3 text-center text-sm">
 <Callout type="win" title="寫（Ingester）+ 讀（Querier）同時兌現 · 同一生產集群 · 升級前後">
-RF=3→2 + Ingest Storage → <strong>Ingester</strong> CPU/Mem 雙降 · MQE → <strong>Querier</strong> CPU/Mem 雙降
+Ingest Storage → <strong>Ingester</strong> CPU/Mem 降低 · MQE → <strong>Querier</strong> CPU/Mem 降低
 </Callout>
 </div>
 
@@ -1069,10 +1069,35 @@ flowchart LR
 -->
 
 ---
+layout: statement
+---
+
+# 但如果只是這樣<br/><span class="text-orange-400">我們不會貿然踏上這條不歸路</span>
+
+<div class="mt-8 text-base opacity-75 max-w-3xl mx-auto leading-relaxed">
+  Kafka 是許多 on-call 工程師的<strong class="text-red-400">噩夢</strong> —<br/>
+  那我們為什麼還是選它？
+</div>
+
+<div v-click class="mt-12">
+  <div class="text-lg opacity-70">因為我們賭的</div>
+  <div class="mt-2 text-3xl font-black">不是「今天的 Kafka」</div>
+  <div class="mt-3 text-5xl font-black text-orange-400">是「明天的 Kafka」</div>
+</div>
+
+<!--
+- 承接上一頁的踩坑 — rebalance / leader 切換 / consumer lag / broker 掛 / PVC 崩
+- 這些我們都真的遇過、都還在踩 — 如果只是要「解耦」，其實沒必要跳進這個坑
+- 我們踩下去的原因：社群的下一個十年，已經悄悄改寫了 Kafka
+- object storage 是 source of truth · broker stateless · PVC 不再是命脈
+- 下一頁帶大家走過這兩年的 diskless 浪潮 — KIP-1150 Diskless Wars
+-->
+
+---
 layout: default
 ---
 
-# Kafka 的下一個十年 · Diskless Wars
+# 下一個十年 · Diskless Kafka
 
 <div class="mt-3 grid grid-cols-5 gap-5">
 
@@ -1146,89 +1171,54 @@ layout: default
 layout: default
 ---
 
-# 傳統 Kafka 的三大痛點
+# AutoMQ · 最小改動的 Diskless Kafka 分支
 
-<div class="mt-8 grid grid-cols-3 gap-5">
-
-<div class="rounded-lg p-5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase tracking-widest mb-2">① 維運</div>
-  <h3 class="!text-base mb-3">Broker 有狀態</h3>
-  <div class="text-sm opacity-80">
-    Partition 綁本地 disk<br/>
-    重啟 / 擴縮 / 修復<br/>
-    <strong>每一次都要搬資料</strong>
-  </div>
+<div class="mt-2 text-sm opacity-80">
+  不重寫 Kafka · 只替換 <strong class="text-white">Storage 介面</strong> — 把本地 disk 換成 object storage · 其餘與上游一致
 </div>
 
-<div class="rounded-lg p-5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase tracking-widest mb-2">② 水平擴展</div>
-  <h3 class="!text-base mb-3">Rebalance Storm</h3>
-  <div class="text-sm opacity-80">
-    加 broker → 觸發大量 partition 遷移<br/>
-    縮 broker → 同樣的故事<br/>
-    <strong>每次擴縮都是風險</strong>
-  </div>
+<div class="mt-4 grid grid-cols-5 gap-4 items-center">
+
+<div class="col-span-3">
+  <img src="/kafka-vs-automq.png" class="rounded-lg shadow-2xl" />
 </div>
 
-<div class="rounded-lg p-5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase tracking-widest mb-2">③ 跨區流量</div>
-  <h3 class="!text-base mb-3">帳單主角</h3>
-  <div class="text-sm opacity-80">
-    Replication + producer + consumer<br/>
-    跨 AZ 流量<br/>
-    <strong>大叢集佔成本 60–70%</strong>
-  </div>
+<div class="col-span-2 space-y-2">
+
+<div class="rounded-lg p-2.5 bg-red-500/8 border border-red-400/30">
+  <div class="text-red-400 text-xs uppercase tracking-widest font-bold mb-0.5">傳統 Kafka 痛點</div>
+  <ul class="text-xs opacity-90 space-y-0.5 pl-4">
+    <li>Broker <strong>有狀態</strong>（綁 local disk · 每次重啟都搬資料）</li>
+    <li><strong>Rebalance storm</strong>（加/縮 broker 觸發 partition 大遷移）</li>
+    <li>跨 AZ 流量<strong>佔大叢集 60-70% 成本</strong></li>
+  </ul>
+</div>
+
+<div class="rounded-lg p-2.5 bg-green-500/8 border border-green-400/30">
+  <div class="text-green-400 text-xs uppercase tracking-widest font-bold mb-0.5">AutoMQ 換介面 → 全解</div>
+  <ul class="text-xs opacity-90 space-y-0.5 pl-4">
+    <li>Broker → <strong>stateless</strong>（spot-friendly · 秒級 rebalance）</li>
+    <li>S3 本身多副本 → <strong>broker 間 zero replication</strong></li>
+    <li><strong>100% Kafka API</strong> · Producer / Consumer 0 改動</li>
+  </ul>
 </div>
 
 </div>
-
-<div v-click class="mt-8 text-center opacity-80">
-  重度用過 Kafka 的人會秒懂 — 這三個是每張 AWS 帳單上的主角
-</div>
-
-<!--
-- 這三個點是 AutoMQ 要解決的東西
-- 第 ③ 跨 AZ 流量通常被低估：producer 寫 broker、broker 間 replication、consumer 拉資料都可能跨 AZ
-- AutoMQ 官方數字：大叢集跨 AZ 可以佔 60-70% 帳單
-- 下一頁看 AutoMQ 怎麼重新想 Kafka 這件事
--->
-
----
-layout: default
----
-
-# AutoMQ · 重新設計的 Kafka
-
-<div class="mt-3 flex justify-center">
-  <img src="/automq-architecture.png" class="rounded-lg shadow-xl max-h-[260px]" />
-</div>
-
-<div class="mt-4 grid grid-cols-3 gap-3 text-sm">
-
-<Callout type="win" title="Storage / Compute 分離">
-Broker 本地不存 partition data<br/>
-全部寫 S3 · <strong>broker stateless</strong>
-</Callout>
-
-<Callout type="win" title="Zero Partition Replication">
-S3 本身多副本<br/>
-不用 broker 之間互相 copy<br/>
-<strong>replication 流量歸零</strong>
-</Callout>
-
-<Callout type="win" title="100% Kafka API">
-Protocol 原生支援<br/>
-現有 Producer / Consumer 不用改<br/>
-<strong>切換零遷移成本</strong>
-</Callout>
 
 </div>
 
 <!--
-- AutoMQ 的基本構想：把 Kafka 的 local disk 換成 S3 + 小 WAL
-- 傳統 Kafka：PageCache + Local Disk → Consumer（Zero Copy）
-- AutoMQ：Producer → WAL + Message Cache → S3；Consumer 從 S3/Cache 拉（沒有 Zero Copy 但也夠快）
-- 關鍵：100% Kafka API 相容 — 我們的 Prometheus distributor / Mimir ingester 完全不用改
+- 這頁把「Kafka 三痛 + AutoMQ 解法」合併，核心訊息是**「最小介面替換」**
+- 傳統 Kafka 的三個結構性問題：有狀態 broker / rebalance storm / 跨 AZ 流量佔 60-70%
+- AutoMQ 的關鍵選擇：不重寫 Kafka，只換 Storage 介面
+  - 傳統 Kafka：PageCache + Local Disk → Consumer (Zero Copy)
+  - AutoMQ：Producer → WAL + Message Cache → S3；Consumer 從 S3 / Cache 拉
+  - API / Protocol / Client 完全不動
+- 這個「surgical replacement」框架很重要：
+  - 我們的風險小（不是賭一個新 broker 實作）
+  - Mimir / Prom 零遷移成本（Kafka API 相容）
+  - 紅利非常大（broker stateless · zero replication · 跨 AZ 流量歸零）
+- 下一頁深入跨 AZ 那條，因為那是三痛裡最狠的
 -->
 
 ---
@@ -1517,7 +1507,7 @@ layout: fact
 
 <div class="mt-10 text-xl opacity-75 font-normal">
   <span class="text-orange-400 font-bold">3.4× 更快</span> · 
-  <span class="text-orange-400 font-bold">~49% 更便宜</span> · 
+  <span class="text-orange-400 font-bold">45 / 48 測試勝出</span> · 
   <span class="text-orange-400 font-bold">~6× 性價比</span>
 </div>
 
@@ -1542,7 +1532,7 @@ layout: section
 
 # 下一站<br/>可觀測性 2.0?
 
-<div class="mt-6 opacity-60">PromCon 2026 帶回來的新東西</div>
+<div class="mt-6 opacity-60">PromCon 2025 帶回來的新東西</div>
 
 <!--
 最後一段 — 帶禮物回家
@@ -1555,115 +1545,126 @@ layout: default
 
 # 可觀測性 2.0 的訊號
 
-<div class="mt-4">
+<div class="mt-2 text-base opacity-80">
+  把 <strong class="text-white">logs / traces / metrics</strong> 全部倒進 <strong class="text-white">DataWarehouse / DataLake</strong>，用統一查詢引擎交叉分析
+</div>
 
-<Callout type="info" title="口號">
-把 <strong>logs / traces / metrics</strong> 全部倒進 <strong>data warehouse / data lake</strong>，用統一查詢引擎交叉分析
+<div class="mt-3">
+
+<Callout type="info" title="技術主張 · Charity Majors (Honeycomb CTO)">
+<strong>單一事實來源 = Wide Events</strong>（富語境的結構化事件） · metrics / logs / traces 全部從同一份 event 推導出來
 </Callout>
 
 </div>
 
-<div class="mt-6 grid grid-cols-2 gap-6">
+<div class="mt-4 grid grid-cols-2 gap-5">
 
-<div>
+<div class="rounded-lg p-3 bg-cyan-500/5 border border-cyan-400/25">
 
-<h3 class="!text-base !text-cyan-400 mb-2">支持者（資料庫廠商）</h3>
+<div class="text-cyan-400 text-xs uppercase tracking-widest font-bold mb-2">✨ 真正在動的勢頭</div>
 
-<v-clicks>
-
-- ClickHouse — 大力鼓吹
-- AWS Athena — 把 metrics 倒進 Iceberg 吧
-- 核心論點：**columnar 格式**對高基數資料超友善
-
-</v-clicks>
-
-</div>
-
-<div>
-
-<h3 class="!text-base !text-red-400 mb-2">為何不溫不火</h3>
-
-<v-clicks>
-
-- PromQL 生態太大太穩
-- SQL ↔ PromQL 轉換成本高
-- Dashboards / alerts 生態綁死 Prom
-
-</v-clicks>
+<ul class="text-xs opacity-90 space-y-1.5 pl-4">
+  <li><strong>Honeycomb</strong> — wide events 派先驅，商用化 Scuba 的理念</li>
+  <li><strong>ClickHouse / ClickStack</strong> — OTel-native 開源 stack，2025 正式上 ClickHouse Cloud</li>
+  <li><strong>ClickHouse 自家</strong>：observability 平台撐到 <strong>100 PB+</strong>，部分場景已用 wide events 取代 OTel</li>
+  <li><strong>GreptimeDB · Pinot · DuckDB · InfluxDB IOx</strong> — 一整批 OLAP 為底的新玩家</li>
+  <li><strong>Iceberg / Delta Lake</strong> — open lake format 成為匯流點，多引擎同倉分析</li>
+</ul>
 
 </div>
 
+<div class="rounded-lg p-3 bg-red-500/5 border border-red-400/25">
+
+<div class="text-red-400 text-xs uppercase tracking-widest font-bold mb-2">🧱 為什麼 Prom 生態沒被取代</div>
+
+<ul class="text-xs opacity-90 space-y-1.5 pl-4">
+  <li>PromQL + dashboards + alerts + HPA / KEDA <strong>整個生態綁得太深</strong></li>
+  <li>SQL ↔ PromQL 心智模型差異 · 換一次 = <strong>所有 runbook 重寫</strong></li>
+  <li>OpenTelemetry semantic conventions 仍在 stabilize · wide event schema 還未定型</li>
+  <li>大部分團隊<strong>先解 cost，再談 paradigm</strong> · 換 observability vendor 成本驚人</li>
+  <li>Prom 的 alert / HPA / KEDA 穩定性 SLA 還沒有 OLAP 引擎能完整取代</li>
+</ul>
+
 </div>
 
-<div v-click class="mt-6 text-center opacity-90">
-  但 Prometheus 生態 <span class="text-orange-400 font-bold">內部</span> 也在吸收 columnar 的好處 → 下一頁
+</div>
+
+<div v-click class="mt-3 text-center">
+<Callout type="win">
+但 Prometheus 生態 <strong class="text-orange-400">內部</strong> 也在吸收 wide-event / columnar 的核心價值 → 下一頁：<strong>Parquet Gateway</strong>
+</Callout>
 </div>
 
 <!--
-- 可觀測性 2.0 是 buzzword，但背後有真實技術洞察：columnar 確實對高基數友善
-- 問題是轉換成本太高，PromQL 生態太大
-- 重點：Prom 生態內部也在吸收這些好處 — 就是 Parquet Gateway
+- 可觀測性 2.0 不是我憑印象寫的，是個有明確主張、有來源、有社群動能的技術路線
+- 術語來自 Charity Majors（Honeycomb CTO）· 原型是 Meta Scuba（VLDB 2013）
+- 核心主張：wide events 是唯一事實來源，metrics / logs / traces 都從它派生
+- 勢頭側：
+  - Honeycomb 是先驅
+  - ClickHouse 是商用化主力（ClickStack 2025、自家跑到 100PB 級）
+  - GreptimeDB / Pinot / DuckDB / InfluxDB IOx 一整批 OLAP 底座新玩家
+  - Iceberg / Delta Lake 讓 wide events 可以和資料湖匯流
+- 阻力側：
+  - Prom 生態不只是 query — 是 dashboards / alerts / HPA / KEDA 整套
+  - 換成本太高，大部分團隊先解成本問題
+  - OTel 語意還沒穩
+- 結論：Prom 生態不是被外部吃掉，是**自己吸收** columnar / wide event 的好處 → Parquet Gateway
+- 參考：charity.wtf · honeycomb.io/blog · ClickHouse engineering blog
 -->
 
 ---
 layout: default
 ---
 
-# PromCon 2026 · Parquet Gateway
+# PromCon 2025 · Parquet Gateway
 
-<div class="mt-4 grid grid-cols-3 gap-3">
+<div class="mt-3 grid grid-cols-5 gap-5 items-center">
 
-<div class="rounded-lg p-3 bg-white/5 border border-white/10 text-center">
-  <div class="text-xs uppercase opacity-60 mb-1">Grafana Labs</div>
-  <div class="font-bold text-orange-400">Jesús Vázquez</div>
-  <div class="text-xs opacity-70 mt-1">Mimir 核心</div>
+<div class="col-span-2">
+  <div class="rounded-lg bg-white/95 p-2 shadow-2xl">
+    <img src="/parquet-gateway-speakers.png" class="rounded w-full" />
+  </div>
+  <div class="text-xs text-center opacity-55 mt-1.5">Grafana · Cloudflare · AWS 同台</div>
 </div>
 
-<div class="rounded-lg p-3 bg-white/5 border border-white/10 text-center">
-  <div class="text-xs uppercase opacity-60 mb-1">AWS</div>
-  <div class="font-bold text-cyan-400">Alan Protasio</div>
-  <div class="text-xs opacity-70 mt-1">Cortex / Amazon Managed Prometheus</div>
+<div class="col-span-3 space-y-3">
+
+<Callout type="info" title="三大社群聯合發聲">
+<strong>Cortex · Thanos · Mimir</strong> 核心 maintainer 首次同台 — 宣告下一代 Prometheus 長期儲存共同方向
+</Callout>
+
+<div class="rounded-lg p-3 bg-green-500/10 border border-green-400/30">
+  <div class="text-xs uppercase tracking-widest text-green-400 font-bold mb-1">共同 Artifact</div>
+  <div class="font-mono text-sm"><strong>prometheus-community / parquet-common</strong></div>
+  <ul class="mt-2 text-xs opacity-85 space-y-0.5 pl-4">
+    <li>Passes <strong>100%</strong> PromQL acceptance tests ✅</li>
+    <li>Built-in Queryable implementation</li>
+    <li>TSDB block → Parquet schema converter</li>
+  </ul>
 </div>
 
-<div class="rounded-lg p-3 bg-white/5 border border-white/10 text-center">
-  <div class="text-xs uppercase opacity-60 mb-1">Cloudflare</div>
-  <div class="font-bold text-purple-400">Michael Hoffmann</div>
-  <div class="text-xs opacity-70 mt-1">Thanos maintainer</div>
 </div>
 
 </div>
 
 <div v-click class="mt-4">
-<Callout type="info" title="三大社群聯合發聲">
-<strong>Cortex · Thanos · Mimir</strong> 核心維護者同台 — 宣告下一代 Prometheus 長期儲存共同方向：<strong class="text-orange-400">Parquet Gateway</strong>
-</Callout>
+<div class="text-xs uppercase tracking-widest opacity-60 text-center mb-2">Parquet Common 實測</div>
+<div class="grid grid-cols-4 gap-3">
+
+<Stat value="83.6%" label="Faster queries" accent="green" />
+<Stat value="89.3%" label="Less bucket GET-range" accent="cyan" />
+<Stat value="72.4%" label="Less memory" accent="purple" />
+<Stat value="41.6%" label="Fewer allocations" accent="orange" />
+
 </div>
-
-<div v-click class="mt-3">
-
-```mermaid {theme: 'dark', scale: 0.72}
-flowchart LR
-    I[Ingester] --> TSDB[TSDB<br/>Blocks]
-    TSDB --> PC[Parquet<br/>Converter]
-    PC --> PF[(Parquet<br/>Files on S3)]
-    QF[Query<br/>Frontend] --> PQ[Parquet<br/>Querier]
-    PQ --> PF
-    style PF fill:#52c41a22,stroke:#52c41a
-    style PC fill:#f4680033,stroke:#f46800
-```
-
-<div class="text-xs text-center opacity-70 mt-1">
-  Parquet Querier 直讀 S3 · <strong>不再需要 Store Gateway 的 index header</strong>
-</div>
-
 </div>
 
 <!--
-- 三家同台本身就是 message：過去他們是競爭關係，現在合流
-- 源頭：Shopify Filip Petkovski 的 Thanos Parquet PoC → Cloudflare parquet-tsdb-poc → 最終匯流到 prometheus-community/parquet-common
-- Cortex 的 proposal（cortexmetrics.io/docs/proposals/parquet-storage/）更直接：Parquet Querier 直接吃 S3 上的 Parquet 檔
-- 這樣就**省掉了 Store Gateway 維護 index header 的角色** — 因為 Parquet 格式自帶 row-group index
-- 整條查詢鏈路瘦身
+- 三家同台本身就是 message：Cortex / Thanos / Mimir 過去是競爭關係，現在合流推 Parquet Gateway
+- 源頭：Shopify Filip Petkovski 的 Thanos Parquet PoC → Cloudflare parquet-tsdb-poc → 匯流到 prometheus-community/parquet-common 共享 library
+- 100% PromQL acceptance tests — 不是新語法，是既有 PromQL 原汁原味
+- 四個數字（83.6% faster、89.3% less GET-range、72.4% less memory、41.6% fewer allocations）是 Parquet Common 這半年的實測進展
+- 下一頁接 First-principles：為什麼 TSDB 在 S3 上天生不對
 -->
 
 ---
@@ -1672,61 +1673,71 @@ layout: default
 
 # 為什麼 TSDB 不適合 Object Storage?
 
-<div class="mt-6 grid grid-cols-2 gap-6 items-center">
+<div class="mt-3 grid grid-cols-3 gap-3 text-xs">
 
-<div>
-
-<h3 class="!text-base !text-cyan-400 mb-3">I/O 經濟學的根本差異</h3>
-
-<v-clicks>
-
-<div class="text-sm space-y-2">
-<div>SSD random read · 固定成本 <code class="text-cyan-400">~100μs</code></div>
-<div>S3 random read · 固定成本 <code class="text-red-400">~10–50ms</code></div>
-<div class="pt-2 text-base"><strong class="text-orange-400">差異：100–500×</strong></div>
+<div class="rounded-lg p-2.5 bg-cyan-500/8 border border-cyan-400/25">
+  <div class="text-cyan-400 uppercase tracking-widest font-bold mb-1">I/O 經濟學</div>
+  SSD random read <code>~100μs</code><br/>
+  S3 random read <code class="text-red-400">~10–50ms</code><br/>
+  <strong class="text-orange-400">差異 100–500×</strong>
 </div>
 
-</v-clicks>
-
+<div class="rounded-lg p-2.5 bg-red-500/8 border border-red-400/25">
+  <div class="text-red-400 uppercase tracking-widest font-bold mb-1">TSDB on S3</div>
+  <div class="text-lg font-bold text-red-400">100+ random GETs</div>
+  <div class="opacity-80 mt-0.5">每個 GET 都是 HTTP round-trip</div>
 </div>
 
-<div>
-
-<h3 class="!text-base !text-orange-400 mb-3">一個查詢的代價</h3>
-
-<v-clicks>
-
-<div class="rounded p-3 bg-red-500/10 border border-red-400/30 mb-2">
-  <div class="text-xs uppercase opacity-60">TSDB on S3</div>
-  <div class="text-xl font-bold text-red-400">100+ random GETs</div>
-</div>
-
-<div class="rounded p-3 bg-green-500/10 border border-green-400/30">
-  <div class="text-xs uppercase opacity-60">Parquet on S3</div>
-  <div class="text-xl font-bold text-green-400">3–4 sequential reads</div>
-</div>
-
-</v-clicks>
-
+<div class="rounded-lg p-2.5 bg-green-500/8 border border-green-400/25">
+  <div class="text-green-400 uppercase tracking-widest font-bold mb-1">Parquet on S3</div>
+  <div class="text-lg font-bold text-green-400">3–4 sequential reads</div>
+  <div class="opacity-80 mt-0.5">Row-group index + columnar skip</div>
 </div>
 
 </div>
 
-<div v-click class="mt-6 text-center">
+<div class="mt-4 grid grid-cols-2 gap-4">
+
+<div class="rounded-lg p-3 bg-red-500/5 border border-red-400/20">
+  <div class="text-red-400 text-xs uppercase tracking-widest font-bold mb-2">TSDB 的結構性不對</div>
+  <ul class="text-xs opacity-90 space-y-1 pl-4">
+    <li>S3 本質：<strong>高 TTFB + 高 throughput</strong>（適合大塊順讀、怕小塊隨讀）</li>
+    <li>TSDB 強制<strong>按 timeseries sequential materialize</strong></li>
+    <li>資料有序，但排序方向不利於跳讀</li>
+    <li>退化成<strong>大量小 random reads</strong></li>
+    <li>→ Store Gateway 被迫 stateful 攤平 lookup</li>
+  </ul>
+</div>
+
+<div class="rounded-lg p-3 bg-red-500/5 border border-red-400/20">
+  <div class="text-red-400 text-xs uppercase tracking-widest font-bold mb-2">Store Gateway 的連鎖代價</div>
+  <ul class="text-xs opacity-90 space-y-1 pl-4">
+    <li>昂貴的本地 disk cost（index header / cache）</li>
+    <li>Sync 時間長（restart / scale 都要等）</li>
+    <li>可用性風險（disk 壞 = 段查詢掛）</li>
+    <li>為保險只能<strong>過度配置</strong></li>
+    <li>三家（Cortex / Thanos / Mimir）都有一樣的痛</li>
+  </ul>
+</div>
+
+</div>
+
+<div v-click class="mt-3 text-center">
 <Callout type="win">
-<strong class="text-orange-400">Request 數量才是成本 · 不是 bytes 數量</strong> · GetRange calls ↓90% · 查詢加速 80–90%
+<strong class="text-orange-400">Request 數量才是成本，不是 bytes 數量</strong> · Parquet + 無狀態 querier → Store Gateway 的四項代價一次解掉
 </Callout>
 </div>
 
 <!--
-First-principles 論證：
-- TSDB 為本地 SSD 設計，random read 便宜（~100μs）
-- S3 上每個 request 都是 HTTP round-trip（~10-50ms）
-- 一個典型 PromQL 查詢在 TSDB 可能要 100+ random GETs
-- 同樣查詢在 Parquet 只要 3-4 次 sequential reads（因為 columnar + row group index）
-- 設計哲學要改：「多讀點 bytes 沒關係，但少發幾次 request」
-- 這正是 Parquet 設計的核心：for analytical workload
-- 實測：GetRange calls ↓ 90%、查詢加速 80-90%
+First-principles + 三家共痛：
+- S3 的 I/O 經濟學：TTFB 高（~ms 級）、throughput 高；天生適合順讀大塊、怕小塊隨讀
+- TSDB 為本地 SSD 設計，random read 便宜；搬到 S3 就變每次 HTTP round-trip
+- 一個典型 PromQL 查詢在 TSDB 可能要 100+ random GETs；同樣查詢在 Parquet 只要 3-4 次 sequential
+- TSDB 資料雖然「有序」，但序是對 SSD random 友善，不是對 S3 sequential 友善
+- 結果：Store Gateway 被迫扛一堆 state（disk cache / index header）來攤平 lookup → 昂貴 · 慢 · 脆弱 · 過度配置
+- 這三個問題在 Cortex / Thanos / Mimir 身上**一模一樣**，所以三家才會坐下來聯合推 Parquet Gateway
+- Parquet 格式自帶 row-group index + columnar skip → querier 可以 stateless 直讀 S3
+- Michael Hoffmann 在 PromCon 把這段講得很清楚：「gateways have to be stateful to amortize some lookups」— 這不是 bug，是 TSDB 格式搬錯家的結果
 -->
 
 ---
@@ -1738,7 +1749,7 @@ layout: end
 <h1 class="!text-6xl !font-black">謝謝聆聽</h1>
 
 <div class="mt-4 text-lg opacity-85">
-  Thanos → Mimir 3.0 → AutoMQ → Parquet?
+  Thanos → Mimir 3.0 → AutoMQ → Parquet Gateway
 </div>
 
 <div class="mt-10 grid grid-cols-3 gap-5 text-sm max-w-3xl mx-auto">
