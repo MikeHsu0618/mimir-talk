@@ -26,7 +26,7 @@ defineProps<{
 
 .callout-title {
   font-weight: 900;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   line-height: 1.25;
   letter-spacing: -0.01em;
   display: flex;
@@ -47,7 +47,7 @@ defineProps<{
 }
 
 .callout-body {
-  font-size: 0.88rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1.65;
   color: rgba(14, 63, 78, 0.62);

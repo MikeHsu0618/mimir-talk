@@ -606,7 +606,6 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.2em;
-  text-transform: uppercase;
   opacity: 0.55;
 }
 .why-card__title {
@@ -1018,7 +1017,6 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: #35738E;
   margin-top: -0.2rem;
 }
