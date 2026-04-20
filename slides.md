@@ -85,7 +85,7 @@ title: 這不是想像 — 我們公司的 SRE Agent
 <div class="grid grid-cols-3 gap-4">
 <Callout type="info" title="現在">數個 agent 正在跑<br/>使用人數尚未飽和</Callout>
 <Callout type="info" title="即將到來">DB agent · Service agent<br/>Cost agent · Security agent</Callout>
-<Callout type="win" title="這只是開始">提前預知趨勢<br/>才有時間把地基打好</Callout>
+<Callout type="win" title="這只是開始">提前預知趨勢，才有時間把地基打好</Callout>
 </div>
 </div>
 
@@ -101,7 +101,6 @@ title: 這不是想像 — 我們公司的 SRE Agent
 ---
 layout: inner
 title: 我們面對的量級
-footnote: 服役 3 年，踩遍所有 Thanos 會踩的坑
 ---
 
 <div class="grid grid-cols-4 gap-5 w-full">

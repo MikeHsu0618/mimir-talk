@@ -14,43 +14,67 @@ defineProps<{
 
 <style scoped>
 .callout {
-  border-radius: 10px;
-  padding: 1rem 1.25rem;
-  font-size: 1.02rem;
-  line-height: 1.6;
-  border: 1px solid transparent;
+  border-radius: 14px;
+  padding: 1rem 1.25rem 1.1rem;
+  border: 1.5px solid transparent;
+  box-shadow: 0 3px 14px rgba(14, 63, 78, 0.05);
   color: #0E3F4E;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
 .callout-title {
-  font-weight: 700;
-  font-size: 0.82rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.5rem;
+  font-weight: 900;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 幾何裝飾：小圓角方塊 */
+.callout-title::before {
+  content: '';
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.7;
+  transform: rotate(12deg);
+}
+
+.callout-body {
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(14, 63, 78, 0.62);
+  padding-left: 1rem; /* 與 title 文字對齊 */
 }
 
 .callout-info {
-  background: #ECF5FA;
-  border-color: #ADD3D8;
+  background: rgba(82, 150, 184, 0.07);
+  border-color: rgba(82, 150, 184, 0.28);
 }
-.callout-info .callout-title { color: #5296B8; }
+.callout-info .callout-title { color: #2E6A87; }
 
 .callout-win {
-  background: rgba(173, 211, 216, 0.18);
-  border-color: #ADD3D8;
+  background: rgba(247, 168, 107, 0.09);
+  border-color: rgba(247, 168, 107, 0.38);
 }
-.callout-win .callout-title { color: #35738E; }
+.callout-win .callout-title { color: #C97C3A; }
 
 .callout-warn {
-  background: rgba(247, 168, 107, 0.12);
-  border-color: rgba(247, 168, 107, 0.45);
+  background: rgba(242, 109, 79, 0.07);
+  border-color: rgba(242, 109, 79, 0.30);
 }
-.callout-warn .callout-title { color: #C97C3A; }
+.callout-warn .callout-title { color: #C0502E; }
 
 .callout-error {
-  background: rgba(242, 109, 79, 0.08);
-  border-color: rgba(242, 109, 79, 0.35);
+  background: rgba(242, 109, 79, 0.07);
+  border-color: rgba(242, 109, 79, 0.28);
 }
 .callout-error .callout-title { color: #C0502E; }
 </style>
