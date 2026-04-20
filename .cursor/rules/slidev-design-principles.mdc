@@ -169,7 +169,7 @@ transition: slide-left
 defaults:
   transition: fade              # inner pages use soft fade
 fonts:
-  sans: 'Inter'
+  sans: 'Ubuntu'
   mono: 'JetBrains Mono'
   provider: google
 ```
@@ -342,6 +342,82 @@ When a slide fills the viewport (e.g. a 2×2 image grid) and a `<Callout>` appea
     <Callout type="win" title="...">...</Callout>
   </div>
 </div>
+```
+
+## Block & component reference — quick lookup
+
+Use this table when choosing how to present content. All classes live in `style.css` unless noted.
+
+### Card blocks
+
+| Class | Variants | Structure (inner elements) | When to use |
+|-------|----------|---------------------------|-------------|
+| `.hl-card` in `.hl-grid` | `--pos` (amber) · `--neg` (coral) · default (blue) | `__num` → `__kicker` → `__title` → `__sub` | 3 parallel takeaways, closing slide, comparison grid |
+| `.pain-card` in `.pain-grid` | default blue only | `__num` → `__kicker` (主) → `__title` (注釋) → `__body` | 痛點 / 限制列舉，3張一排；⚠️ kicker 是主要文字，title 是小注釋 |
+| `.path-card` in `.path-grid` | `is-chosen` · `is-rejected` · `is-danger` | `__num` → `__title` → `__desc` → `__foot` | A/B/C 選型，click 後動畫 highlight |
+| `.pillar-card` | `--blue` · `--orange` · `--red` | `__title`（icon + 文字）→ `__note`（斜體）→ `__body` | 功能支柱、方案對比（2 張） |
+| `.why-card` | `--red` · `--blue` · `--orange` · `--ink` | `__title`（icon + 文字）→ `.why-list`（icon bullet list） | 有標題 + icon list 的說明區塊 |
+| `.combo-row` in `.combo-list` | `is-chosen` | `__num` → `__body`（`__title` + `__desc`） | 排列組合清單，橫向選項列 |
+
+### Banner / 結論區塊
+
+| Class | When to use | Color |
+|-------|-------------|-------|
+| `.hl-banner` | 一頁最底部的總結句，搭配 `hl-banner__icon` | 藍（預設） |
+| `.quote-bar` | split / image-side 右欄底部短結論，比 hl-banner 輕 | `--warn` 琥珀 · `--error` 珊瑚 · 預設藍 |
+| `.why-conclusion` | 一行結論 + 旁邊 pill 標籤（`.why-conclusion__pills span`） | 無背景，pills 帶琥珀邊框 |
+| `.path-conclusion` | path-card 下方虛線框總結一行 | 藍虛線 |
+
+### 列表
+
+| Class | 用法 | 特性 |
+|-------|------|------|
+| `ul.icon-list` | `<mdi-xxx />` 開頭每個 `<li>`，flex 對齊 | icon 與文字水平對齊，自動隱藏三角 bullet |
+| `ul.why-list` | 用在 `.why-card` 內，`<mdi-xxx class="why-list__icon" /><span>…</span>` | grid 對齊，必須用 `<span>` 包非 icon 內容 |
+| `ul.li-lg` | 一般 ul，字 1.2rem | split 右欄常用 |
+| `ul.li-xl` | 一般 ul，字 1.35rem | 短列表、需要存在感 |
+| `ul.li-2xl` | 一般 ul，字 2rem | 單行 hero 列表 |
+
+### 標籤 / 角標
+
+| Class | 位置 | 用途 |
+|-------|------|------|
+| `.section-badge` (`--red`) | 右欄頂部 | 標出區塊主題，搭配 icon-list |
+| `.tag` (`.new` / `.good` / `.warn`) | 封面 `abs-br` | 時長、技術版本標籤 |
+
+### 圖表輔助
+
+| Class | 用途 |
+|-------|------|
+| `.mermaid-eq` | 固定高 220px，兩張 mermaid 並排等高 |
+| `.mermaid-full` | mermaid 撐滿寬度 |
+| `.diagram-caption` | 圖下居中 caption，兩側裝飾短橫線 |
+
+### Vue 元件
+
+| 元件 | Props | 用途 |
+|------|-------|------|
+| `<Stat>` | `value` `label` `accent`（blue/sky/ink/orange/red） | 大數字 hero stat，2–4 個橫排 |
+| `<Callout>` | `type`（info/win/warn/error）`title` | image-side 右欄 3 條旁注，或單獨補充框 |
+
+### 特殊整頁
+
+| 模式 | Frontmatter | 用途 |
+|------|-------------|------|
+| 深色結尾頁 | `class: end-dark` | 謝謝聆聽頁深色背景版，搭配 `end-page` wrapper + `hl-grid--3` + `hl-banner` + `end-page__contact` |
+| `pg-artifact` | — | Parquet 協作產物展示（repo path + title badge + icon-list） |
+
+### 快速選型口訣
+
+```
+3 項並列重點    →  hl-card × 3（hl-grid--3）
+3 個痛點/限制   →  pain-card × 3（pain-grid）
+A/B/C 三選一   →  path-card（有動畫）
+左圖右說明      →  split + section-badge + icon-list + quote-bar
+大圖 + 旁注    →  image-side + 3 × Callout
+大圖 + 單一結論 →  image-side + insight block
+單張大數字      →  Stat 元件
+頁面結論句      →  hl-banner（獨立一行）或 quote-bar（欄位底部）
 ```
 
 ## Common pitfalls to avoid
