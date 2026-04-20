@@ -23,7 +23,7 @@
     </marker>
     <style>
       text {
-        font-family: Inter, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        font-family: Ubuntu, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
         fill: #0E3F4E;
       }
       .node-title {

@@ -16,7 +16,7 @@ aspectRatio: 16/9
 canvasWidth: 1280
 colorSchema: light
 fonts:
-  sans: 'Inter'
+  sans: 'Ubuntu'
   mono: 'JetBrains Mono'
   provider: google
 download: false
@@ -272,32 +272,29 @@ layout: inner
 title: Sidecar Mode 的巧妙之處
 ---
 
-<div class="mermaid-full">
-
-```mermaid {theme: 'dark', scale: 0.75}
-flowchart LR
-    subgraph Prom["Prometheus 記憶體"]
-      direction TB
-      TSDB[[in-memory TSDB]]
-    end
-    TSDB ==>|每 2h 壓縮| B[TSDB Block]
-    B --> LD[(Local Disk)]
-    B -.->|Sidecar<br/>原封不動 upload| S3[(S3)]
-    style B fill:#f4680033,stroke:#f46800,stroke-width:2px
-```
-
+<div class="flex flex-col gap-3 w-full h-full min-h-0 -mt-12">
+<div class="flex-1 min-h-0 flex items-center justify-center">
+  <div class="w-full max-w-6xl mx-auto">
+    <img
+      src="/sidecar-mode.png"
+      alt="Sidecar mode flow"
+      class="block w-full h-full object-contain"
+      style="max-height: 52vh;"
+    />
+  </div>
 </div>
 
-<div class="grid grid-cols-2 gap-4 mt-2">
+<div v-click class="grid grid-cols-2 gap-4 flex-shrink-0 max-w-5xl mx-auto w-full">
 <Callout type="win" title="關鍵洞察">
 <strong>S3 上的 block 和本地 disk 完全一樣</strong><br/>
 Sidecar 不做任何運算
 </Callout>
 
-<Callout v-click type="info" title="對比 Remote-write">
+<Callout type="info" title="對比 Remote-write">
 Backend 要解 protobuf → 重新壓縮 → 建 index<br/>
 相當於把運算做了兩次
 </Callout>
+</div>
 </div>
 
 <!--
@@ -1184,35 +1181,30 @@ footnote: "AutoMQ 官方數據：大叢集裡 <strong style='color:#F26D4F'>跨 
 -->
 
 ---
-layout: inner
+layout: split
 title: AutoMQ 的解法 · Zero-Zone Router
-align: start
+ratio: "3:2"
 ---
 
-<div class="flex flex-col gap-2 w-full h-full min-h-0">
+::left::
 
-<div class="flex gap-4 w-full flex-1 min-h-0 items-center">
-  <div class="flex-1 min-w-0 rounded-lg overflow-hidden" style="box-shadow:0 4px 20px rgba(14,63,78,0.10);">
-    <img src="/automq-zero-zone-router.png" class="w-full" style="display:block;" />
-  </div>
-  <ul class="why-list li-lg flex-shrink-0" style="width:40%;">
-    <li><mdi-tune class="why-list__icon" /><span>Producer 寫入<strong>本地 AZ</strong> 的 broker</span></li>
-    <li><mdi-swap-horizontal class="why-list__icon" /><span>Rack-aware Router 透過 <strong>S3</strong> 路由給 leader partition</span></li>
-    <li><mdi-database-sync class="why-list__icon" /><span>其他 AZ 從 S3 同步拿 <strong>readonly 副本</strong></span></li>
-    <li><mdi-download class="why-list__icon" /><span>Consumer 從<strong>本地 AZ</strong> 的 readonly replica 讀取</span></li>
-  </ul>
+<div class="rounded-xl overflow-hidden" style="box-shadow:0 4px 20px rgba(14,63,78,0.10);">
+  <img src="/automq-zero-zone-router.png" class="w-full" style="display:block;" />
 </div>
 
-<div class="flex justify-center flex-shrink-0">
-  <div class="flex flex-col items-center gap-1.5 rounded-2xl px-6 py-3" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);">
-    <div class="flex items-center gap-2">
-      <mdi-check-circle style="font-size:1.3rem;color:#C97C3A;flex-shrink:0;" />
-      <div style="font-size:1rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;">唯一跨 AZ 流量</div>
-    </div>
-    <div style="font-size:1rem;font-weight:600;color:#0E3F4E;">只有 <strong>broker ↔ S3</strong> · AWS 同 region S3 免費</div>
-  </div>
-</div>
+::right::
 
+<div class="section-badge">流量路由設計</div>
+
+<ul class="icon-list">
+  <li><mdi-tune /><span>Producer 寫入<strong>本地 AZ</strong> 的 broker</span></li>
+  <li><mdi-swap-horizontal /><span>Rack-aware Router 透過 <strong>S3</strong> 路由給 leader partition</span></li>
+  <li><mdi-database-sync /><span>其他 AZ 從 S3 同步拿 <strong>readonly 副本</strong></span></li>
+  <li><mdi-download /><span>Consumer 從<strong>本地 AZ</strong> 的 readonly replica 讀取</span></li>
+</ul>
+
+<div v-click class="quote-bar quote-bar--warn">
+唯一跨 AZ 流量：<strong>broker ↔ S3</strong> · AWS 同 region S3 免費
 </div>
 
 <!--
@@ -1650,14 +1642,15 @@ First-principles + 三家共痛：
 ---
 layout: inner
 align: center
+class: end-dark
 ---
 
 <div class="end-page w-full flex flex-col items-center gap-8">
 
 <div class="text-center">
-  <h1 class="!text-7xl !font-black !mb-3" style="letter-spacing:-0.04em;">謝謝聆聽</h1>
-  <div class="text-lg font-mono tracking-wide">
-    Thanos → Mimir 3.0 → AutoMQ → <span class="font-bold text-rose-400">Parquet Gateway</span>
+  <h1 class="!text-7xl !font-black !mb-3" style="letter-spacing:-0.04em;color:#F5F0EB;">Thank you</h1>
+  <div class="text-lg font-mono tracking-wide" style="color:rgba(245,240,235,0.72);">
+    Thanos → Mimir 3.0 → AutoMQ → <span class="font-bold" style="color:#F7A86B;">Parquet Gateway</span>
   </div>
 </div>
 

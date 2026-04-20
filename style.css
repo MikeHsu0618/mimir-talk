@@ -5,7 +5,7 @@
 /* ── Design System ── */
 
 .slidev-layout {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   font-size: 1.15rem;
 }
 
@@ -655,10 +655,6 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   justify-content: center;
   gap: 0.9rem;
   padding: 1rem 1.5rem;
-  border-radius: 14px;
-  border: 1px solid rgba(247, 168, 107, 0.4);
-  background: rgba(247, 168, 107, 0.1);
-  /* color: #5296B8; */
   font-size: 1.05rem;
   font-weight: 500;
 }
@@ -1215,3 +1211,46 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   font-size: 0.95rem !important;
 }
 .end-page__dot { opacity: 0.4; }
+
+/* ── Dark end page (最後一頁深色版) ── */
+.end-dark,
+.end-dark .slidev-layout,
+.end-dark .inner-layout {
+  background: #0A2E3A !important;
+  color: #F5F0EB;
+}
+.end-dark .inner-layout h1 { color: #F5F0EB !important; }
+.end-dark .end-page > .text-center > div { color: rgba(245,240,235,0.72) !important; }
+
+.end-dark .hl-card {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.14) !important;
+}
+.end-dark .hl-card__num  { color: rgba(255,255,255,0.32) !important; opacity: 1 !important; }
+.end-dark .hl-card__kicker { color: #7DC4E0 !important; }
+.end-dark .hl-card__title  { color: #F5F0EB !important; }
+.end-dark .hl-card__sub    { color: rgba(245,240,235,0.65) !important; }
+
+.end-dark .hl-card--neg {
+  background: rgba(242,109,79,0.12) !important;
+  border-color: rgba(242,109,79,0.35) !important;
+}
+.end-dark .hl-card--neg .hl-card__num   { color: rgba(242,109,79,0.55) !important; opacity: 1 !important; }
+.end-dark .hl-card--neg .hl-card__title { color: #F26D4F !important; }
+
+.end-dark .hl-banner {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.13) !important;
+  color: rgba(245,240,235,0.82) !important;
+}
+.end-dark .hl-banner__icon { color: #7DC4E0 !important; }
+.end-dark .hl-banner strong { color: #F7A86B !important; }
+
+.end-dark .end-page__contact {
+  background: rgba(255,255,255,0.08) !important;
+  border-color: rgba(255,255,255,0.14) !important;
+  color: rgba(245,240,235,0.72) !important;
+}
+.end-dark .end-page__contact svg { color: #7DC4E0 !important; }
+.end-dark .end-page__contact code { color: #7DC4E0 !important; }
+
