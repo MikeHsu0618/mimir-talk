@@ -787,30 +787,36 @@ title: 副本數學 — 成本最大的砍刀
 align: start
 ---
 
-<table style="width:100%;font-size:0.82rem;">
+<table style="width:100%;font-size:1rem;">
 <thead>
-<tr style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;opacity:0.55;border-bottom:2px solid #C9BDA9;">
-<th style="text-align:left;padding:0.4rem 0.75rem;">維度</th>
-<th style="text-align:center;padding:0.4rem 0.75rem;">Classic RF=3 + 3 zones</th>
-<th style="text-align:center;padding:0.4rem 0.75rem;">Ingest Storage + 3 zones</th>
-<th style="text-align:center;padding:0.4rem 0.75rem;">Ingest Storage + 2 zones</th>
+<tr style="font-size:1rem;letter-spacing:0.06em;color:#0E3F4E;border-bottom:2px solid #C9BDA9;">
+<th style="text-align:left;padding:0.55rem 0.9rem;">維度</th>
+<th style="text-align:center;padding:0.55rem 0.9rem;">Classic RF=3 + 3 zones</th>
+<th style="text-align:center;padding:0.55rem 0.9rem;">Ingest Storage + 3 zones</th>
+<th style="text-align:center;padding:0.55rem 0.9rem;color:#35738E;font-weight:800;">Ingest Storage + 2 zones ✦</th>
 </tr>
 </thead>
 <tbody>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.35rem 0.75rem;">副本決定方式</td><td style="text-align:center;">RF=3（寫 3 次）</td><td style="text-align:center;">zone 數決定</td><td style="text-align:center;">zone 數決定</td></tr>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.35rem 0.75rem;">實際副本數</td><td style="text-align:center;color:#F26D4F;">3×</td><td style="text-align:center;">3×</td><td style="text-align:center;color:#35738E;font-weight:700;">2×</td></tr>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.35rem 0.75rem;">Write 容錯</td><td style="text-align:center;">1 zone (2/3 quorum)</td><td style="text-align:center;">Kafka 負責</td><td style="text-align:center;">Kafka 負責</td></tr>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.35rem 0.75rem;">Read quorum</td><td style="text-align:center;">2/3</td><td style="text-align:center;color:#35738E;">1/3</td><td style="text-align:center;color:#35738E;">1/2</td></tr>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.35rem 0.75rem;">Read 容錯</td><td style="text-align:center;">1 zone</td><td style="text-align:center;color:#35738E;font-weight:700;">2 zones</td><td style="text-align:center;">1 zone</td></tr>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.35rem 0.75rem;">Ingester 成本</td><td style="text-align:center;color:#F26D4F;">3×</td><td style="text-align:center;">3×</td><td style="text-align:center;color:#35738E;font-weight:700;">2×</td></tr>
-<tr><td style="padding:0.35rem 0.75rem;">額外成本</td><td style="text-align:center;opacity:0.5;">—</td><td style="text-align:center;">Kafka</td><td style="text-align:center;">Kafka</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">副本決定方式</td><td style="text-align:center;">RF=3（寫 3 次）</td><td style="text-align:center;">zone 數決定</td><td style="text-align:center;">zone 數決定</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">實際副本數</td><td style="text-align:center;color:#F26D4F;font-weight:700;">3×</td><td style="text-align:center;">3×</td><td style="text-align:center;color:#35738E;font-weight:800;">2×</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Write 容錯</td><td style="text-align:center;">1 zone (2/3 quorum)</td><td style="text-align:center;">Kafka 負責</td><td style="text-align:center;">Kafka 負責</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Read quorum</td><td style="text-align:center;color:#F26D4F;font-weight:700;">2/3</td><td style="text-align:center;color:#35738E;">1/3</td><td style="text-align:center;color:#35738E;font-weight:700;">1/2</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Read 容錯</td><td style="text-align:center;">1 zone</td><td style="text-align:center;color:#35738E;font-weight:800;">2 zones</td><td style="text-align:center;">1 zone</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Ingester 成本</td><td style="text-align:center;color:#F26D4F;font-weight:700;">3×</td><td style="text-align:center;">3×</td><td style="text-align:center;color:#35738E;font-weight:800;">2×</td></tr>
+<tr><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">額外成本</td><td style="text-align:center;opacity:0.45;">—</td><td style="text-align:center;">Kafka</td><td style="text-align:center;">Kafka</td></tr>
 </tbody>
 </table>
 
-<div v-click style="margin-top:0.75rem;">
-<Callout type="win" title="我們的選擇">
-<strong>RF=2 + 2 zones</strong> — 把可用性從「RF 堆出來」換成「Kafka 保證 + partition 調整」
-</Callout>
+<div v-click class="flex justify-center mt-4">
+  <div class="flex items-center gap-3 rounded-2xl px-6 py-3" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);">
+    <div class="flex flex-col items-center gap-1.5">
+      <div class="flex items-center gap-2">
+        <mdi-trophy-outline style="font-size:1rem;color:#C97C3A;flex-shrink:0;" />
+        <div style="font-size:1rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;text-transform:uppercase;">我們的選擇</div>
+      </div>
+      <div style="font-size:1.25rem;font-weight:600;color:#0E3F4E;line-height:1.5;"><strong>RF=2 + 2 zones</strong> — 把可用性從「RF 堆出來」換成「Kafka 保證 + partition 調整」</div>
+    </div>
+  </div>
 </div>
 
 <!--
@@ -860,27 +866,31 @@ align: start
 
 <div class="grid grid-cols-2 gap-2 w-full flex-1 min-h-0">
 <div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(247,168,107,0.06);border:1px solid rgba(247,168,107,0.25);">
-  <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:#F7A86B;text-align:center;font-weight:700;margin-bottom:0.3rem;">Ingester · CPU</div>
+  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#F7A86B;text-align:center;font-weight:700;margin-bottom:0.3rem;">Ingester · CPU</div>
   <img src="/mimir3-ingester-cpu.png" class="rounded flex-1 min-h-0 w-full object-contain" />
 </div>
 <div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(247,168,107,0.06);border:1px solid rgba(247,168,107,0.25);">
-  <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:#F7A86B;text-align:center;font-weight:700;margin-bottom:0.3rem;">Ingester · Memory</div>
+  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#F7A86B;text-align:center;font-weight:700;margin-bottom:0.3rem;">Ingester · Memory</div>
   <img src="/mimir3-ingester-memory.png" class="rounded flex-1 min-h-0 w-full object-contain" />
 </div>
 <div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(82,150,184,0.06);border:1px solid rgba(82,150,184,0.25);">
-  <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:#5296B8;text-align:center;font-weight:700;margin-bottom:0.3rem;">Querier · CPU</div>
+  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#5296B8;text-align:center;font-weight:700;margin-bottom:0.3rem;">Querier · CPU</div>
   <img src="/mimir3-querier-cpu.png" class="rounded flex-1 min-h-0 w-full object-contain" />
 </div>
 <div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(82,150,184,0.06);border:1px solid rgba(82,150,184,0.25);">
-  <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.1em;color:#5296B8;text-align:center;font-weight:700;margin-bottom:0.3rem;">Querier · Memory</div>
+  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#5296B8;text-align:center;font-weight:700;margin-bottom:0.3rem;">Querier · Memory</div>
   <img src="/mimir3-querier-memory.png" class="rounded flex-1 min-h-0 w-full object-contain" />
 </div>
 </div>
 
-<div v-click class="flex-shrink-0">
-<Callout type="win" title="寫（Ingester）+ 讀（Querier）同時兌現 · 同一生產集群 · 升級前後">
-RF=3→2 + Ingest Storage → <strong>Ingester</strong> CPU/Mem 雙降 · MQE → <strong>Querier</strong> CPU/Mem 雙降
-</Callout>
+<div v-click class="flex justify-center flex-shrink-0">
+  <div class="flex flex-col items-center gap-1.5 rounded-2xl px-6 py-3" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);width:100%;">
+    <div class="flex items-center gap-2">
+      <mdi-chart-line style="font-size:1.2rem;color:#C97C3A;flex-shrink:0;" />
+      <div style="font-size:1rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;text-transform:uppercase;">寫（Ingester）+ 讀（Querier）同時兌現 · 同一生產集群 · 升級前後</div>
+    </div>
+    <div style="font-size:1rem;font-weight:600;color:#0E3F4E;line-height:1.5;">RF=3→2 + Ingest Storage → <strong>Ingester</strong> CPU/Mem 雙降 · MQE → <strong>Querier</strong> CPU/Mem 雙降</div>
+  </div>
 </div>
 
 </div>
@@ -952,13 +962,14 @@ clicks: 2
 -->
 
 ---
-layout: split
+layout: inner
 title: 現實中的 Kafka —— 分散式回堵噩夢
-ratio: "3:2"
-footnote: "虛線 = 回堵方向 · 任何一環節的 W 變大都會一路反噬到最上游"
+align: start
 ---
 
-::left::
+<div class="flex flex-col gap-3 w-full h-full min-h-0">
+
+<div class="flex-1 min-h-0 flex justify-center">
 
 ```mermaid {theme: 'dark', scale: 0.82}
 flowchart LR
@@ -974,16 +985,22 @@ flowchart LR
     style K fill:#a78bfa33,stroke:#a78bfa
 ```
 
-::right::
+</div>
 
-<Callout type="warn" title="Kafka 不永遠低延遲">
-<strong>Rebalance</strong> · <strong>Leader 切換</strong> · <strong>Consumer lag</strong><br/>
-任一件事都能把 5ms 變成 5 秒
-</Callout>
+<div class="text-center text-xs opacity-50" style="font-size:0.78rem;">虛線 = 回堵方向 · 任何一環節的 W 變大都會一路反噬到最上游</div>
 
-<Callout type="info" title="我們學到的">
-加 Kafka 不是免費的午餐<br/>你接受這個複雜度，換來上層解耦<br/><strong>選型要算清楚這筆帳</strong>
-</Callout>
+<div class="grid grid-cols-2 gap-3 flex-shrink-0 max-w-5xl mx-auto">
+<div class="why-card why-card--ink">
+  <div class="why-card__title"><mdi-alert-circle class="why-card__icon" />Kafka 不永遠低延遲</div>
+  <p><strong>Rebalance</strong> · <strong>Leader 切換</strong> · <strong>Consumer lag</strong><br/>任一件事都能把 5ms 變成 5 秒</p>
+</div>
+<div class="why-card why-card--ink">
+  <div class="why-card__title"><mdi-lightbulb-on class="why-card__icon" />我們學到的</div>
+  <p>加 Kafka 不是免費的午餐<br/>你接受這個複雜度，換來上層解耦<br/><strong>選型要算清楚這筆帳</strong></p>
+</div>
+</div>
+
+</div>
 
 <!--
 重要（誠實調性）：
@@ -1027,48 +1044,51 @@ align: center
 ---
 layout: split
 title: Kafka 的下一個十年 · Diskless Wars
-ratio: "3:2"
+ratio: "4:5"
 ---
 
 ::left::
 
-<div class="flex flex-col gap-1.5">
-<div class="flex items-center gap-3 p-1.5" style="border-left:2px solid rgba(82,150,184,0.3);">
-  <div style="font-family:monospace;font-size:0.7rem;width:4.5rem;color:#5296B8;opacity:0.6;flex-shrink:0;">Aug 2023</div>
-  <div style="font-size:0.82rem;">WarpStream 發表 — Kafka-API on S3 首發商用化</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Aug 2023</div>
+  <div style="font-size:1rem;">WarpStream 發表 — Kafka-API on S3 首發商用化</div>
 </div>
-<div class="flex items-center gap-3 p-1.5" style="border-left:2px solid rgba(82,150,184,0.3);">
-  <div style="font-family:monospace;font-size:0.7rem;width:4.5rem;color:#5296B8;opacity:0.6;flex-shrink:0;">May 2024</div>
-  <div style="font-size:0.82rem;">Confluent Freight 發表</div>
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">May 2024</div>
+  <div style="font-size:1rem;">Confluent Freight 發表</div>
 </div>
-<div class="flex items-center gap-3 p-1.5" style="border-left:2px solid rgba(82,150,184,0.3);">
-  <div style="font-family:monospace;font-size:0.7rem;width:4.5rem;color:#5296B8;opacity:0.6;flex-shrink:0;">Jul 2024</div>
-  <div style="font-size:0.82rem;"><strong>AutoMQ 1.0</strong> 發布 · S3 Direct 寫入支援</div>
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Jul 2024</div>
+  <div style="font-size:1rem;"><strong>AutoMQ 1.0</strong> 發布 · S3 Direct 寫入</div>
 </div>
-<div class="flex items-center gap-3 p-1.5" style="border-left:2px solid rgba(82,150,184,0.3);">
-  <div style="font-family:monospace;font-size:0.7rem;width:4.5rem;color:#5296B8;opacity:0.6;flex-shrink:0;">Sep 2024</div>
-  <div style="font-size:0.82rem;">Confluent 收購 WarpStream — $220M</div>
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Sep 2024</div>
+  <div style="font-size:1rem;">Confluent 收購 WarpStream — $220M</div>
 </div>
-<div class="flex items-center gap-3 p-1.5" style="border-left:2px solid rgba(82,150,184,0.3);">
-  <div style="font-family:monospace;font-size:0.7rem;width:4.5rem;color:#5296B8;opacity:0.6;flex-shrink:0;">Apr 2025</div>
-  <div style="font-size:0.82rem;"><strong>Aiven 提出 KIP-1150</strong> Diskless Topics</div>
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Apr 2025</div>
+  <div style="font-size:1rem;"><strong>Aiven 提出 KIP-1150</strong> Diskless Topics</div>
 </div>
-<div class="flex items-center gap-3 p-1.5" style="border-left:2px solid rgba(82,150,184,0.3);">
-  <div style="font-family:monospace;font-size:0.7rem;width:4.5rem;color:#5296B8;opacity:0.6;flex-shrink:0;">Nov 2025</div>
-  <div style="font-size:0.82rem;">Redpanda 發表 Cloud Topics</div>
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Nov 2025</div>
+  <div style="font-size:1rem;">Redpanda 發表 Cloud Topics</div>
 </div>
-<div class="flex items-center gap-3 p-2 rounded-lg" style="border-left:3px solid #F26D4F;background:rgba(242,109,79,0.05);">
-  <div style="font-family:monospace;font-size:0.7rem;width:4.5rem;color:#F26D4F;flex-shrink:0;font-weight:700;">Mar 2026</div>
-  <div style="font-size:0.82rem;font-weight:700;">KIP-1150 正式通過 — Apache Kafka 擁抱 diskless</div>
+<div v-click="1" class="flex items-center gap-3 mt-1 rounded-xl px-3 py-2" style="background:rgba(242,109,79,0.07);border:1.5px solid rgba(242,109,79,0.30);transition:all 0.5s ease;">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#C0502E;flex-shrink:0;font-weight:800;">Mar 2026</div>
+  <div style="font-size:1rem;font-weight:700;color:#0E3F4E;">KIP-1150 正式通過 — Apache Kafka 擁抱 diskless</div>
 </div>
-<Callout type="win"><strong>社群共識已成形</strong> · stateless broker · object storage 為 source of truth</Callout>
+<div v-click="2" class="flex items-center gap-2 mt-1 rounded-xl px-3 py-2" style="background:rgba(247,168,107,0.09);border:1.5px solid rgba(247,168,107,0.35);transition:all 0.5s ease;">
+  <mdi-check-circle style="font-size:1.2rem;color:#C97C3A;flex-shrink:0;" />
+  <div style="font-size:1rem;font-weight:600;color:#0E3F4E;"><strong>社群共識已成形</strong><br/>stateless broker · object storage 為 source of truth</div>
+</div>
 </div>
 
 ::right::
 
 <div class="flex justify-center items-start">
   <div class="rounded-lg overflow-hidden shadow-lg" style="border:1px solid rgba(14,63,78,0.12);">
-    <img src="/kip1150-xiaohongshu.png" style="max-height:420px;" />
+    <img src="/kip1150-xiaohongshu.png" style="max-height:540px;" />
   </div>
 </div>
 
@@ -1082,32 +1102,36 @@ ratio: "3:2"
 -->
 
 ---
-layout: inner
+layout: split
 title: AutoMQ · 重新設計的 Kafka
+ratio: "5:4"
 ---
 
-<div class="flex justify-center mb-2">
-  <img src="/automq-architecture.png" class="rounded-lg shadow-lg" style="max-height:240px;" />
+::left::
+
+<img src="/automq-architecture.png" class="w-full h-full object-contain" style="border:none;box-shadow:none;background:transparent;" />
+
+::right::
+
+<div class="flex flex-col gap-3">
+
+<div class="pillar-card pillar-card--blue">
+  <div class="pillar-card__title"><mdi-database-sync />Storage / Compute 分離</div>
+  <div class="pillar-card__note">Broker stateless</div>
+  <div class="pillar-card__body">Broker 本地不存 partition data · 全部寫 S3</div>
 </div>
 
-<div class="grid grid-cols-3 gap-3">
+<div class="pillar-card pillar-card--orange">
+  <div class="pillar-card__title"><mdi-content-cut />Zero Partition Replication</div>
+  <div class="pillar-card__note">replication 流量歸零</div>
+  <div class="pillar-card__body">S3 本身多副本 · 不用 broker 之間互相 copy</div>
+</div>
 
-<Callout type="win" title="Storage / Compute 分離">
-Broker 本地不存 partition data<br/>
-全部寫 S3 · <strong>broker stateless</strong>
-</Callout>
-
-<Callout type="win" title="Zero Partition Replication">
-S3 本身多副本<br/>
-不用 broker 之間互相 copy<br/>
-<strong>replication 流量歸零</strong>
-</Callout>
-
-<Callout type="win" title="100% Kafka API">
-Protocol 原生支援<br/>
-現有 Producer / Consumer 不用改<br/>
-<strong>切換零遷移成本</strong>
-</Callout>
+<div class="pillar-card pillar-card--red">
+  <div class="pillar-card__title"><mdi-swap-horizontal />100% Kafka API</div>
+  <div class="pillar-card__note">切換零遷移成本</div>
+  <div class="pillar-card__body">Protocol 原生支援 · 現有 Producer / Consumer 不用改</div>
+</div>
 
 </div>
 
@@ -1127,25 +1151,25 @@ footnote: "AutoMQ 官方數據：大叢集裡 <strong style='color:#F26D4F'>跨 
 
 ::left::
 
-<img src="/kafka-inter-zone.png" />
+<img src="/kafka-inter-zone.png" class="w-full h-full object-contain" style="border:none;box-shadow:none;background:transparent;" />
 
 ::right::
 
-<div class="flex flex-col gap-2">
+<div class="flex flex-col gap-3">
 
-<div class="rounded-lg p-2.5" style="background:rgba(242,109,79,0.06);border:1px solid rgba(242,109,79,0.3);">
-  <div style="color:#C0502E;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.15rem;">① Producer → Broker</div>
-  <div style="font-size:0.78rem;opacity:0.85;">寫入可能 hit 到其他 AZ 的 leader</div>
+<div class="pillar-card pillar-card--blue">
+  <div class="pillar-card__title">① Producer → Broker</div>
+  <div class="pillar-card__body">寫入可能 hit 到其他 AZ 的 leader</div>
 </div>
 
-<div class="rounded-lg p-2.5" style="background:rgba(242,109,79,0.06);border:1px solid rgba(242,109,79,0.3);">
-  <div style="color:#C0502E;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.15rem;">② Broker ↔ Broker Replication</div>
-  <div style="font-size:0.78rem;opacity:0.85;">副本機制本質上<strong>幾乎必定跨 AZ</strong></div>
+<div class="pillar-card pillar-card--blue">
+  <div class="pillar-card__title">② Broker ↔ Broker Replication</div>
+  <div class="pillar-card__body">副本機制本質上<strong>幾乎必定跨 AZ</strong></div>
 </div>
 
-<div class="rounded-lg p-2.5" style="background:rgba(242,109,79,0.06);border:1px solid rgba(242,109,79,0.3);">
-  <div style="color:#C0502E;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:0.15rem;">③ Consumer ← Broker</div>
-  <div style="font-size:0.78rem;opacity:0.85;">Consumer 不一定跟 leader 同 AZ</div>
+<div class="pillar-card pillar-card--blue">
+  <div class="pillar-card__title">③ Consumer ← Broker</div>
+  <div class="pillar-card__body">Consumer 不一定跟 leader 同 AZ</div>
 </div>
 
 </div>
@@ -1168,28 +1192,32 @@ image: /automq-zero-zone-router.png
 
 ::notes::
 
-<div class="flex flex-col gap-1.5">
-<div class="flex gap-2 items-start">
-  <span style="color:#35738E;font-family:monospace;font-weight:700;font-size:0.78rem;padding-top:0.1rem;">①</span>
-  <div style="font-size:0.8rem;opacity:0.9;">Producer 寫入 <strong>本地 AZ</strong> 的 broker</div>
+<div class="flex flex-col gap-2">
+<div class="flex gap-3 items-start">
+  <span style="color:#35738E;font-family:monospace;font-weight:800;font-size:1rem;flex-shrink:0;padding-top:0.1rem;">①</span>
+  <div style="font-size:1rem;">Producer 寫入<strong>本地 AZ</strong> 的 broker</div>
 </div>
-<div class="flex gap-2 items-start">
-  <span style="color:#35738E;font-family:monospace;font-weight:700;font-size:0.78rem;padding-top:0.1rem;">②</span>
-  <div style="font-size:0.8rem;opacity:0.9;">Rack-aware Router 透過 <strong>S3</strong> 路由給 leader partition</div>
+<div class="flex gap-3 items-start">
+  <span style="color:#35738E;font-family:monospace;font-weight:800;font-size:1rem;flex-shrink:0;padding-top:0.1rem;">②</span>
+  <div style="font-size:1rem;">Rack-aware Router 透過 <strong>S3</strong> 路由給 leader partition</div>
 </div>
-<div class="flex gap-2 items-start">
-  <span style="color:#35738E;font-family:monospace;font-weight:700;font-size:0.78rem;padding-top:0.1rem;">③</span>
-  <div style="font-size:0.8rem;opacity:0.9;">其他 AZ 從 S3 同步拿 <strong>readonly 副本</strong></div>
+<div class="flex gap-3 items-start">
+  <span style="color:#35738E;font-family:monospace;font-weight:800;font-size:1rem;flex-shrink:0;padding-top:0.1rem;">③</span>
+  <div style="font-size:1rem;">其他 AZ 從 S3 同步拿 <strong>readonly 副本</strong></div>
 </div>
-<div class="flex gap-2 items-start">
-  <span style="color:#35738E;font-family:monospace;font-weight:700;font-size:0.78rem;padding-top:0.1rem;">④</span>
-  <div style="font-size:0.8rem;opacity:0.9;">Consumer 從 <strong>本地 AZ</strong> 的 readonly replica 讀取</div>
+<div class="flex gap-3 items-start">
+  <span style="color:#35738E;font-family:monospace;font-weight:800;font-size:1rem;flex-shrink:0;padding-top:0.1rem;">④</span>
+  <div style="font-size:1rem;">Consumer 從<strong>本地 AZ</strong> 的 readonly replica 讀取</div>
 </div>
 </div>
 
-<Callout type="win" title="唯一跨 AZ 流量">
-只有 <strong>broker ↔ S3</strong><br/>AWS 同 region S3 <strong style="color:#35738E;">免費</strong>
-</Callout>
+<div class="flex flex-col gap-1.5 rounded-2xl px-4 py-3 mt-2" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);">
+  <div class="flex items-center gap-2">
+    <mdi-check-circle style="font-size:1.3rem;color:#C97C3A;flex-shrink:0;" />
+    <div style="font-size:0.78rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;text-transform:uppercase;">唯一跨 AZ 流量</div>
+  </div>
+  <div style="font-size:1rem;font-weight:600;color:#0E3F4E;">只有 <strong>broker ↔ S3</strong> · AWS 同 region S3 免費</div>
+</div>
 
 <!--
 Zero-Zone Router 分步講解：

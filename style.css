@@ -610,10 +610,13 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   opacity: 0.55;
 }
 .why-card__title {
-  font-size: 1.1rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: #0E3F4E;
   margin-top: 0.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .why-card__note {
