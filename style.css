@@ -232,6 +232,96 @@ html:not(.dark) .slidev-layout .pg-artifact__list.icon-list li span {
 }
 
 /* Parquet Gateway — speaker photo (room below = 1×4 stats row) */
+.quote-bar {
+  border-left: 3.5px solid rgba(82, 150, 184, 0.55);
+  padding-left: 1rem;
+  color: rgba(14, 63, 78, 0.85);
+  line-height: 1.6;
+}
+.quote-bar--error { border-left-color: rgba(242, 109, 79, 0.65); }
+.quote-bar--warn  { border-left-color: rgba(247, 168, 107, 0.65); }
+
+.pillar-card {
+  padding: 0.8rem 1.05rem;
+  border-radius: 12px;
+  border: 1.5px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.pillar-card__title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+.pillar-card__title svg { font-size: 1.5rem; flex-shrink: 0; }
+.pillar-card__note {
+  font-size: 1rem;
+  font-style: italic;
+  color: rgba(14, 63, 78, 0.52);
+}
+.pillar-card__body {
+  font-size: 1rem;
+  color: rgba(14, 63, 78, 0.72);
+  line-height: 1.55;
+}
+.pillar-card--orange { background: rgba(247,168,107,0.09); border-color: rgba(247,168,107,0.35); }
+.pillar-card--orange .pillar-card__title { color: #C97C3A; }
+.pillar-card--blue   { background: rgba(82,150,184,0.09);  border-color: rgba(82,150,184,0.28); }
+.pillar-card--blue   .pillar-card__title { color: #2E6A87; }
+.pillar-card--red    { background: rgba(242,109,79,0.08);  border-color: rgba(242,109,79,0.28); }
+.pillar-card--red    .pillar-card__title { color: #C0502E; }
+
+.section-badge {
+  display: inline-block;
+  width: fit-content;
+  font-size: 1.15rem;
+  font-weight: 800;
+  padding: 0.28rem 0.85rem;
+  border-radius: 7px;
+  color: #35738E;
+  background: rgba(82, 150, 184, 0.09);
+  border: 1.5px solid rgba(82, 150, 184, 0.28);
+  margin-bottom: 0.75rem;
+}
+.section-badge--red { color: #C0502E; background: rgba(242,109,79,0.08); border-color: rgba(242,109,79,0.28); }
+
+.mermaid-eq {
+  height: 220px;
+  overflow: hidden;
+}
+.mermaid-eq svg {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+}
+
+.mermaid-full svg {
+  width: 100% !important;
+  height: auto !important;
+  max-width: none !important;
+}
+
+.diagram-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  font-size: 1rem;
+  color: rgba(14, 63, 78, 0.70);
+  margin-top: 0.5rem;
+}
+.diagram-caption::before,
+.diagram-caption::after {
+  content: '';
+  flex: 0 0 20px;
+  height: 1px;
+  background: rgba(14, 63, 78, 0.18);
+}
+
 .pg-parquet__img {
   display: block;
   width: auto !important;
@@ -496,6 +586,9 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
 .why-card--red    { border-color: rgba(242, 109, 79, 0.35); background: rgba(242, 109, 79, 0.06); }
 .why-card--blue   { border-color: rgba(82, 150, 184, 0.35); background: rgba(82, 150, 184, 0.06); }
 .why-card--orange { border-color: rgba(247, 168, 107, 0.4);  background: rgba(247, 168, 107, 0.07); }
+.why-card--ink    { border-color: rgba(14, 63, 78, 0.12);   background: rgba(14, 63, 78, 0.04); }
+.why-card--ink .why-card__icon  { color: #35738E; }
+.why-card--ink .why-list__icon  { color: #35738E; }
 
 .why-card__head {
   display: flex;
@@ -521,6 +614,13 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   font-weight: 700;
   color: #0E3F4E;
   margin-top: 0.15rem;
+}
+
+.why-card__note {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: rgba(14, 63, 78, 0.50);
+  line-height: 1.5;
 }
 
 .why-list {

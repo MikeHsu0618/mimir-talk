@@ -1,7 +1,7 @@
 <template>
   <footer class="slide-footer">
-    <span class="footer-title">Observability Day 2026</span>
-    <span class="footer-author">Mike Hsu</span>
+    <span class="footer-title">Observability Day 2026 <span class="footer-dot">·</span> <strong>Mike Hsu</strong></span>
+    <span class="footer-page">{{ $nav.currentPage }} / {{ $nav.total }}</span>
   </footer>
 </template>
 
@@ -29,9 +29,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.footer-author {
-  opacity: 0.75;
+.footer-dot {
+  margin: 0 0.3em;
+  font-weight: 500;
+  font-size: 1.2em;
+}
+.footer-page {
+  opacity: 0.50;
   font-weight: 500;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 </style>

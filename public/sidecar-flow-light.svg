@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 700" width="1120" height="700" role="img" aria-labelledby="title desc">
+  <title id="title">Thanos Sidecar Mode Flow</title>
+  <desc id="desc">Prometheus and Thanos Sidecar in one pod. Sidecar uploads to S3. Store Gateway queries history from S3. Sidecar remote-reads short-term data from Prometheus.</desc>
+
+  <defs>
+    <linearGradient id="nodeFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFAF7" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#ECF5FA" stop-opacity="0.9" />
+    </linearGradient>
+    <linearGradient id="podFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5296B8" stop-opacity="0.16" />
+      <stop offset="100%" stop-color="#6BAEBE" stop-opacity="0.1" />
+    </linearGradient>
+    <linearGradient id="sidecarFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F26D4F" stop-opacity="0.16" />
+      <stop offset="100%" stop-color="#F7A86B" stop-opacity="0.12" />
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0E3F4E" flood-opacity="0.12" />
+    </filter>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#5296B8" />
+    </marker>
+    <style>
+      text {
+        font-family: Inter, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        fill: #0E3F4E;
+      }
+      .node-title {
+        font-size: 34px;
+        font-weight: 800;
+      }
+      .node-sub {
+        font-size: 30px;
+        font-weight: 800;
+      }
+      .pod-title {
+        font-size: 24px;
+        font-weight: 700;
+        fill: #35738E;
+      }
+      .edge-label {
+        font-size: 24px;
+        font-weight: 600;
+        fill: #35738E;
+      }
+      .edge {
+        stroke: #5296B8;
+        stroke-width: 4;
+        fill: none;
+        marker-end: url(#arrowBlue);
+      }
+      .edge-dashed {
+        stroke-dasharray: 10 8;
+      }
+      .edge-strong {
+        stroke-width: 6;
+      }
+    </style>
+  </defs>
+
+  <!-- Pod container -->
+  <g filter="url(#softShadow)">
+    <rect x="120" y="84" width="690" height="280" rx="24" ry="24" fill="url(#podFill)" stroke="#5296B8" stroke-width="2.6" />
+    <text x="150" y="128" class="pod-title">Prometheus Pod</text>
+  </g>
+
+  <!-- Prometheus node -->
+  <g filter="url(#softShadow)">
+    <rect x="170" y="164" width="280" height="140" rx="22" ry="22" fill="url(#nodeFill)" stroke="#ADD3D8" stroke-width="2.2" />
+    <text x="310" y="248" text-anchor="middle" class="node-title">Prometheus</text>
+  </g>
+
+  <!-- Sidecar node -->
+  <g filter="url(#softShadow)">
+    <rect x="490" y="164" width="270" height="140" rx="22" ry="22" fill="url(#sidecarFill)" stroke="#F26D4F" stroke-width="2.4" />
+    <text x="625" y="235" text-anchor="middle" class="node-title">Thanos</text>
+    <text x="625" y="278" text-anchor="middle" class="node-sub">Sidecar</text>
+  </g>
+
+  <!-- S3 node -->
+  <g filter="url(#softShadow)">
+    <rect x="790" y="466" width="220" height="120" rx="22" ry="22" fill="url(#nodeFill)" stroke="#ADD3D8" stroke-width="2.2" />
+    <text x="900" y="540" text-anchor="middle" class="node-title">S3</text>
+  </g>
+
+  <!-- Store Gateway node -->
+  <g filter="url(#softShadow)">
+    <rect x="120" y="468" width="280" height="120" rx="22" ry="22" fill="url(#nodeFill)" stroke="#ADD3D8" stroke-width="2.2" />
+    <text x="260" y="530" text-anchor="middle" class="node-title">Store</text>
+    <text x="260" y="570" text-anchor="middle" class="node-sub">Gateway</text>
+  </g>
+
+  <!-- Edges -->
+  <!-- P1 to SC (read 2h block) -->
+  <path class="edge edge-dashed" d="M450 234 L490 234" />
+  <text x="466" y="206" text-anchor="middle" class="edge-label">&#x8B80; 2h block</text>
+
+  <!-- SC ==>|upload| S3 -->
+  <path class="edge edge-strong" d="M710 304 C 810 360, 868 420, 896 466" />
+  <text x="790" y="378" class="edge-label">upload</text>
+
+  <!-- SG to S3 (history query) -->
+  <path class="edge" d="M400 528 L790 528" />
+  <text x="594" y="500" text-anchor="middle" class="edge-label">&#x67E5;&#x6B77;&#x53F2;</text>
+
+  <!-- SC to P1 (remote-read short-term) -->
+  <path class="edge edge-dashed" d="M490 268 L450 268" />
+  <text x="468" y="336" text-anchor="middle" class="edge-label">
+    <tspan x="468" dy="0">remote-read</tspan>
+    <tspan x="468" dy="30">&#x67E5;&#x77ED;&#x671F;</tspan>
+  </text>
+</svg>
