@@ -967,27 +967,20 @@ title: 現實中的 Kafka —— 分散式回堵噩夢
 align: start
 ---
 
-<div class="flex flex-col gap-3 w-full h-full min-h-0">
+<div class="flex flex-col gap-4 w-full h-full min-h-0">
 
-<div class="flex-1 min-h-0 flex justify-center">
-
-```mermaid {theme: 'dark', scale: 0.82}
-flowchart LR
-    P[Prometheus<br/>λ 持續產生] ==>|remote_write| D[Distributor]
-    D ==>|produce| K[Kafka]
-    K ==>|consume| I[Ingester<br/>⚠️ W 變大]
-    I -.->|L 堆積| K
-    K -.->|produce timeout| D
-    D -.->|queue full| P
-    P ==>|🔔| A[On-call<br/>Alert 暴擊]
-    style I fill:#f5222d55,stroke:#f5222d,stroke-width:2px,color:#fff
-    style A fill:#ff9b4455,stroke:#ff9b44,stroke-width:2px,color:#fff
-    style K fill:#a78bfa33,stroke:#a78bfa
-```
-
+<div class="flex-1 min-h-0 flex items-center">
+  <div class="w-full max-w-8xl mx-auto">
+    <img
+      src="/kafka-backpressure-flow.png"
+      alt="Prometheus Kafka backpressure flow"
+      class="block w-full h-auto object-contain"
+      style="max-height:46vh;"
+    />
+  </div>
 </div>
 
-<div class="text-center text-xs opacity-50" style="font-size:0.78rem;">虛線 = 回堵方向 · 任何一環節的 W 變大都會一路反噬到最上游</div>
+<div class="text-center text-xs opacity-70" >虛線 = 回堵方向 · 任何一環節的 W 變大都會一路反噬到最上游</div>
 
 <div class="grid grid-cols-2 gap-3 flex-shrink-0 max-w-5xl mx-auto">
 <div class="why-card why-card--ink">
@@ -1234,13 +1227,13 @@ Zero-Zone Router 分步講解：
 ---
 layout: split
 title: 容量與彈性 · 從「預留」到「按用量」
-ratio: "1:1"
+ratio: "5:4"
 ---
 
 ::left::
 
 <div class="flex justify-center">
-  <img src="/automq-elastic-capacity.png" class="rounded-lg" style="max-height:280px;" />
+  <img src="/automq-elastic-capacity.png" class="rounded-lg"/>
 </div>
 
 ::right::
