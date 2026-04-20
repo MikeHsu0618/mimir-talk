@@ -1,53 +1,43 @@
 <template>
-  <footer v-if="$slidev.nav.currentPage > 1 && !$frontmatter.layout?.match(/^(cover|end|statement|fact|section)$/)"
-    class="deck-footer">
-    <div class="footer-left">
-      <span class="brand-dot"></span>
-      <span class="brand-text">Thanos → Mimir 3.0 → AutoMQ</span>
-    </div>
-    <div class="footer-right">
-      <span class="page">{{ $slidev.nav.currentPage }} / {{ $slidev.nav.total }}</span>
-    </div>
+  <footer class="slide-footer">
+    <span class="footer-title">Observability Day 2026 <span class="footer-dot">·</span> <strong>Mike Hsu</strong></span>
+    <span class="footer-page">{{ $nav.currentPage }} / {{ $nav.total }}</span>
   </footer>
 </template>
 
 <style scoped>
-.deck-footer {
-  position: absolute;
-  bottom: 0.6rem;
-  left: 1.2rem;
-  right: 1.2rem;
+.slide-footer {
+  position: fixed;
+  bottom: 0.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.55rem;
-  color: rgba(231, 235, 243, 0.35);
-  letter-spacing: 0.08em;
-  font-weight: 500;
+  gap: 1rem;
+  font-size: 0.68rem;
+  color: #0E3F4E;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
   pointer-events: none;
-  z-index: 10;
+  z-index: 100;
 }
-
-.footer-left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.footer-title {
+  opacity: 0.65;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
-.brand-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #f46800;
-  box-shadow: 0 0 8px rgba(244, 104, 0, 0.6);
+.footer-dot {
+  margin: 0 0.3em;
+  font-weight: 500;
+  font-size: 1.2em;
 }
-
-.brand-text {
-  text-transform: uppercase;
-}
-
-.page {
+.footer-page {
+  opacity: 0.50;
+  font-weight: 500;
+  flex-shrink: 0;
   font-variant-numeric: tabular-nums;
 }
 </style>

@@ -14,7 +14,7 @@ transition: slide-left
 mdc: true
 aspectRatio: 16/9
 canvasWidth: 1280
-colorSchema: dark
+colorSchema: light
 fonts:
   sans: 'Inter'
   mono: 'JetBrains Mono'
@@ -26,41 +26,39 @@ seoMeta:
   ogDescription: AI 時代下的可觀測性基礎設施重構
 defaults:
   transition: fade
+layout: cover-template
 ---
 
 # 從 Thanos<br/>到 Mimir 3.0
 
-<div class="mt-4 text-xl opacity-90 font-medium">
-  AI 時代下 · 我們如何重構可觀測性的地基
+## AI 時代下 · 我們如何重構可觀測性的地基
+
+<div class="mt-8 flex flex-col gap-1 tracking-wider" style="color:#5296B8;">
+  <div style="font-size:1.15rem;font-weight:500;">Mike Hsu </div>
 </div>
 
-<div class="mt-10 opacity-70 text-sm tracking-wider">
-  <div class="text-base font-medium text-white/90 mb-2">Mike Hsu · Observability Day 2026</div>
-  <div>AI Agents · Mimir 3.0 · AutoMQ · Parquet Gateway</div>
-</div>
-
-<div class="abs-br m-6 flex gap-2">
+<div class="abs-br m-8 flex gap-2">
   <span class="tag">40 min</span>
   <span class="tag new">Mimir 3.0</span>
   <span class="tag new">AutoMQ</span>
 </div>
 
 <!--
-開場提示：
-- 自我介紹 + 今天要帶大家走過的這條路
+開場建議（自由發揮）：
+- 自我介紹 + 今天 40 分鐘要帶大家走的路
 - Hook 句：「最神奇的 AI 世界，底下跑的還是這些最不性感的基礎設施」
 - 這是一份工程日誌，不是產品宣傳：會有踩坑、會有真實成本數字、會有沒解決的難題
+- 這場演講會分享我們從 Thanos 遷移到 Mimir 的真實歷程
+- 最後會帶大家看一下長期指標後端的未來方向（Parquet Gateway）
 -->
 
 ---
-layout: statement
+layout: quote
 ---
 
-# 我們的 Metrics 後端<br/>主要使用者<br/><span class="text-orange-400">已經不再是人類</span>
+# 我們的 Metrics 後端<br/>主要使用者<br/><span v-click class="accent">已經不再是人類</span>
 
-<div class="mt-6 text-base opacity-60">
-  觀測者，正從「人」變成「agent」
-</div>
+<p>觀測者，正從「人」變成「agent」</p>
 
 <!--
 切入動機（hook 要講得慢一點）：
@@ -69,37 +67,26 @@ layout: statement
 - 一個人消化資訊的能力有限；AI agent 一秒吞下一整面 dashboard，還會追著問下一層
 - 查詢模式從「偶爾」變成「連續」、從「手動」變成「程式化」
 - 我們原本的 metrics 基礎設施（Thanos）每天被這些 agent 嚴峻考驗
-- 這就是為什麼我們要重新審視整個長期指標後端
 -->
 
 ---
-layout: default
+layout: inner
+title: 這不是想像 — 我們公司的 SRE Agent
 ---
 
-# 這不是想像 — 我們公司的 SRE Agent
-
-<div class="mt-6 flex justify-center items-center h-[380px] rounded-2xl border border-dashed border-white/20 bg-white/5 relative">
-  <div class="text-center opacity-60">
-    <div class="text-sm uppercase tracking-widest mb-2">Reserved for Live Demo</div>
+<div class="w-full flex flex-col gap-5">
+<div class="flex justify-center items-center rounded-2xl relative" style="border:1.5px dashed rgba(82,150,184,0.4);background:rgba(82,150,184,0.04);height:240px;">
+  <div class="text-center" style="opacity:0.5;">
+    <div class="text-xs uppercase tracking-widest mb-2">Reserved for Live Demo</div>
     <div class="text-base">▶ SRE Agent Videos</div>
   </div>
-  <div class="absolute bottom-3 right-4 text-xs opacity-50">⏱ 20–30 sec budget</div>
+  <div style="position:absolute;bottom:0.75rem;right:1rem;font-size:0.75rem;opacity:0.4;">⏱ 20–30 sec budget</div>
 </div>
-
-<div class="mt-6 grid grid-cols-3 gap-4 text-sm">
-
-<Callout type="info" title="現在">
-數個 agent 正在跑<br/>使用人數尚未飽和
-</Callout>
-
-<Callout type="info" title="即將到來">
-DB agent · Service agent<br/>Cost agent · Security agent
-</Callout>
-
-<Callout type="win" title="這只是開始">
-提前預知趨勢<br/>才有時間把地基打好
-</Callout>
-
+<div class="grid grid-cols-3 gap-4">
+<Callout type="info" title="現在">數個 agent 正在跑<br/>使用人數尚未飽和</Callout>
+<Callout type="info" title="即將到來">DB agent · Service agent<br/>Cost agent · Security agent</Callout>
+<Callout type="win" title="這只是開始">提前預知趨勢，才有時間把地基打好</Callout>
+</div>
 </div>
 
 <!--
@@ -112,55 +99,47 @@ DB agent · Service agent<br/>Cost agent · Security agent
 -->
 
 ---
-layout: default
+layout: inner
+title: 我們面對的量級
 ---
 
-# 我們面對的量級
-
-<div class="grid grid-cols-4 gap-4 mt-8">
-
-<Stat value="40" label="EKS Clusters" />
-<Stat value="120M" label="Peak Active Series" accent="cyan" />
-<Stat value="8M" label="Samples / sec" accent="purple" />
-<Stat value="365 天" label="保留週期" accent="green" />
-
+<div class="grid grid-cols-4 gap-5 w-full">
+  <Stat value="40" label="EKS Clusters" />
+  <Stat value="120M" label="Peak Active Series" accent="sky" />
+  <Stat value="8M" label="Samples / sec" accent="blue" />
+  <Stat value="365 天" label="保留週期" accent="sky" />
 </div>
 
-<div class="mt-6 grid grid-cols-5 gap-6 items-start">
-
-<div class="col-span-3">
-
-<h3 class="!text-base !text-orange-400 mb-2">為什麼盯著 Active Series？</h3>
-
-<div class="text-sm opacity-90 space-y-1.5">
-<div>Ingester 記憶體 <strong class="text-orange-400">≈ 8 KB × active series</strong>（Grafana 官方經驗值）</div>
-<div class="opacity-70">・TSDB head chunk（近 1-2h raw samples）</div>
-<div class="opacity-70">・In-memory postings index（label → series ID 倒排）</div>
-<div class="opacity-70">・Label set 本身（高基數會膨脹）</div>
-<div class="pt-2 text-purple-300">120M × 8 KB ≈ <strong class="text-purple-400 text-lg">960 GB RAM</strong> 跑在 ingester 層</div>
+<div v-click class="grid grid-cols-5 gap-5 mt-4">
+<div class="why-card why-card--ink col-span-3">
+  <div class="why-card__head">
+    <mdi-chart-line class="why-card__icon" />
+    <div>
+      <div class="why-card__kicker">成本核心</div>
+      <div class="why-card__title">為什麼 Active Series 決定成本？</div>
+    </div>
+  </div>
+  <div class="why-card__note">Ingester 記憶體 ≈ 8 KB × active series（Grafana 官方經驗值）</div>
+  <ul class="why-list">
+    <li><mdi-clock-outline class="why-list__icon" /><span>TSDB head chunk（近 1-2h raw samples）</span></li>
+    <li><mdi-magnify class="why-list__icon" /><span>In-memory postings index（label → series ID 倒排）</span></li>
+    <li><mdi-tune class="why-list__icon" /><span>Label set 本身（高基數會膨脹）</span></li>
+  </ul>
+  <div style="border-top:1px solid rgba(14,63,78,0.08);padding-top:0.75rem;font-weight:600;color:rgba(14,63,78,0.8);">
+    120M × 8 KB ≈ <strong>960 GB RAM</strong> 跑在 ingester 層
+  </div>
 </div>
-
+<div class="pain-card col-span-2">
+  <div class="pain-card__num">2023</div>
+  <div class="pain-card__kicker">我們選 Thanos</div>
+  <div class="pain-card__body">當時最成熟的開源選項，唯一有 <strong>Sidecar Mode</strong> 可無侵入接上現有 Prometheus</div>
 </div>
-
-<div class="col-span-2">
-
-<Callout type="info" title="2023 我們選 Thanos">
-當時最成熟的開源選項<br/>
-唯一有 <strong>Sidecar Mode</strong> 可以無侵入接上現有 Prometheus
-</Callout>
-
-<div class="mt-3 text-xs opacity-60 text-center">
-服役 3 年，踩遍所有坑
-</div>
-
-</div>
-
 </div>
 
 <!--
 這頁建立 credibility：
 - 40 個 EKS cluster、尖峰 1.2 億 active series、每秒 8M samples、365 天保留
-- 為什麼盯 active series？因為它**直接決定 ingester 記憶體**，而記憶體是長期指標後端最貴的資源
+- 為什麼盯 active series？因為它直接決定 ingester 記憶體，而記憶體是長期指標後端最貴的資源
 - 每條 series 約 8 KB（TSDB head chunk + postings index + label set）
 - 1.2 億 × 8 KB = 960 GB — 光 ingester 就要這麼多 RAM
 - 2023 選 Thanos 是當時正確的決定（sidecar mode 可以無侵入掛上現有 Prom）
@@ -168,7 +147,9 @@ layout: default
 -->
 
 ---
-layout: section
+layout: section-blue
+chapter: "01"
+parent: Thanos → Mimir 3.0
 ---
 
 # 長期指標後端<br/>架構介紹
@@ -177,75 +158,83 @@ layout: section
 
 <!--
 進入第一大段：架構介紹
-團隊內部都熟悉 Prometheus 生態，這段快走
-目的：讓聽眾跟著我的思路建立對比框架
+不要花太多時間科普，我們團隊內部都熟悉 Prometheus 生態
+這段的目的是讓聽眾跟著我的思路建立對比架構
 -->
 
 ---
-layout: default
+layout: inner
+title: 為什麼需要長期指標後端？
 ---
 
-# 為什麼需要長期指標後端？
+<div class="w-full flex flex-col gap-6">
 
-<div class="mt-6 grid grid-cols-2 gap-8">
+<div class="grid grid-cols-2 gap-6 items-stretch">
 
-<div>
+<div class="why-card why-card--red">
+  <div class="why-card__head">
+    <mdi-alert-circle class="why-card__icon" />
+    <div>
+      <div class="why-card__kicker">問題</div>
+      <div class="why-card__title">Prometheus 本身的限制</div>
+    </div>
+  </div>
+  <ul class="why-list">
+    <li><mdi-clock-alert-outline class="why-list__icon" /><span>預設本地保留 <strong>14 天</strong></span></li>
+    <li><mdi-database-off-outline class="why-list__icon" /><span>單機儲存、單點失敗</span></li>
+    <li><mdi-magnify-close class="why-list__icon" /><span>無法跨集群統一查詢</span></li>
+    <li><mdi-memory class="why-list__icon" /><span>Ingester RAM 線性 ∝ active series — <strong>垂直擴展的天花板</strong></span></li>
+  </ul>
+</div>
 
-<h3 class="!text-base !text-cyan-400">Prometheus 的先天限制</h3>
-
-<v-clicks>
-
-- 預設本地保留 **14 天**
-- 單機儲存、單點失敗
-- 無法跨集群統一查詢
-- Ingester RAM 線性 ∝ active series — **垂直擴展的天花板**
-
-</v-clicks>
+<div class="why-card why-card--blue">
+  <div class="why-card__head">
+    <mdi-lightbulb-on-outline class="why-card__icon" />
+    <div>
+      <div class="why-card__kicker">需求</div>
+      <div class="why-card__title">工程師 & Agent 真實使用場景</div>
+    </div>
+  </div>
+  <ul class="why-list">
+    <li><mdi-history class="why-list__icon" /><span>上個月的 baseline 是什麼？</span></li>
+    <li><mdi-chart-timeline-variant class="why-list__icon" /><span>黑五 vs 平日負載對比</span></li>
+    <li><mdi-trophy-outline class="why-list__icon" /><span>SLO 的年度達成率</span></li>
+    <li><mdi-robot-outline class="why-list__icon" /><span>AI agents 的<strong>連續性</strong>歷史回溯查詢</span></li>
+  </ul>
+</div>
 
 </div>
 
-<div>
-
-<h3 class="!text-base !text-cyan-400">現實中的需求</h3>
-
-<v-clicks>
-
-- 「上個月的 baseline 是什麼？」
-- 「黑五 vs 平日負載對比」
-- 「SLO 的年度達成率」
-- AI agents 的**連續性**歷史回溯查詢
-
-</v-clicks>
-
+<div v-click class="why-conclusion">
+  <span class="why-conclusion__label">需要一個</span>
+  <div class="why-conclusion__pills">
+    <span>高吞吐</span>
+    <span>低查詢延遲</span>
+    <span>便宜</span>
+  </div>
+  <span class="why-conclusion__label">且能擺脫單機天花板的後端</span>
 </div>
-
-</div>
-
-<div v-click class="mt-8 text-center">
-
-<Callout type="win" title="關鍵需求">
-需要一個 <strong class="text-orange-400">高吞吐 · 低查詢延遲 · 便宜</strong> 且能擺脫單機天花板的後端
-</Callout>
 
 </div>
 
 <!--
 - 這張快速過，聽眾都懂
-- 強調：AI agent 的歷史回溯是**連續性 workload**，不是偶爾看 dashboard
-- 一個 agent 在 30 分鐘分析窗口裡，可能發出幾千個 PromQL —— 這是新出現的需求模式
+- 重點是最後一個 bullet：AI agent 的歷史回溯 — 這是現在新出現的需求
+- 強調這跟以往的「偶爾查看 dashboard」是不同量級的
 -->
 
 ---
-layout: default
+layout: split
+title: 兩種整合模式
+ratio: "1:1"
 ---
 
-# 兩種整合模式
+::left::
 
-<div class="mt-4 grid grid-cols-2 gap-6">
-
-<div>
-
-<h3 class="!text-base !text-orange-400 mb-2 text-center">Sidecar Mode</h3>
+<div class="flex flex-col items-center gap-1.5">
+  <h3 style="color:#F26D4F">Sidecar Mode</h3>
+  <span class="tag warn">我們原本的架構</span>
+</div>
 
 ```mermaid {theme: 'dark', scale: 0.7}
 flowchart TB
@@ -254,114 +243,76 @@ flowchart TB
       P1[Prometheus]
       SC[Thanos<br/>Sidecar]
     end
-    P1 -.-|讀 2h block| SC
+    P1 -.-|讀 block| SC
     SC ==>|upload| S3[(S3)]
-    SG[Store<br/>Gateway] -->|查歷史| S3
-    SC -.->|remote-read<br/>查短期| P1
     style SC fill:#f4680033,stroke:#f46800
-    style Pod fill:#1e2540,stroke:#42a5f5
 ```
 
-<div class="text-xs text-center opacity-70 mt-2">
-  Sidecar 寄生 Prom Pod · 原封不動上傳 block<br/>
-  短期查詢走 remote-read 回 Prom
+<p class="diagram-caption">Sidecar 寄生於 Prom Pod · 直接上傳 TSDB block</p>
+
+::right::
+
+<div class="flex flex-col items-center gap-1.5">
+  <h3 style="color:#5296B8">Remote-Write Mode</h3>
+  <span class="tag" style="visibility:hidden">placeholder</span>
 </div>
 
-</div>
+<img src="/rw-flow-light.svg" class="w-full" style="border:none;box-shadow:none;border-radius:0;" />
 
-<div>
-
-<h3 class="!text-base !text-cyan-400 mb-2 text-center">Remote-Write Mode</h3>
-
-```mermaid {theme: 'dark', scale: 0.7}
-flowchart TB
-    P2[Prometheus] ==>|remote_write<br/>protobuf| B[Long-term<br/>Backend]
-    B ==>|壓縮 + 建 index| S3[(S3)]
-    B -->|查短期<br/>查長期| B
-    style B fill:#42a5f533,stroke:#42a5f5
-```
-
-<div class="text-xs text-center opacity-70 mt-2">
-  Prom 推資料給後端<br/>
-  後端全權負責寫入與查詢
-</div>
-
-</div>
-
-</div>
-
-<div v-click class="mt-4 text-center text-sm opacity-80">
-  我們一開始選的是 <strong class="text-orange-400">Sidecar Mode</strong> —— 這是個很巧妙的設計
-</div>
+<p class="diagram-caption">Prom push 給後端 · 後端負責壓縮與 index</p>
 
 <!--
+補充：
 - Sidecar 是 Thanos 的標誌性設計，跟 Cortex/Mimir 的 remote_write 哲學不同
-- 延伸閱讀：thanos.io/blog/2023-11-20-life-of-a-sample-part-1/
-- 下一頁講 Sidecar 的巧妙之處，鋪陳為什麼我們最後還是離開它
+- 兩者各有優缺點，先看 Sidecar 的妙處
 -->
 
 ---
-layout: default
+layout: inner
+title: Sidecar Mode 的巧妙之處
 ---
 
-# Sidecar Mode 的巧妙之處
+<div class="mermaid-full">
 
-<div class="mt-4 grid grid-cols-5 gap-4 items-center">
-
-<div class="col-span-3">
-
-```mermaid {theme: 'dark', scale: 0.82}
+```mermaid {theme: 'dark', scale: 0.75}
 flowchart LR
     subgraph Prom["Prometheus 記憶體"]
+      direction TB
       TSDB[[in-memory TSDB]]
     end
     TSDB ==>|每 2h 壓縮| B[TSDB Block]
     B --> LD[(Local Disk)]
     B -.->|Sidecar<br/>原封不動 upload| S3[(S3)]
     style B fill:#f4680033,stroke:#f46800,stroke-width:2px
-    style Prom fill:#1e2540,stroke:#42a5f5
 ```
 
 </div>
 
-<div class="col-span-2">
-
+<div class="grid grid-cols-2 gap-4 mt-2">
 <Callout type="win" title="關鍵洞察">
-S3 上的 block 和本地 disk <strong>完全一樣</strong><br/>
-Sidecar 不做任何壓縮、不重建 index
+<strong>S3 上的 block 和本地 disk 完全一樣</strong><br/>
+Sidecar 不做任何運算
 </Callout>
 
-<div v-click class="mt-3">
-
-<Callout type="info" title="對比 Remote-write">
-後端要解 protobuf →<br/>
-重新壓縮 → 重建 index<br/>
-<strong>同一份運算做了兩次</strong>
+<Callout v-click type="info" title="對比 Remote-write">
+Backend 要解 protobuf → 重新壓縮 → 建 index<br/>
+相當於把運算做了兩次
 </Callout>
-
-</div>
-
-</div>
-
-</div>
-
-<div v-click class="mt-4 text-center text-sm opacity-80">
-  理論上 Sidecar 避免了後端重新壓縮的浪費 — 所以我們選它是合理的
 </div>
 
 <!--
+補充（重要）：
 - 這張是為了鋪陳「Sidecar 不是笨設計，它有它的巧妙」
-- 我們不是盲目換掉 Sidecar，是因為遇到了結構性問題
-- 先說好話，後面批判才有重量
+- 這樣接下來的痛點討論才誠實
+- 讓聽眾知道我們不是盲目換掉 Sidecar，是因為遇到了 Sidecar 架構的結構性問題
 -->
 
 ---
-layout: statement
+layout: quote
 ---
 
-# 但是 ⋯ <br/><span class="text-red-400">我們撞牆了</span>
+# 但是 ⋯<br/><span class="accent">我們撞牆了</span>
 
-<div class="mt-6 text-lg opacity-70">接下來講痛點</div>
 
 <!--
 過場頁：給聽眾一個心理緩衝
@@ -371,72 +322,59 @@ layout: statement
 -->
 
 ---
-layout: default
+layout: split
+title: "痛點 ① — 短期查詢放大 Prometheus 垂直瓶頸"
+ratio: "3:2"
 ---
 
-# 痛點 ①<br/><span class="text-red-400 text-3xl">短期查詢放大 Prometheus 的垂直瓶頸</span>
+::left::
 
-<div class="mt-4 grid grid-cols-5 gap-5 items-center">
-
-<div class="col-span-3">
-
-```mermaid {theme: 'dark', scale: 0.72}
+```mermaid {theme: 'dark', scale: 0.75}
 flowchart LR
-    G[Grafana<br/>+ AI Agent] ==>|PromQL| TQ[Thanos<br/>Querier]
-    TQ ==>|短期| SC[Sidecar]
-    SC -->|remote-read<br/>API| P[💥 Prometheus]
-    TQ -->|長期| SG[Store<br/>Gateway]
+    G[Grafana<br/>Dashboard] ==>|query| TQ[Thanos<br/>Querier]
+    TQ ==>|短期資料| SC[Sidecar]
+    SC -.-|同 Pod| P[💥 Prometheus]
+    TQ -->|長期資料| SG[Store<br/>Gateway]
     SG --> S3[(S3)]
     style P fill:#f5222d55,stroke:#f5222d,stroke-width:3px,color:#fff
     style SC fill:#f4680033,stroke:#f46800
 ```
 
-<div class="text-xs text-center opacity-70 mt-2">
-  短期查詢經 Sidecar 回呼 remote-read API → 壓力全部打回 Prometheus
-</div>
+<p class="text-center text-sm opacity-70">短期查詢壓力<strong class="text-red-400">全部打回 Prometheus</strong></p>
 
-</div>
+::right::
 
-<div class="col-span-2 text-center">
-
-<div class="rounded-2xl p-5 bg-red-500/10 border-2 border-red-400/50">
-  <div class="text-xs uppercase tracking-widest opacity-60 mb-2">Single Prometheus Pod</div>
-  <div class="text-7xl font-black text-red-400 leading-none">512</div>
-  <div class="text-lg mt-1 opacity-90">GiB RAM</div>
-  <div class="text-xs mt-3 opacity-70 leading-relaxed">
-    <strong>Prometheus:</strong> 400+ GiB<br/>
-    <strong>Thanos Sidecar:</strong> 數十 GiB
+<div v-click class="text-center">
+  <div class="rounded-2xl p-5 bg-red-500/10 border-2 border-red-400/50">
+    <div class="text-xs uppercase tracking-widest opacity-60 mb-1">Single Prometheus Pod</div>
+    <div class="text-7xl font-black text-red-400 leading-none">512</div>
+    <div class="text-base mt-1 opacity-90">GiB RAM</div>
+    <div class="text-xs mt-3 opacity-75 leading-relaxed">
+      <strong>Prometheus:</strong> 400+ GiB<br/>
+      <strong>Thanos Sidecar:</strong> 數十 GiB
+    </div>
   </div>
-</div>
-
-</div>
-
-</div>
-
-<div v-click class="mt-3 text-sm opacity-75 text-center">
-  Sidecar 要為短期查詢扛 remote-read buffer → <strong class="text-red-400">記憶體壓力被放大</strong> · 必須配一台 512 GiB node
+  <!-- <div v-click class="text-xs opacity-75 mt-3 leading-relaxed">
+    Sidecar 要為短期查詢扛 remote-read buffer<br/>→ <strong style="color:#F26D4F;">記憶體壓力被放大</strong>
+  </div> -->
 </div>
 
 <!--
-第一個 money shot。
-- 這是真實 production 數字
-- 細節：Thanos 在查短期（< 2h）時透過 sidecar 打 Prom 的 remote-read API
-- 所以壓力不只回到 Prom，還要在 sidecar 端 buffer、decode、forward
-- Sidecar 自己就要分掉幾十 GiB 記憶體
-- 最後我們必須用 512 GiB node 才裝得下一個 Prom + Sidecar
-- 這是**垂直擴展的瓶頸被放大**，不是 Prom 本身的問題，而是這個架構讓 Prom 不能水平切
-- 參考：thanos-io/thanos/docs/components/sidecar.md
+這是整場第一個 money shot。
+補充（自由發揮）：
+- 512 GiB 聽起來很誇張，但那是我們真實的 production 數字
+- 我們的 Prometheus 已經在單一節點 vertical 到這個程度
+- 繼續往下走只剩兩條路：買更大的機器 / 或換架構
+- 這個數字是我們決定遷移的第一個導火線
 -->
 
 ---
-layout: default
+layout: split
+title: "痛點 ② — 長期查詢 Store Gateway 掙扎"
+ratio: "3:2"
 ---
 
-# 痛點 ②<br/><span class="text-red-400 text-3xl">長期查詢 Store Gateway 掙扎</span>
-
-<div class="mt-4 grid grid-cols-5 gap-5">
-
-<div class="col-span-3">
+::left::
 
 ```mermaid {theme: 'dark', scale: 0.7}
 flowchart TB
@@ -445,7 +383,7 @@ flowchart TB
     Q ==> SG2[Store GW-2]
     Q ==> SG3[Store GW-3]
     Q ==> SGN[Store GW-N]
-    SG1 -->|全量<br/>bucket scan| S3[(S3<br/>所有 tenant)]
+    SG1 -->|全量<br/>bucket scan| S3[(S3<br/>所有 tenant 的 blocks)]
     SG2 --> S3
     SG3 --> S3
     SGN --> S3
@@ -453,81 +391,77 @@ flowchart TB
     style S3 fill:#f5222d22,stroke:#f5222d
 ```
 
-<div class="text-xs text-center opacity-70 mt-2">
-  Querier fan-out 到所有 Store Gateway · 每個 SG 掃整個 bucket
-</div>
+::right::
 
-</div>
+<div class="section-badge">結構性瓶頸</div>
 
-<div class="col-span-2">
+<ul class="icon-list">
+<li><mdi-magnify /><span>Bucket scan 是 <code>O(all_blocks)</code></span></li>
+<li><mdi-download /><span>Index header 先下載才能查</span></li>
+<li><mdi-content-cut /><span>Sharding <strong>靜態</strong>（硬切 relabel）</span></li>
+<li><mdi-tune /><span>Cache 參數多 · 難調教</span></li>
+<li><mdi-alert-octagon /><span>重度查詢 → SG 直接 <strong>OOM</strong></span></li>
+</ul>
 
-<h3 class="!text-base !text-cyan-400 mb-2">結構性瓶頸</h3>
-
-<v-clicks>
-
-- Bucket scan 複雜度 `O(all_blocks)`
-- Index header 先下載才能查
-- Sharding **靜態**（relabel 硬切）
-- Cache 參數多 · 調教難
-- 重度查詢 → SG 直接 OOM
-
-</v-clicks>
-
-<div v-click class="mt-3 text-sm opacity-75">
-  → Store Gateway 一失守，<strong class="text-red-400">整個長期查詢鏈路就崩</strong>
-</div>
-
-</div>
-
+<div v-click class="quote-bar quote-bar--error">
+Store Gateway 一失守，<strong>整個長期查詢鏈路就崩</strong>
 </div>
 
 <!--
-- Thanos 的 sharding/caching 設計比較簡單直接
-- 大流量下 Store Gateway 成為瓶頸：要處理所有查詢、還要 scan S3 上的所有 block
-- 我們遇過：長期查詢高峰時 Store Gateway OOM，然後 Querier 噴 connection refused
-- 重點讓聽眾感受：Mimir Store-Gateway 為大規模多租戶設計（bucket index、動態 sharding），Thanos 則是從 Prometheus 長出來的
-- 不是誰對誰錯 — 設計前提不同
+補充：
+- 這段不要深講 11 維度的比較，聽眾會消化不下
+- 重點讓聽眾感受：Mimir Store-Gateway 是為大規模多租戶設計的，Thanos 是從 Prometheus 長出來的
+- 兩者的設計前提不同，不是誰對誰錯
 -->
 
 ---
-layout: default
+layout: inner
+title: 三條決策維度，我們一條一條想清楚
 ---
 
-# 三條決策維度，我們一條一條想清楚
+<div class="w-full flex flex-col gap-5">
 
-<div class="mt-6 space-y-3">
+<div class="path-grid">
 
-<div class="rounded-lg p-4 bg-white/5 border border-white/10">
-  <div class="flex items-baseline gap-3">
-    <span class="text-xs uppercase tracking-widest text-cyan-400 font-bold">維度 ①</span>
-    <strong class="text-base">Sidecar vs Remote-Write</strong>
-    <span class="ml-auto text-xs opacity-60">→ 緩解<strong class="text-orange-400">短期</strong>垂直瓶頸</span>
+<div class="path-card">
+  <div class="path-card__ribbon path-card__ribbon--warn">短期瓶頸</div>
+  <div class="path-card__num">01</div>
+  <div class="path-card__title">Sidecar<br/>vs Remote-Write</div>
+  <div class="path-card__desc">把壓縮 / index 的工作交給後端<br/>解放 Prometheus + Sidecar Pod 記憶體</div>
+  <div class="path-card__foot">
+    <mdi-speedometer /> 緩解短期垂直瓶頸
   </div>
-  <div class="text-sm opacity-75 mt-1 ml-1">把壓縮 / index 的工作交給後端，解放 Prometheus + Sidecar Pod 記憶體</div>
 </div>
 
-<div class="rounded-lg p-4 bg-white/5 border border-white/10">
-  <div class="flex items-baseline gap-3">
-    <span class="text-xs uppercase tracking-widest text-cyan-400 font-bold">維度 ②</span>
-    <strong class="text-base">Thanos vs Mimir</strong>
-    <span class="ml-auto text-xs opacity-60">→ 解決<strong class="text-orange-400">長期</strong>查詢瓶頸</span>
+<div class="path-card">
+  <div class="path-card__ribbon path-card__ribbon--warn">長期瓶頸</div>
+  <div class="path-card__num">02</div>
+  <div class="path-card__title">Thanos<br/>vs Mimir</div>
+  <div class="path-card__desc">Mimir 的 bucket-index、動態 sharding、MQE<br/>為大規模多租戶而生</div>
+  <div class="path-card__foot">
+    <mdi-database-search /> 解決長期查詢瓶頸
   </div>
-  <div class="text-sm opacity-75 mt-1 ml-1">Mimir 的 bucket-index、動態 sharding、MQE — 為大規模多租戶而生</div>
 </div>
 
-<div class="rounded-lg p-4 bg-white/5 border border-white/10">
-  <div class="flex items-baseline gap-3">
-    <span class="text-xs uppercase tracking-widest text-cyan-400 font-bold">維度 ③</span>
-    <strong class="text-base">Prometheus Server vs Prometheus Agent</strong>
-    <span class="ml-auto text-xs opacity-60">→ 徹底消除<strong class="text-orange-400">採集端</strong>瓶頸</span>
+<div class="path-card">
+  <div class="path-card__ribbon path-card__ribbon--warn">採集端</div>
+  <div class="path-card__num">03</div>
+  <div class="path-card__title">Prom Server<br/>vs Prom Agent</div>
+  <div class="path-card__desc">砍掉 Prom Server 本地 query / alert 責任<br/>徹底消除採集端瓶頸</div>
+  <div class="path-card__foot">
+    <mdi-alert-octagon /> 最激進 · 風險最高
   </div>
-  <div class="text-sm opacity-75 mt-1 ml-1">砍掉 Prom Server 本地 query/alert 責任 — <strong class="text-red-400">最激進，風險最高</strong></div>
 </div>
 
 </div>
 
-<div v-click class="mt-6 text-center text-sm opacity-80">
-  三個維度互相獨立 · 排列組合出來的方案我們會一起看
+<!-- <div v-click="1" class="path-conclusion">
+  <mdi-lightbulb-on class="path-conclusion__icon" />
+  <div>
+    三個維度互相<strong style="color:#F26D4F">獨立</strong> · 下一頁把排列組合攤開，一個一個刪去
+  </div>
+</div> -->
+
 </div>
 
 <!--
@@ -536,66 +470,73 @@ layout: default
 - ② 解決長期查詢：需要換後端
 - ③ 砍 Prom Server：最激進，HPA / KEDA / Alert evaluation 都綁在 Prom 上
 - 三個維度是「可以獨立組合」的，所以下一頁會畫排列組合
+- 特別強調 ③ Prom Agent 的風險：HPA/KEDA 依賴 metrics 作決策，如果 metrics backend 不穩，business 會受直接影響
 -->
 
 ---
-layout: default
+layout: inner
+kicker: ※ 合法性約束：Mimir 只吃 remote-write（無 Sidecar 模式）· Prom Agent 無本地 TSDB（不能配 Sidecar）
+title: 排列組合 · 一個一個刪去
 ---
 
-# 排列組合 · 一個一個刪去
+<div class="w-full flex flex-col gap-3">
 
-<div class="mt-3 text-xs opacity-65 italic">
-  ※ 合法性約束：Mimir 只吃 remote-write（無 Sidecar 模式）· Prom Agent 無本地 TSDB（不能配 Sidecar）
+<div class="combo-list flex flex-col gap-2.5">
+
+<div class="combo-row">
+  <div class="combo-row__num">①</div>
+  <div class="combo-row__body">
+    <div class="combo-row__title">Thanos · Sidecar · Prom Server <span class="combo-row__hint">（現況）</span></div>
+    <div class="combo-row__desc">短期 + 長期都撞牆</div>
+  </div>
+  <span class="tag warn">撞牆</span>
 </div>
 
-<div class="mt-3 space-y-2.5">
+<div class="combo-row">
+  <div class="combo-row__num">②</div>
+  <div class="combo-row__body">
+    <div class="combo-row__title">Thanos · Remote-Write (Receiver) · Prom Server</div>
+    <div class="combo-row__desc">短期解了，長期 Store Gateway 沒解</div>
+  </div>
+  <span class="tag warn">半套</span>
+</div>
 
-<div class="rounded-lg p-3 bg-white/5 border border-white/10 opacity-50">
-  <div class="text-sm">
-    <span class="font-mono text-xs opacity-60">①</span>
-    <strong>Thanos · Sidecar · Prom Server</strong>
-    <span class="text-xs opacity-60">（現況）</span>
-    <span class="tag warn ml-2">短期 + 長期都撞牆</span>
+<div class="combo-row">
+  <div class="combo-row__num">③</div>
+  <div class="combo-row__body">
+    <div class="combo-row__title">Thanos · Remote-Write · Prom Agent</div>
+    <div class="combo-row__desc">長期沒解 · 又把 alert 風險疊加</div>
+  </div>
+  <span class="tag warn">風險疊加</span>
+</div>
+
+<div class="combo-row" :class="{ 'is-chosen': $clicks >= 1 }">
+  <div class="combo-row__num">④</div>
+  <div class="combo-row__body">
+    <div class="combo-row__title">Mimir · Remote-Write · Prom Server</div>
+    <div class="combo-row__desc">同時解短期 + 長期 · Prom Server 保留做 alert / HPA / KEDA 的可靠來源</div>
+  </div>
+  <span class="tag" :class="$clicks >= 1 ? 'good' : 'warn'">{{ $clicks >= 1 ? '選這條' : '？' }}</span>
+</div>
+
+<div class="combo-row">
+  <div class="combo-row__num">⑤</div>
+  <div class="combo-row__body">
+    <div class="combo-row__title">Mimir · Remote-Write · Prom Agent</div>
+    <div class="combo-row__desc">太激進 — HPA / KEDA / Alert 全綁 Mimir</div>
+  </div>
+  <span class="tag warn">激進</span>
+</div>
+
+</div>
+
+<div v-click class="path-conclusion">
+  <mdi-lightbulb-on class="path-conclusion__icon" />
+  <div>
+    刪去法 → 剩下 <strong style="color:#F26D4F;">④</strong>：Mimir 換後端、Prom Server <strong>保留</strong> 做最後防線
   </div>
 </div>
 
-<div class="rounded-lg p-3 bg-white/5 border border-white/10 opacity-50">
-  <div class="text-sm">
-    <span class="font-mono text-xs opacity-60">②</span>
-    <strong>Thanos · Remote-Write (Receiver) · Prom Server</strong>
-    <span class="tag warn ml-2">短期解了，長期 Store Gateway 沒解</span>
-  </div>
-</div>
-
-<div class="rounded-lg p-3 bg-white/5 border border-white/10 opacity-50">
-  <div class="text-sm">
-    <span class="font-mono text-xs opacity-60">③</span>
-    <strong>Thanos · Remote-Write · Prom Agent</strong>
-    <span class="tag warn ml-2">長期沒解 · 又把 alert 風險疊加</span>
-  </div>
-</div>
-
-<div class="rounded-lg p-4 bg-green-500/10 border-2 border-green-400/40">
-  <div class="text-base">
-    <span class="font-mono text-xs text-green-400">④</span>
-    <strong class="text-green-400">Mimir · Remote-Write · Prom Server</strong>
-    <span class="tag good ml-2">選這條</span>
-  </div>
-  <div class="text-xs opacity-75 mt-1 ml-5">同時解短期 + 長期 · Prom Server 保留做 alert / HPA / KEDA 的可靠來源</div>
-</div>
-
-<div class="rounded-lg p-3 bg-white/5 border border-white/10 opacity-50">
-  <div class="text-sm">
-    <span class="font-mono text-xs opacity-60">⑤</span>
-    <strong>Mimir · Remote-Write · Prom Agent</strong>
-    <span class="tag warn ml-2">太激進 — HPA / KEDA / Alert 全綁 Mimir</span>
-  </div>
-</div>
-
-</div>
-
-<div v-click class="mt-4 text-center text-sm opacity-85">
-  刪去法 → 剩下 <strong class="text-green-400">④</strong>：Mimir 換後端、Prom Server <strong>保留</strong> 做最後防線
 </div>
 
 <!--
@@ -605,12 +546,13 @@ layout: default
 - 所以實際合法組合是 5 個（原本的 Sidecar+Mimir 根本不存在）
 - ①②③ 都是 Thanos 系，結構性問題各自沒解完
 - ⑤ 太激進：Prom Agent = alert / HPA / KEDA 全交給後端，後端抖動就業務抖動
-- 保留 Prom Server 是**保險決策** — 未來想切 Agent，這條路還能走；反過來則不行
-- 記住這個「保留 Prom Server」的選擇，**後面 AutoMQ 500ms 延遲那段會回來收**
+- 保留 Prom Server 是保險決策 — 未來想切 Agent，這條路還能走
 -->
 
 ---
-layout: section
+layout: section-blue
+chapter: "02"
+parent: Thanos → Mimir 3.0
 ---
 
 # Mimir 3.0 架構
@@ -619,127 +561,129 @@ layout: section
 
 <!--
 進入 Mimir 3.0 介紹段
-先講為什麼是 Mimir 3.0，再拆解內部
+先給大畫面 (官方圖)，再拆解
 -->
 
 ---
-layout: default
+layout: inner
+title: 為什麼偏偏挑這個時間點？
 ---
 
-# 為什麼偏偏挑這個時間點？
+<div class="w-full flex flex-col gap-4">
 
-<div class="mt-4 grid grid-cols-2 gap-6">
+<div class="grid grid-cols-2 gap-5 items-stretch">
 
-<div>
+<div class="why-card why-card--orange">
+  <div class="why-card__head">
+    <mdi-rocket-launch class="why-card__icon" />
+    <div>
+      <div class="why-card__kicker">版本時機</div>
+      <div class="why-card__title">Mimir 3.0 剛好到位</div>
+    </div>
+  </div>
+  <ul class="why-list">
+    <li><mdi-calendar-check class="why-list__icon" /><span>2025 下半年推出 · 三大主題 <strong>Reliability · Performance · Cost</strong></span></li>
+    <li><mdi-swap-horizontal class="why-list__icon" /><span><strong>Ingest Storage</strong> — Kafka-API 寫讀解耦</span></li>
+    <li><mdi-flash class="why-list__icon" /><span><strong>Mimir Query Engine</strong> — streaming + optimization</span></li>
+    <li><mdi-chart-line-variant class="why-list__icon" /><span>Grafana Cloud dogfood · <strong>~25% TCO ↓</strong></span></li>
+  </ul>
+</div>
 
-<h3 class="!text-base !text-orange-400 mb-2">Mimir 3.0 的時間點</h3>
-
-<v-clicks>
-
-- 2025 下半年推出
-- 三大主題：<strong>Reliability · Performance · Cost</strong>
-- 兩大新特性：
-  - **Ingest Storage**（Kafka-API 寫讀解耦）
-  - **Mimir Query Engine**（streaming + optimization）
-- Grafana Cloud 自己 dogfood，報告 ~25% TCO 下降
-
-</v-clicks>
+<div class="why-card why-card--blue">
+  <div class="why-card__head">
+    <mdi-trending-up class="why-card__icon" />
+    <div>
+      <div class="why-card__kicker">生態走勢</div>
+      <div class="why-card__title">Grafana vs Thanos 社群態勢</div>
+    </div>
+  </div>
+  <ul class="why-list">
+    <li><mdi-fire class="why-list__icon" /><span>Grafana Labs 對 <strong>LGTM</strong> 集中火力投資</span></li>
+    <li><mdi-rocket-launch-outline class="why-list__icon" /><span>Mimir <strong>每個 minor</strong> 都在重大升級</span></li>
+    <li><mdi-turtle class="why-list__icon" /><span>Thanos 社群節奏<strong>不快</strong>（個人營運經驗）</span></li>
+    <li><mdi-file-document-alert-outline class="why-list__icon" /><span>文件<strong>不齊</strong> · 深度問題大多得翻 source code 才有答案</span></li>
+    <li><mdi-account-group class="why-list__icon" /><span>下一代儲存 <strong>Parquet Gateway</strong> 由三家社群共同推 — 未來紅利 Thanos 也分得到</span></li>
+  </ul>
+</div>
 
 </div>
 
-<div>
-
-<h3 class="!text-base !text-purple-400 mb-2">Grafana vs Thanos 的社群態勢</h3>
-
-<v-clicks>
-
-- Grafana Labs 對 **LGTM**（Loki / Mimir / Tempo）集中火力投資
-- Mimir 每個 minor 都在重大升級
-- Thanos 社群節奏**不快**（個人營運經驗）
-- 文件<strong>不齊</strong> · 深度問題大多得翻 source code 才有答案
-- 下一代儲存（Parquet Gateway）由**三家社群共同推** — 未來紅利 Thanos 也分得到
-
-</v-clicks>
-
-</div>
-
-</div>
-
-<div v-click class="mt-6 text-center">
+<!-- <div v-click>
 <Callout type="win" title="選型的風向判斷">
-Thanos 是可靠的老兵，但 <strong class="text-orange-400">Mimir 正站在浪尖</strong> — 選方向比選當下更重要
+Thanos 是可靠的老兵，但 <strong>Mimir 正站在浪尖</strong> — 選方向比選當下更重要
 </Callout>
+</div> -->
+
 </div>
 
 <!--
 - Mimir 3.0 剛好在我們評估的時間點推出
-- 社群態勢是**我自己營運 3 年的第一手經驗**，不是引用外部報告：
-  - Thanos 節奏不算快（相對 Mimir 的更新密度）
-  - 文件不齊全，深度問題（sharding 行為、cache key、memory behavior）大多得翻 source code
-- 下一代儲存 Parquet Gateway 三家社群共同推（後面 Slide 36 會展開）
+- 社群態勢是我自己營運 3 年的第一手經驗，不是引用外部報告
+- Thanos 節奏不算快（相對 Mimir 的更新密度）
+- 文件不齊全，深度問題（sharding 行為、cache key、memory behavior）大多得翻 source code
+- 下一代儲存 Parquet Gateway 三家社群共同推（後面 Slide 會展開）
 - 我們選 Mimir 的理由不是「Thanos 要死了」，而是「Mimir 現在就有 Ingest Storage + MQE 可以兌現」
 -->
 
 ---
-layout: default
+layout: split
+title: Mimir 3.0 的三大支柱
+ratio: "1:1"
 ---
 
-# Mimir 3.0 的三大支柱
+::left::
 
-<div class="mt-3 flex justify-center">
-  <div class="rounded-lg bg-white/95 p-2 shadow-2xl inline-block">
-    <img src="/mimir3-architecture-official.png" class="rounded max-h-[230px]" />
-  </div>
+<img src="/mimir3-architecture-official.png" class="w-full h-full border-none shadow-none" style="object-fit:cover;" />
+
+::right::
+
+<div class="flex flex-col gap-3">
+
+<div class="pillar-card pillar-card--orange">
+  <div class="pillar-card__title"><mdi-check-circle />Reliability</div>
+  <div class="pillar-card__note">寫讀徹底解耦</div>
+  <div class="pillar-card__body">Kafka 中繼 · 讀端掛了寫依然健康 · quorum 從 2/3 降到 1</div>
 </div>
 
-<div class="text-xs text-center opacity-55 mt-1 mb-3">Grafana Labs 官方 Mimir 3.0 架構</div>
-
-<div class="grid grid-cols-3 gap-4">
-
-<div class="rounded-xl p-3.5 bg-gradient-to-br from-orange-500/15 to-orange-500/5 border border-orange-400/30">
-  <div class="text-xs uppercase tracking-widest text-orange-400 mb-1">Reliability</div>
-  <div class="font-bold text-sm mb-1">寫讀徹底解耦</div>
-  <div class="text-xs opacity-80">Kafka 中繼 · 讀端掛了寫依然健康 · quorum 從 2/3 降到 1</div>
+<div class="pillar-card pillar-card--blue">
+  <div class="pillar-card__title"><mdi-chart-line />Performance</div>
+  <div class="pillar-card__note">Mimir Query Engine</div>
+  <div class="pillar-card__body">Streaming 取代全量載入 · Peak CPU ↓80% · Peak Mem ↓3×</div>
 </div>
 
-<div class="rounded-xl p-3.5 bg-gradient-to-br from-cyan-500/15 to-cyan-500/5 border border-cyan-400/30">
-  <div class="text-xs uppercase tracking-widest text-cyan-400 mb-1">Performance</div>
-  <div class="font-bold text-sm mb-1">Mimir Query Engine</div>
-  <div class="text-xs opacity-80">Streaming 取代全量載入 · Peak CPU ↓80% · Peak Mem ↓3×</div>
-</div>
-
-<div class="rounded-xl p-3.5 bg-gradient-to-br from-green-500/15 to-green-500/5 border border-green-400/30">
-  <div class="text-xs uppercase tracking-widest text-green-400 mb-1">Cost</div>
-  <div class="font-bold text-sm mb-1">Ingester 減半</div>
-  <div class="text-xs opacity-80">Zones 從 3 降到 2 · 副本不靠 RF=3 · ~25% TCO ↓</div>
+<div class="pillar-card pillar-card--red">
+  <div class="pillar-card__title"><mdi-content-cut />Cost</div>
+  <div class="pillar-card__note">Ingester 減半</div>
+  <div class="pillar-card__body">Zones 從 3 降到 2 · 副本不靠 RF=3 · ~25% TCO ↓</div>
 </div>
 
 </div>
 
-<div v-click class="mt-4 text-center text-sm opacity-80">
-  接下來拆兩個支柱講 — 先 Ingest Storage，再 MQE
-</div>
+<!-- <div v-click style="margin-top:0.75rem;text-align:center;font-size:0.85rem;opacity:0.78;">
+  接下來拆兩個支柱講 — 先 <strong style="color:#F7A86B">Ingest Storage</strong>，再 <strong style="color:#5296B8">MQE</strong>
+</div> -->
 
 <!--
-- 上方先放 Grafana 官方 Mimir 3.0 架構圖，當視覺錨點 · 現場可指圖講：
-  - 右半「Data to ingest → distributor → Kafka → ingesters」= 寫路徑（Ingest Storage 核心）
-  - 左半「Queries → query-frontend → querier → ingesters + store-gateway」= 讀路徑
-  - 虛線 Asynchronous transfers = ingester 非同步上傳 block 到 object storage
+- Grafana 官方 Mimir 3.0 三大主題：Reliability / Performance / Cost
+  - 右半 Data to ingest → distributor → Kafka → ingesters = 寫路徑（Ingest Storage 核心）
+  - 左半 Queries → query-frontend → querier → ingesters + store-gateway = 讀路徑
   - Compactor 在 object storage 背後壓縮
 - 下方三卡片講三大支柱：Reliability（解耦）/ Performance（MQE）/ Cost（Ingester 減半）
 - 下兩頁深入 Ingest Storage
 -->
 
 ---
-layout: default
+layout: split
+title: "Ingest Storage"
+kicker: "從「3 副本寫入」到「1 次 Kafka produce」"
+ratio: "1:1"
 ---
 
-# Ingest Storage — 從「3 副本寫入」到「1 次 Kafka produce」
+::left::
 
-<div class="mt-4 grid grid-cols-2 gap-5">
+<div class="section-badge section-badge--red">Mimir v2 · Classic</div>
 
-<div>
-<h3 class="!text-xs !text-red-400 !uppercase !tracking-widest mb-2">Mimir v2 · Classic</h3>
+<div class="mermaid-eq">
 
 ```mermaid {theme: 'dark', scale: 0.68}
 flowchart LR
@@ -754,59 +698,46 @@ flowchart LR
     style I3 fill:#ff8c3c33,stroke:#ff8c3c
 ```
 
-<div class="text-xs mt-2 space-y-0.5 opacity-85">
-  <div>• 寫入走 gRPC Push，<strong>寫 3 次</strong></div>
-  <div>• Querier 讀 2/3 才算成功</div>
-  <div>• Ingester 扛寫入 + 查詢 + 建 block + 上傳 S3</div>
 </div>
 
+<ul>
+  <li><strong>寫 3 次</strong> gRPC Push · Querier 讀 2/3 才算成功</li>
+  <li>Ingester 身兼寫入、查詢、建 block、上傳 S3</li>
+</ul>
+
+<div v-click class="mt-2 rounded-xl p-3" style="background:rgba(242,109,79,0.06);border:1.5px solid rgba(242,109,79,0.28);">
+  <div style="font-size:1rem;font-weight:800;color:#C0502E;margin-bottom:0.35rem;">為什麼要 2/3 quorum？</div>
+  <div style="font-size:0.92rem;line-height:1.6;color:rgba(14,63,78,0.72);"><strong>Dynamo-style 不變式：</strong> <code>R + W &gt; N</code><br/>W=2 · R=2 · N=3 → <strong>4 &gt; 3 ✓</strong>　讀集合與最新寫入必交集</div>
 </div>
 
-<div>
-<h3 class="!text-xs !text-green-400 !uppercase !tracking-widest mb-2">Mimir 3.0 · Ingest Storage</h3>
+::right::
+
+<div class="section-badge">Mimir 3.0 · Ingest Storage</div>
+
+<div class="mermaid-eq">
 
 ```mermaid {theme: 'dark', scale: 0.68}
 flowchart LR
-    D[Distributor] ==>|ProduceSync<br/>寫 1 次| K[(Kafka API<br/>Kafka / WarpStream /<br/>AutoMQ / Redpanda)]
+    D[Distributor] ==>|ProduceSync<br/>寫 1 次| K[(Kafka API)]
     K -->|consume| I[Ingester<br/>Partition consumer]
     K -->|consume| BB[Block Builder]
     BB --> S3[(S3)]
     Q[Querier] -->|quorum = 1| I
     style K fill:#a78bfa22,stroke:#a78bfa
     style I fill:#ff8c3c33,stroke:#ff8c3c
-    style BB fill:#52c41a22,stroke:#52c41a
+    style BB fill:#5296B822,stroke:#5296B8
 ```
 
-<div class="text-xs mt-2 space-y-0.5 opacity-85">
-  <div>• 寫 <strong>1 次</strong> 到 Kafka partition</div>
-  <div>• Querier 讀 <strong>1 個</strong> 健康 consumer 就夠</div>
-  <div>• Block 建構拆獨立元件，Ingester 只做 consume</div>
 </div>
 
-</div>
+<ul>
+  <li><strong>寫 1 次</strong> · Querier 讀 <strong>1 個</strong> 健康 consumer 就夠</li>
+  <li>Block Builder 獨立元件 · Ingester 純 consume</li>
+</ul>
 
-</div>
-
-<div v-click class="mt-3 grid grid-cols-2 gap-5 text-xs">
-
-<div class="rounded p-2 bg-red-500/10 border border-red-400/25">
-  <div class="text-red-300 font-bold mb-0.5">為什麼要 2/3 quorum？</div>
-  <div class="opacity-90"><strong>Dynamo-style 不變式：</strong> <code class="text-orange-300">R + W &gt; N</code></div>
-  <div class="opacity-85">W=2 · R=2 · N=3 → <strong>4 &gt; 3 ✓</strong>　讀集合與最新寫必交集</div>
-</div>
-
-<div class="rounded p-2 bg-green-500/10 border border-green-400/25">
-  <div class="text-green-300 font-bold mb-0.5">為什麼 quorum = 1 就夠？</div>
-  <div class="opacity-90"><strong>Kafka partition = linearized log</strong></div>
-  <div class="opacity-85">每個 consumer 都是同一 log 完整 replay · 無分歧狀態 · 不需 overlap</div>
-</div>
-
-</div>
-
-<div v-click class="mt-3 text-center">
-<Callout type="win" title="引述官方（Jonathan @ Grafana Labs）">
-「我們依賴的<strong>不是 Kafka，是 Kafka API</strong> — 可以換 WarpStream、Redpanda、AutoMQ — 選你能營運的」
-</Callout>
+<div v-click class="mt-2 rounded-xl p-3" style="background:rgba(82,150,184,0.07);border:1.5px solid rgba(82,150,184,0.30);">
+  <div style="font-size:1rem;font-weight:800;color:#2E6A87;margin-bottom:0.35rem;">為什麼 quorum = 1 就夠？</div>
+  <div style="font-size:0.92rem;line-height:1.6;color:rgba(14,63,78,0.72);"><strong>Kafka partition = linearized log</strong><br/>每個 consumer 都是同一 log 完整 replay · 無分歧狀態 · 不需 overlap</div>
 </div>
 
 <!--
@@ -814,21 +745,18 @@ flowchart LR
   - 寫入從 3 副本變 1 次
   - Ingester 從「什麼都做」變成純 consumer
   - Block 建構拆出去 — 各元件獨立 scale
-- 強調 Kafka API 不是 Kafka — 這個很重要，為後面 AutoMQ 鋪路
-- 原話引自 Grafana 官方影片，增強可信度
+- 兩欄各自底部：2/3 的 Dynamo 不變式 vs Kafka 單一 log 為何只需 quorum=1（純 split，無第三列）
+- 引自 Grafana 官方（Jonathan）：「我們依賴的不是 Kafka，是 Kafka API」— 可換 WarpStream / Redpanda / AutoMQ
+- Kafka API 不是 Kafka — 這個很重要，為後面 AutoMQ 鋪路
 -->
 
 ---
-layout: default
+layout: image-side
+title: Write/Read Path 完全解耦 · Quorum = 1
+image: /mimir3-decouple.png
 ---
 
-# Write/Read Path 完全解耦 · Quorum = 1
-
-<div class="mt-3 flex justify-center">
-  <img src="/mimir3-decouple.png" class="rounded-lg shadow-2xl max-h-[280px]" />
-</div>
-
-<div class="mt-4 grid grid-cols-2 gap-4">
+::notes::
 
 <Callout type="win" title="可用性翻轉">
 v2：過半 zone 健康才算活<br/>
@@ -840,11 +768,10 @@ v3：<strong>每個 partition 有 1 個消費者</strong>就算活
 —— 而不是加整組 zone
 </Callout>
 
-</div>
-
-<div v-click class="mt-3 text-center text-sm opacity-85">
-  熱查詢再兇 · 寫入路徑只到 Kafka 就結束 · <strong class="text-green-400">Write 永遠 HEALTHY</strong>
-</div>
+<!-- <div v-click class="insight">
+  <div class="insight-label">實戰意義</div>
+  <div class="insight-text">熱查詢再兇 · 寫入只到 Kafka 就結束<br/><strong>Write 永遠 HEALTHY</strong></div>
+</div> -->
 
 <!--
 - 這張圖視覺效果很強：Write ✅ / Read ✗
@@ -855,39 +782,41 @@ v3：<strong>每個 partition 有 1 個消費者</strong>就算活
 -->
 
 ---
-layout: default
+layout: inner
+title: 副本數學 — 成本最大的砍刀
+align: start
 ---
 
-# 副本數學 — 成本最大的砍刀
-
-<div class="mt-4">
-
-<table class="w-full text-sm">
+<table style="width:100%;font-size:1rem;">
 <thead>
-<tr class="text-xs uppercase opacity-60 border-b border-white/10">
-<th class="text-left py-2">維度</th>
-<th class="text-center py-2">Classic RF=3 + 3 zones</th>
-<th class="text-center py-2">Ingest Storage + 3 zones</th>
-<th class="text-center py-2">Ingest Storage + 2 zones</th>
+<tr style="font-size:1rem;letter-spacing:0.06em;color:#0E3F4E;border-bottom:2px solid #C9BDA9;">
+<th style="text-align:left;padding:0.55rem 0.9rem;">維度</th>
+<th style="text-align:center;padding:0.55rem 0.9rem;">Classic RF=3 + 3 zones</th>
+<th style="text-align:center;padding:0.55rem 0.9rem;">Ingest Storage + 3 zones</th>
+<th style="text-align:center;padding:0.55rem 0.9rem;color:#35738E;font-weight:800;">Ingest Storage + 2 zones ✦</th>
 </tr>
 </thead>
-<tbody class="opacity-90">
-<tr class="border-b border-white/5"><td class="py-2">副本決定方式</td><td class="text-center">RF=3（寫 3 次）</td><td class="text-center">zone 數決定</td><td class="text-center">zone 數決定</td></tr>
-<tr class="border-b border-white/5"><td class="py-2">實際副本數</td><td class="text-center text-red-400">3×</td><td class="text-center">3×</td><td class="text-center text-green-400"><strong>2×</strong></td></tr>
-<tr class="border-b border-white/5"><td class="py-2">Write 容錯</td><td class="text-center">1 zone (2/3 quorum)</td><td class="text-center">Kafka 負責</td><td class="text-center">Kafka 負責</td></tr>
-<tr class="border-b border-white/5"><td class="py-2">Read quorum</td><td class="text-center">2/3</td><td class="text-center text-green-400">1/3</td><td class="text-center text-green-400">1/2</td></tr>
-<tr class="border-b border-white/5"><td class="py-2">Read 容錯</td><td class="text-center">1 zone</td><td class="text-center text-green-400"><strong>2 zones</strong></td><td class="text-center">1 zone</td></tr>
-<tr class="border-b border-white/5"><td class="py-2">Ingester 成本</td><td class="text-center text-red-400">3×</td><td class="text-center">3×</td><td class="text-center text-green-400"><strong>2×</strong></td></tr>
-<tr><td class="py-2">額外成本</td><td class="text-center opacity-60">—</td><td class="text-center">Kafka</td><td class="text-center">Kafka</td></tr>
+<tbody>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">副本決定方式</td><td style="text-align:center;">RF=3（寫 3 次）</td><td style="text-align:center;">zone 數決定</td><td style="text-align:center;">zone 數決定</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">實際副本數</td><td style="text-align:center;color:#F26D4F;font-weight:700;">3×</td><td style="text-align:center;">3×</td><td style="text-align:center;color:#35738E;font-weight:800;">2×</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Write 容錯</td><td style="text-align:center;">1 zone (2/3 quorum)</td><td style="text-align:center;">Kafka 負責</td><td style="text-align:center;">Kafka 負責</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Read quorum</td><td style="text-align:center;color:#F26D4F;font-weight:700;">2/3</td><td style="text-align:center;color:#35738E;">1/3</td><td style="text-align:center;color:#35738E;font-weight:700;">1/2</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Read 容錯</td><td style="text-align:center;">1 zone</td><td style="text-align:center;color:#35738E;font-weight:800;">2 zones</td><td style="text-align:center;">1 zone</td></tr>
+<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Ingester 成本</td><td style="text-align:center;color:#F26D4F;font-weight:700;">3×</td><td style="text-align:center;">3×</td><td style="text-align:center;color:#35738E;font-weight:800;">2×</td></tr>
+<tr><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">額外成本</td><td style="text-align:center;opacity:0.45;">—</td><td style="text-align:center;">Kafka</td><td style="text-align:center;">Kafka</td></tr>
 </tbody>
 </table>
 
-</div>
-
-<div v-click class="mt-5 text-center">
-<Callout type="win" title="我們的選擇">
-<strong>RF=2 + 2 zones</strong> — 把可用性從「RF 堆出來」換成「Kafka 保證 + partition 調整」
-</Callout>
+<div v-click class="flex justify-center mt-4">
+  <div class="flex items-center gap-3 rounded-2xl px-6 py-3" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);">
+    <div class="flex flex-col items-center gap-1.5">
+      <div class="flex items-center gap-2">
+        <mdi-trophy-outline style="font-size:1rem;color:#C97C3A;flex-shrink:0;" />
+        <div style="font-size:1rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;text-transform:uppercase;">我們的選擇</div>
+      </div>
+      <div style="font-size:1.25rem;font-weight:600;color:#0E3F4E;line-height:1.5;"><strong>RF=2 + 2 zones</strong> — 把可用性從「RF 堆出來」換成「Kafka 保證 + partition 調整」</div>
+    </div>
+  </div>
 </div>
 
 <!--
@@ -899,70 +828,71 @@ layout: default
 -->
 
 ---
-layout: default
+layout: split
+title: Mimir Query Engine · 讀端同步省下來
+kicker: MQE 在 Mimir 3.0 是 default · 升級後自動拿到 · 覆蓋 100% 穩定 PromQL
+ratio: "3:2"
 ---
 
-# Mimir Query Engine · 讀端同步省下來
+::left::
 
-<div class="mt-2 flex justify-center">
-  <img src="/mimir3-mqe-benchmark.png" class="rounded-lg shadow-2xl max-h-[280px]" />
-</div>
+<img src="/mimir3-mqe-benchmark.png" />
 
-<div class="mt-3 grid grid-cols-4 gap-3">
+::right::
 
-<Stat value="92%" label="Less memory vs Prometheus" accent="green" />
-<Stat value="38%" label="Faster execution" accent="cyan" />
-<Stat value="3×" label="Querier peak mem ↓" accent="purple" />
-<Stat value="80%" label="Querier peak CPU ↓" accent="orange" />
-
-</div>
-
-<div v-click class="mt-3 text-center text-xs opacity-75">
-  MQE 在 Mimir 3.0 是 <strong>default</strong> · 升級後<strong>自動拿到</strong>這些好處 · 覆蓋 100% 穩定 PromQL grammar
+<div class="grid grid-cols-2 gap-3">
+  <Stat value="92%" label="Less memory vs Prometheus" accent="orange" />
+  <Stat value="38%" label="Faster execution" accent="blue" />
+  <Stat value="3×" label="Querier peak mem ↓" accent="sky" />
+  <Stat value="80%" label="Querier peak CPU ↓" accent="orange" />
 </div>
 
 <!--
-- MQE 的兩個核心：streaming execution + common sub-expression elimination
-- Streaming：不再全量載入 series，operator-by-operator 往下推
-- 實測 Grafana Cloud querier peak memory 降 3x、peak CPU 降 80%
-- 最棒的是：升上去就有 — 不用改 query、不用加設定
-- 接下來直接看我們遷移後的實測 dashboard
+補充：
+- MQE 在 Mimir 3.0 是 default
+- 相比舊的 Prometheus engine，streaming execution + optimization framework
+- 這張 benchmark 是官方 1h range query 1000 series 的 sum() 測試
+- 實際 Grafana Cloud 跑下來 querier peak memory 降 3x、peak CPU 降 80%
+- 這個是「我們遷移後立刻拿到的」好處，不需要做什麼
 -->
 
 ---
-layout: default
+layout: inner
+title: 遷移後 · 寫讀兩端資源同時下降
+align: start
 ---
 
-# 遷移後 · 寫讀兩端資源同時下降
+<div class="flex flex-col gap-2 w-full h-full min-h-0">
 
-<div class="mt-3 grid grid-cols-2 gap-3">
-
-<div class="rounded-lg p-2 bg-orange-500/5 border border-orange-400/20">
-  <div class="text-xs uppercase tracking-widest text-orange-400 mb-1 text-center font-bold">Ingester · CPU</div>
-  <img src="/mimir3-ingester-cpu.png" class="rounded shadow-lg" />
+<div class="grid grid-cols-2 gap-2 w-full flex-1 min-h-0">
+<div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(247,168,107,0.06);border:1px solid rgba(247,168,107,0.25);">
+  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#F7A86B;text-align:center;font-weight:700;margin-bottom:0.3rem;">Ingester · CPU</div>
+  <img src="/mimir3-ingester-cpu.png" class="rounded flex-1 min-h-0 w-full object-contain" />
+</div>
+<div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(247,168,107,0.06);border:1px solid rgba(247,168,107,0.25);">
+  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#F7A86B;text-align:center;font-weight:700;margin-bottom:0.3rem;">Ingester · Memory</div>
+  <img src="/mimir3-ingester-memory.png" class="rounded flex-1 min-h-0 w-full object-contain" />
+</div>
+<div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(82,150,184,0.06);border:1px solid rgba(82,150,184,0.25);">
+  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#5296B8;text-align:center;font-weight:700;margin-bottom:0.3rem;">Querier · CPU</div>
+  <img src="/mimir3-querier-cpu.png" class="rounded flex-1 min-h-0 w-full object-contain" />
+</div>
+<div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(82,150,184,0.06);border:1px solid rgba(82,150,184,0.25);">
+  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#5296B8;text-align:center;font-weight:700;margin-bottom:0.3rem;">Querier · Memory</div>
+  <img src="/mimir3-querier-memory.png" class="rounded flex-1 min-h-0 w-full object-contain" />
+</div>
 </div>
 
-<div class="rounded-lg p-2 bg-orange-500/5 border border-orange-400/20">
-  <div class="text-xs uppercase tracking-widest text-orange-400 mb-1 text-center font-bold">Ingester · Memory</div>
-  <img src="/mimir3-ingester-memory.png" class="rounded shadow-lg" />
+<div v-click class="flex justify-center flex-shrink-0">
+  <div class="flex flex-col items-center gap-1.5 rounded-2xl px-6 py-3" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);width:100%;">
+    <div class="flex items-center gap-2">
+      <mdi-chart-line style="font-size:1.2rem;color:#C97C3A;flex-shrink:0;" />
+      <div style="font-size:1rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;text-transform:uppercase;">寫（Ingester）+ 讀（Querier）同時兌現 · 同一生產集群 · 升級前後</div>
+    </div>
+    <div style="font-size:1rem;font-weight:600;color:#0E3F4E;line-height:1.5;">RF=3→2 + Ingest Storage → <strong>Ingester</strong> CPU/Mem 雙降 · MQE → <strong>Querier</strong> CPU/Mem 雙降</div>
+  </div>
 </div>
 
-<div class="rounded-lg p-2 bg-cyan-500/5 border border-cyan-400/20">
-  <div class="text-xs uppercase tracking-widest text-cyan-400 mb-1 text-center font-bold">Querier · CPU</div>
-  <img src="/mimir3-querier-cpu.png" class="rounded shadow-lg" />
-</div>
-
-<div class="rounded-lg p-2 bg-cyan-500/5 border border-cyan-400/20">
-  <div class="text-xs uppercase tracking-widest text-cyan-400 mb-1 text-center font-bold">Querier · Memory</div>
-  <img src="/mimir3-querier-memory.png" class="rounded shadow-lg" />
-</div>
-
-</div>
-
-<div v-click class="mt-3 text-center text-sm">
-<Callout type="win" title="寫（Ingester）+ 讀（Querier）同時兌現 · 同一生產集群 · 升級前後">
-Ingest Storage → <strong>Ingester</strong> CPU/Mem 降低 · MQE → <strong>Querier</strong> CPU/Mem 降低
-</Callout>
 </div>
 
 <!--
@@ -975,11 +905,12 @@ Ingest Storage → <strong>Ingester</strong> CPU/Mem 降低 · MQE → <strong>Q
   - Peak 被壓平
 - CPU / Memory 都明顯下降一個 level
 - 不是 benchmark，是 production — 數字不漂亮，但真實
-- 這只是 Mimir 側；下一段還要選 Kafka，才是真正的成本大戰
 -->
 
 ---
-layout: section
+layout: section-blue
+chapter: "03"
+parent: Thanos → Mimir 3.0
 ---
 
 # Kafka 選型
@@ -987,45 +918,60 @@ layout: section
 <div class="mt-6 opacity-60">多了一個元件 · 我們是不是在自己給自己找死？</div>
 
 <!--
-進入 Kafka / AutoMQ 章節 — 整場重頭戲
-這裡先不提 AutoMQ，讓聽眾陪我一起被「加 Kafka 就是複雜」這個直覺綁架一下
+進入 Kafka / AutoMQ 章節 — 整場演講的重頭戲
+開場用這句話引出下一張
 -->
 
 ---
-layout: default
+layout: inner
+align: start
+clicks: 2
 ---
 
-# 等等 ⋯ 加 Kafka 不就更複雜嗎？
-
-<div class="mt-8 text-center">
-  <div class="inline-block rounded-xl p-5 bg-white/5 border border-white/10 text-xl italic opacity-90">
-    「原本一個長期指標系統就夠複雜了，<br/>現在還要多一個 Kafka？」
+<div class="p17-wrap" :class="{ 'p17-wrap--on': $clicks >= 1 }">
+  <h1 class="p17-title">等等，加 Kafka不就更複雜嗎？</h1>
+  <div class="p17-quote-block" :class="{ 'p17-visible': $clicks >= 1 }">
+    <div class="p17-quote-text">原本一個長期指標系統就夠複雜了，<strong>現在還要多一個 Kafka？</strong></div>
+  </div>
+  <div class="p17-formula-block" :class="{ 'p17-visible': $clicks >= 2 }">
+    <div style="font-size:4.5rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:#F7A86B;letter-spacing:-0.02em;margin-top:1.75rem;">L = λ · W</div>
+    <div class="text-xs uppercase tracking-widest opacity-50" style="margin-top:0.5rem;">Little's Law · 李式定理</div>
+    <div class="grid grid-cols-3 gap-5 w-full max-w-2xl mx-auto" style="margin-top:1.25rem;">
+      <div class="flex flex-col items-center gap-2 rounded-2xl p-5" style="background:rgba(82,150,184,0.08);">
+        <div class="text-3xl font-black font-mono" style="color:#5296B8;">L</div>
+        <div class="text-sm opacity-65 leading-snug">Queue 中的<br/>平均任務數</div>
+      </div>
+      <div class="flex flex-col items-center gap-2 rounded-2xl p-5" style="background:rgba(247,168,107,0.10);">
+        <div class="text-3xl font-black font-mono" style="color:#F7A86B;">λ</div>
+        <div class="text-sm opacity-65 leading-snug">系統吞吐率<br/>(samples/s)</div>
+      </div>
+      <div class="flex flex-col items-center gap-2 rounded-2xl p-5" style="background:rgba(82,150,184,0.08);">
+        <div class="text-3xl font-black font-mono" style="color:#5296B8;">W</div>
+        <div class="text-sm opacity-65 leading-snug">每個任務的<br/>平均等待時間</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div v-click class="mt-10 text-center">
-  <div class="text-sm opacity-70 mb-2">答案要從這個定理說起</div>
-  <div class="text-6xl font-black text-orange-400 font-mono tracking-tight">L = λ · W</div>
-  <div class="text-sm opacity-60 mt-3">Little's Law · 李氏定理</div>
-  <div class="text-xs opacity-60 mt-1">系統中的待處理量 = 到達速率 × 每件事的處理時間</div>
-</div>
-
 <!--
-- 我跟主管討論時第一個被問的問題就是這個
-- 加元件 = 多複雜度，這是真的；但複雜度不會憑空消失，你只是選擇它放在哪裡
-- 李氏定理：L 堆積 = 流入（控不住）× 處理時間（被下游拖慢）
-- 加 Kafka 不是為了簡化，是為了**把耦合拆開** —— 下一頁看真實踩坑
+補充：
+- 我當初跟主管討論時也被問過這個問題
+- 加一個元件 = 多一份複雜度，這是直覺
+- 但實際上複雜度不會憑空消失，你只是選擇把它放在哪裡
+- 李式定理告訴我們的是：系統吞吐的本質
 -->
 
 ---
-layout: default
+layout: inner
+title: 現實中的 Kafka —— 分散式回堵噩夢
+align: start
 ---
 
-# 現實中的 Kafka —— 分散式回堵噩夢
+<div class="flex flex-col gap-3 w-full h-full min-h-0">
 
-<div class="mt-3">
+<div class="flex-1 min-h-0 flex justify-center">
 
-```mermaid {theme: 'dark', scale: 0.8}
+```mermaid {theme: 'dark', scale: 0.82}
 flowchart LR
     P[Prometheus<br/>λ 持續產生] ==>|remote_write| D[Distributor]
     D ==>|produce| K[Kafka]
@@ -1039,38 +985,38 @@ flowchart LR
     style K fill:#a78bfa33,stroke:#a78bfa
 ```
 
-<div class="text-xs text-center opacity-70 mt-1">
-  虛線 = 回堵方向 · 任何一環 W 變大都會一路反噬到最上游
 </div>
 
+<div class="text-center text-xs opacity-50" style="font-size:0.78rem;">虛線 = 回堵方向 · 任何一環節的 W 變大都會一路反噬到最上游</div>
+
+<div class="grid grid-cols-2 gap-3 flex-shrink-0 max-w-5xl mx-auto">
+<div class="why-card why-card--ink">
+  <div class="why-card__title"><mdi-alert-circle class="why-card__icon" />Kafka 不永遠低延遲</div>
+  <p><strong>Rebalance</strong> · <strong>Leader 切換</strong> · <strong>Consumer lag</strong><br/>任一件事都能把 5ms 變成 5 秒</p>
 </div>
-
-<div class="mt-3 grid grid-cols-2 gap-4 text-sm">
-
-<Callout type="warn" title="Kafka 不永遠低延遲">
-<strong>Rebalance</strong> · <strong>Leader 切換</strong> · <strong>Consumer lag</strong><br/>
-任一件事都能把 5ms 變成 5 秒
-</Callout>
-
-<Callout type="info" title="我們學到的">
-加 Kafka 不是免費的午餐<br/>
-你接受這個複雜度，換來上層解耦<br/>
-<strong>選型要算清楚這筆帳</strong>
-</Callout>
+<div class="why-card why-card--ink">
+  <div class="why-card__title"><mdi-lightbulb-on class="why-card__icon" />我們學到的</div>
+  <p>加 Kafka 不是免費的午餐<br/>你接受這個複雜度，換來上層解耦<br/><strong>選型要算清楚這筆帳</strong></p>
+</div>
+</div>
 
 </div>
 
 <!--
-- 這段是我想表達的核心態度：**不盲目推薦**
-- 真實踩過坑：Kafka consumer 慢（根因在 ingester）→ Kafka 堆積 → Distributor produce timeout → Prom queue full → 全環境噴 alert
-- 跨元件 debug 是 Kafka 架構的固有複雜度
-- Kafka 不永遠低延遲 — rebalance、leader 切換、consumer lag、甚至 GC 都能讓 L 瞬間爆開
-- 但這個複雜度是值得的，因為換來寫讀解耦 + 水平擴展
+重要（誠實調性）：
+- 這段是我想表達的核心態度：不盲目推薦
+- 分享真實踩坑：有一次 Kafka consumer 變慢，根因追到 Ingester
+- 但當下看到的是「Prom 噴 queue full alert」
+- 這種跨元件 debug 是 Kafka 架構的固有複雜度
+- 我們接受了這個，因為換來的好處夠大（下面會講）
 -->
 
 ---
-layout: statement
+layout: inner
+align: center
 ---
+
+<div class="text-center w-full max-w-4xl mx-auto">
 
 # 但如果只是這樣<br/><span class="text-orange-400">我們不會貿然踏上這條不歸路</span>
 
@@ -1085,6 +1031,8 @@ layout: statement
   <div class="mt-3 text-5xl font-black text-orange-400">是「明天的 Kafka」</div>
 </div>
 
+</div>
+
 <!--
 - 承接上一頁的踩坑 — rebalance / leader 切換 / consumer lag / broker 掛 / PVC 崩
 - 這些我們都真的遇過、都還在踩 — 如果只是要「解耦」，其實沒必要跳進這個坑
@@ -1094,170 +1042,136 @@ layout: statement
 -->
 
 ---
-layout: default
+layout: split
+title: Kafka 的下一個十年 · Diskless Wars
+ratio: "4:5"
 ---
 
-# 下一個十年 · Diskless Kafka
+::left::
 
-<div class="mt-3 grid grid-cols-5 gap-5">
-
-<div class="col-span-3 space-y-1.5">
-
-<div class="flex items-center gap-3 p-1.5 rounded-lg bg-white/5 border-l-2 border-orange-400/50">
-  <div class="font-mono text-xs w-20 text-orange-400">Aug 2023</div>
-  <div class="text-xs">WarpStream 發表 — Kafka-API on S3 首發商用化</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Aug 2023</div>
+  <div style="font-size:1rem;">WarpStream 發表 — Kafka-API on S3 首發商用化</div>
+</div>
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">May 2024</div>
+  <div style="font-size:1rem;">Confluent Freight 發表</div>
+</div>
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Jul 2024</div>
+  <div style="font-size:1rem;"><strong>AutoMQ 1.0</strong> 發布 · S3 Direct 寫入</div>
+</div>
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Sep 2024</div>
+  <div style="font-size:1rem;">Confluent 收購 WarpStream — $220M</div>
+</div>
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Apr 2025</div>
+  <div style="font-size:1rem;"><strong>Aiven 提出 KIP-1150</strong> Diskless Topics</div>
+</div>
+<div class="flex items-center gap-3 py-1.5 pl-3" style="border-left:2px solid rgba(82,150,184,0.3);">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Nov 2025</div>
+  <div style="font-size:1rem;">Redpanda 發表 Cloud Topics</div>
+</div>
+<div v-click="1" class="flex items-center gap-3 mt-1 rounded-xl px-3 py-2" style="background:rgba(242,109,79,0.07);border:1.5px solid rgba(242,109,79,0.30);transition:all 0.5s ease;">
+  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#C0502E;flex-shrink:0;font-weight:800;">Mar 2026</div>
+  <div style="font-size:1rem;font-weight:700;color:#0E3F4E;">KIP-1150 正式通過 — Apache Kafka 擁抱 diskless</div>
+</div>
+<div v-click="2" class="flex items-center gap-2 mt-1 rounded-xl px-3 py-2" style="background:rgba(247,168,107,0.09);border:1.5px solid rgba(247,168,107,0.35);transition:all 0.5s ease;">
+  <mdi-check-circle style="font-size:1.2rem;color:#C97C3A;flex-shrink:0;" />
+  <div style="font-size:1rem;font-weight:600;color:#0E3F4E;"><strong>社群共識已成形</strong><br/>stateless broker · object storage 為 source of truth</div>
+</div>
 </div>
 
-<div class="flex items-center gap-3 p-1.5 rounded-lg bg-white/5 border-l-2 border-orange-400/50">
-  <div class="font-mono text-xs w-20 text-orange-400">May 2024</div>
-  <div class="text-xs">Confluent Freight 發表 — Streamative Cloud</div>
-</div>
+::right::
 
-<div class="flex items-center gap-3 p-1.5 rounded-lg bg-white/5 border-l-2 border-purple-400/50">
-  <div class="font-mono text-xs w-20 text-purple-400">Jul 2024</div>
-  <div class="text-xs"><strong>AutoMQ 1.0</strong> 發布 · S3 Direct 寫入支援</div>
-</div>
-
-<div class="flex items-center gap-3 p-1.5 rounded-lg bg-white/5 border-l-2 border-orange-400/50">
-  <div class="font-mono text-xs w-20 text-orange-400">Sep 2024</div>
-  <div class="text-xs">Confluent 收購 WarpStream —— $220M</div>
-</div>
-
-<div class="flex items-center gap-3 p-1.5 rounded-lg bg-white/5 border-l-2 border-cyan-400/50">
-  <div class="font-mono text-xs w-20 text-cyan-400">Apr 2025</div>
-  <div class="text-xs"><strong>Aiven 提出 Diskless Topics (KIP-1150)</strong></div>
-</div>
-
-<div class="flex items-center gap-3 p-1.5 rounded-lg bg-white/5 border-l-2 border-orange-400/50">
-  <div class="font-mono text-xs w-20 text-orange-400">Nov 2025</div>
-  <div class="text-xs">Redpanda 發表 Cloud Topics</div>
-</div>
-
-<div class="flex items-center gap-3 p-1.5 rounded-lg bg-green-500/10 border-l-4 border-green-400">
-  <div class="font-mono text-xs w-20 text-green-400 font-bold">Mar 2026</div>
-  <div class="text-xs font-bold text-green-400">KIP-1150 正式通過 — Apache Kafka 擁抱 diskless</div>
-</div>
-
-<div class="mt-2 text-xs">
-<Callout type="info">
-<strong>社群共識已成形</strong> · stateless broker · object storage 為 source of truth
-</Callout>
-</div>
-
-</div>
-
-<div class="col-span-2 flex justify-center items-start">
-  <div class="rounded-lg overflow-hidden shadow-2xl border border-white/10">
-    <img src="/mimir-kafka-architecture.png" class="max-h-[420px]" />
+<div class="flex justify-center items-start">
+  <div class="rounded-lg overflow-hidden shadow-lg" style="border:1px solid rgba(14,63,78,0.12);">
+    <img src="/kip1150-xiaohongshu.png" style="max-height:540px;" />
   </div>
-</div>
-
-</div>
-
-<div class="mt-1 text-xs text-center opacity-55">
-  KIP-1150 正式通過的社群公告 · Aiven / Confluent / Red Hat / IBM 等共同背書
 </div>
 
 <!--
 - 左側時間軸：這兩年 Kafka 生態正在經歷一場 diskless 浪潮
   - 從 WarpStream（2023）開局，到 KIP-1150 今年 3/2 正式通過
-- 右側截圖：小紅書上 Aiven 的 Josep / Greg 的通告 + 底下 Apache 郵件投票結果
+- 右側截圖：Aiven 的 Josep / Greg 的通告 + 底下 Apache 郵件投票結果
   - 真實感很強，這不是 PR 稿，是社群裡真人真投票
   - 9 binding votes + 5 non-binding votes
 - 結論：AutoMQ 不是冒險選擇，是走在共識已成方向上的最早一批
 -->
 
 ---
-layout: default
+layout: split
+title: AutoMQ · 重新設計的 Kafka
+ratio: "5:4"
 ---
 
-# AutoMQ · 最小改動的 Diskless Kafka 分支
+::left::
 
-<div class="mt-2 text-sm opacity-80">
-  不重寫 Kafka · 只替換 <strong class="text-white">Storage 介面</strong> — 把本地 disk 換成 object storage · 其餘與上游一致
+<img src="/automq-architecture.png" class="w-full h-full object-contain" style="border:none;box-shadow:none;background:transparent;" />
+
+::right::
+
+<div class="flex flex-col gap-3">
+
+<div class="pillar-card pillar-card--blue">
+  <div class="pillar-card__title"><mdi-database-sync />Storage / Compute 分離</div>
+  <div class="pillar-card__note">Broker stateless</div>
+  <div class="pillar-card__body">Broker 本地不存 partition data · 全部寫 S3</div>
 </div>
 
-<div class="mt-4 grid grid-cols-5 gap-4 items-center">
-
-<div class="col-span-3">
-  <img src="/kafka-vs-automq.png" class="rounded-lg shadow-2xl" />
+<div class="pillar-card pillar-card--orange">
+  <div class="pillar-card__title"><mdi-content-cut />Zero Partition Replication</div>
+  <div class="pillar-card__note">replication 流量歸零</div>
+  <div class="pillar-card__body">S3 本身多副本 · 不用 broker 之間互相 copy</div>
 </div>
 
-<div class="col-span-2 space-y-2">
-
-<div class="rounded-lg p-2.5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase tracking-widest font-bold mb-0.5">傳統 Kafka 痛點</div>
-  <ul class="text-xs opacity-90 space-y-0.5 pl-4">
-    <li>Broker <strong>有狀態</strong>（綁 local disk · 每次重啟都搬資料）</li>
-    <li><strong>Rebalance storm</strong>（加/縮 broker 觸發 partition 大遷移）</li>
-    <li>跨 AZ 流量<strong>佔大叢集 60-70% 成本</strong></li>
-  </ul>
-</div>
-
-<div class="rounded-lg p-2.5 bg-green-500/8 border border-green-400/30">
-  <div class="text-green-400 text-xs uppercase tracking-widest font-bold mb-0.5">AutoMQ 換介面 → 全解</div>
-  <ul class="text-xs opacity-90 space-y-0.5 pl-4">
-    <li>Broker → <strong>stateless</strong>（spot-friendly · 秒級 rebalance）</li>
-    <li>S3 本身多副本 → <strong>broker 間 zero replication</strong></li>
-    <li><strong>100% Kafka API</strong> · Producer / Consumer 0 改動</li>
-  </ul>
-</div>
-
+<div class="pillar-card pillar-card--red">
+  <div class="pillar-card__title"><mdi-swap-horizontal />100% Kafka API</div>
+  <div class="pillar-card__note">切換零遷移成本</div>
+  <div class="pillar-card__body">Protocol 原生支援 · 現有 Producer / Consumer 不用改</div>
 </div>
 
 </div>
 
 <!--
-- 這頁把「Kafka 三痛 + AutoMQ 解法」合併，核心訊息是**「最小介面替換」**
-- 傳統 Kafka 的三個結構性問題：有狀態 broker / rebalance storm / 跨 AZ 流量佔 60-70%
-- AutoMQ 的關鍵選擇：不重寫 Kafka，只換 Storage 介面
-  - 傳統 Kafka：PageCache + Local Disk → Consumer (Zero Copy)
-  - AutoMQ：Producer → WAL + Message Cache → S3；Consumer 從 S3 / Cache 拉
-  - API / Protocol / Client 完全不動
-- 這個「surgical replacement」框架很重要：
-  - 我們的風險小（不是賭一個新 broker 實作）
-  - Mimir / Prom 零遷移成本（Kafka API 相容）
-  - 紅利非常大（broker stateless · zero replication · 跨 AZ 流量歸零）
-- 下一頁深入跨 AZ 那條，因為那是三痛裡最狠的
+- AutoMQ 的基本構想：把 Kafka 的 local disk 換成 S3 + 小 WAL
+- 傳統 Kafka：PageCache + Local Disk → Consumer（Zero Copy）
+- AutoMQ：Producer → WAL + Message Cache → S3；Consumer 從 S3/Cache 拉（沒有 Zero Copy 但也夠快）
+- 關鍵：100% Kafka API 相容 — 我們的 Prometheus distributor / Mimir ingester 完全不用改
 -->
 
 ---
-layout: default
+layout: split
+title: 跨 AZ 流量 · 傳統 Kafka 的黑洞
+ratio: "3:2"
+footnote: "AutoMQ 官方數據：大叢集裡 <strong style='color:#F26D4F'>跨 AZ 流量佔 Kafka 總成本的 60–70%</strong> · 這筆錢不是花在你業務上，是花在 AWS 網路上"
 ---
 
-# 跨 AZ 流量 · 傳統 Kafka 的黑洞
+::left::
 
-<div class="mt-3 grid grid-cols-5 gap-5 items-center">
+<img src="/kafka-inter-zone.png" class="w-full h-full object-contain" style="border:none;box-shadow:none;background:transparent;" />
 
-<div class="col-span-3">
-  <img src="/kafka-inter-zone.png" class="rounded-lg shadow-2xl" />
+::right::
+
+<div class="flex flex-col gap-3">
+
+<div class="pillar-card pillar-card--blue">
+  <div class="pillar-card__title">① Producer → Broker</div>
+  <div class="pillar-card__body">寫入可能 hit 到其他 AZ 的 leader</div>
 </div>
 
-<div class="col-span-2 space-y-2 text-sm">
-
-<div class="rounded-lg p-2.5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase font-bold tracking-widest mb-0.5">① Producer → Broker</div>
-  <div class="text-xs opacity-85">寫入可能 hit 到其他 AZ 的 leader</div>
+<div class="pillar-card pillar-card--blue">
+  <div class="pillar-card__title">② Broker ↔ Broker Replication</div>
+  <div class="pillar-card__body">副本機制本質上<strong>幾乎必定跨 AZ</strong></div>
 </div>
 
-<div class="rounded-lg p-2.5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase font-bold tracking-widest mb-0.5">② Broker ↔ Broker Replication</div>
-  <div class="text-xs opacity-85">副本機制本質上<strong>幾乎必定跨 AZ</strong></div>
+<div class="pillar-card pillar-card--blue">
+  <div class="pillar-card__title">③ Consumer ← Broker</div>
+  <div class="pillar-card__body">Consumer 不一定跟 leader 同 AZ</div>
 </div>
 
-<div class="rounded-lg p-2.5 bg-red-500/8 border border-red-400/30">
-  <div class="text-red-400 text-xs uppercase font-bold tracking-widest mb-0.5">③ Consumer ← Broker</div>
-  <div class="text-xs opacity-85">Consumer 不一定跟 leader 同 AZ</div>
-</div>
-
-</div>
-
-</div>
-
-<div v-click class="mt-4 text-center">
-<Callout type="warn" title="AutoMQ 官方數據">
-大叢集裡 <strong class="text-red-400">跨 AZ 流量佔 Kafka 總成本的 60–70%</strong> · 這筆錢不是花在你業務上，是花在 AWS 網路上
-</Callout>
 </div>
 
 <!--
@@ -1271,96 +1185,77 @@ layout: default
 -->
 
 ---
-layout: default
+layout: image-side
+title: AutoMQ 的解法 · Zero-Zone Router
+image: /automq-zero-zone-router.png
 ---
 
-# AutoMQ 的解法 · Zero-Zone Router
+::notes::
 
-<div class="mt-3 grid grid-cols-5 gap-5 items-center">
-
-<div class="col-span-3">
-  <img src="/automq-zero-zone-router.png" class="rounded-lg shadow-2xl" />
+<div class="flex flex-col gap-2">
+<div class="flex gap-3 items-start">
+  <span style="color:#35738E;font-family:monospace;font-weight:800;font-size:1rem;flex-shrink:0;padding-top:0.1rem;">①</span>
+  <div style="font-size:1rem;">Producer 寫入<strong>本地 AZ</strong> 的 broker</div>
+</div>
+<div class="flex gap-3 items-start">
+  <span style="color:#35738E;font-family:monospace;font-weight:800;font-size:1rem;flex-shrink:0;padding-top:0.1rem;">②</span>
+  <div style="font-size:1rem;">Rack-aware Router 透過 <strong>S3</strong> 路由給 leader partition</div>
+</div>
+<div class="flex gap-3 items-start">
+  <span style="color:#35738E;font-family:monospace;font-weight:800;font-size:1rem;flex-shrink:0;padding-top:0.1rem;">③</span>
+  <div style="font-size:1rem;">其他 AZ 從 S3 同步拿 <strong>readonly 副本</strong></div>
+</div>
+<div class="flex gap-3 items-start">
+  <span style="color:#35738E;font-family:monospace;font-weight:800;font-size:1rem;flex-shrink:0;padding-top:0.1rem;">④</span>
+  <div style="font-size:1rem;">Consumer 從<strong>本地 AZ</strong> 的 readonly replica 讀取</div>
+</div>
 </div>
 
-<div class="col-span-2 space-y-1.5 text-sm">
-
-<div class="flex gap-2 items-start">
-  <span class="text-green-400 font-mono font-bold text-xs pt-0.5">①</span>
-  <div class="text-xs opacity-90">Producer 寫入 <strong>本地 AZ</strong> 的 broker</div>
-</div>
-
-<div class="flex gap-2 items-start">
-  <span class="text-green-400 font-mono font-bold text-xs pt-0.5">②</span>
-  <div class="text-xs opacity-90">Rack-aware Router 透過 <strong>S3</strong> 路由給 leader partition</div>
-</div>
-
-<div class="flex gap-2 items-start">
-  <span class="text-green-400 font-mono font-bold text-xs pt-0.5">③</span>
-  <div class="text-xs opacity-90">其他 AZ 從 S3 同步拿 <strong>readonly 副本</strong></div>
-</div>
-
-<div class="flex gap-2 items-start">
-  <span class="text-green-400 font-mono font-bold text-xs pt-0.5">④</span>
-  <div class="text-xs opacity-90">Consumer 從 <strong>本地 AZ</strong> 的 readonly replica 讀取</div>
-</div>
-
-<div class="mt-2 rounded-lg p-2.5 bg-green-500/8 border border-green-400/30">
-  <div class="text-green-400 text-xs uppercase font-bold tracking-widest mb-0.5">唯一跨 AZ 流量</div>
-  <div class="text-xs opacity-90">只有 <strong>broker ↔ S3</strong> · AWS 同 region S3 <strong class="text-green-400">免費</strong></div>
-</div>
-
-</div>
-
-</div>
-
-<div v-click class="mt-3 text-center">
-<Callout type="win" title="神來一筆的設計">
-Producer / Consumer 全部 <strong>in-AZ</strong> · 跨 AZ 流量從 60–70% 成本歸 <strong class="text-green-400">零</strong>
-</Callout>
+<div class="flex flex-col gap-1.5 rounded-2xl px-4 py-3 mt-2" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);">
+  <div class="flex items-center gap-2">
+    <mdi-check-circle style="font-size:1.3rem;color:#C97C3A;flex-shrink:0;" />
+    <div style="font-size:0.78rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;text-transform:uppercase;">唯一跨 AZ 流量</div>
+  </div>
+  <div style="font-size:1rem;font-weight:600;color:#0E3F4E;">只有 <strong>broker ↔ S3</strong> · AWS 同 region S3 免費</div>
 </div>
 
 <!--
-Zero-Zone Router 分步講解（可以慢慢講 2 分鐘）：
+Zero-Zone Router 分步講解：
 1. Producer 在 AZ2 寫入 → 只寫 AZ2 的 broker（本地，不跨 AZ）
 2. AZ2 的 Rack-aware Router 把資料透過 S3「路由」給 AZ1（leader partition 所在地）
 3. AZ1 從 S3 讀取完成寫入 · 其他 AZ 也從 S3 拿 readonly 副本
 4. Consumer 在 AZ2 讀取 → 只從 AZ2 的 readonly replica 讀（本地，不跨 AZ）
-
 關鍵：
 - Producer ↔ Broker / Consumer ↔ Broker 全部 in-AZ
 - 唯一跨 AZ 流量：broker ↔ S3，而 AWS 同 region S3 免費
 - 把傳統 Kafka 最大的帳單項目（60-70% 成本）直接砍到零
-- 這是 AutoMQ 對我們這種重度跨 AZ 部署最大的吸引力
 -->
 
 ---
-layout: default
+layout: split
+title: 容量與彈性 · 從「預留」到「按用量」
+ratio: "1:1"
 ---
 
-# 容量與彈性 · 從「預留」到「按用量」
+::left::
 
-<div class="mt-3 flex justify-center">
-  <img src="/automq-elastic-capacity.png" class="rounded-lg shadow-2xl max-h-[280px]" />
+<div class="flex justify-center">
+  <img src="/automq-elastic-capacity.png" class="rounded-lg" style="max-height:280px;" />
 </div>
 
-<div class="mt-4 grid grid-cols-2 gap-5 text-sm">
+::right::
 
-<div class="rounded-lg p-4 bg-red-500/5 border border-red-400/30">
-<div class="text-red-400 text-xs uppercase tracking-widest mb-1">Apache Kafka</div>
-<strong>Fixed Capacity · Wasted &gt; 50%</strong>
-<div class="text-xs opacity-80 mt-1">
-  Local disk 必須預先配足 peak 空間 · 平均使用率低 · scaling 以「小時」計
+<div class="flex flex-col gap-4">
+<div class="rounded-lg p-4" style="background:rgba(242,109,79,0.06);border:1px solid rgba(242,109,79,0.3);">
+  <div style="color:#C0502E;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;font-weight:700;">Apache Kafka</div>
+  <div style="font-weight:700;font-size:0.95rem;">Fixed Capacity · Wasted &gt; 50%</div>
+  <div style="font-size:0.82rem;opacity:0.75;margin-top:0.3rem;">Local disk 必須預先配足 peak 空間 · 平均使用率低 · scaling 以「小時」計</div>
 </div>
+<div class="rounded-lg p-4" style="background:rgba(53,115,142,0.07);border:1px solid rgba(53,115,142,0.35);">
+  <div style="color:#35738E;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;font-weight:700;">AutoMQ</div>
+  <div style="font-weight:700;font-size:0.95rem;">Elastic Capacity · Pay-as-you-go</div>
+  <div style="font-size:0.82rem;opacity:0.75;margin-top:0.3rem;">S3 近乎無限 · partition 搬移以「秒」計 · Broker 可用 spot · <strong>真正的 auto-scaling</strong></div>
 </div>
-
-<div class="rounded-lg p-4 bg-green-500/5 border border-green-400/30">
-<div class="text-green-400 text-xs uppercase tracking-widest mb-1">AutoMQ</div>
-<strong>Elastic Capacity · Pay-as-you-go</strong>
-<div class="text-xs opacity-80 mt-1">
-  S3 近乎無限 · partition 搬移以「秒」計 · Broker 可用 spot · <strong>真正的 auto-scaling</strong>
-</div>
-</div>
-
 </div>
 
 <!--
@@ -1371,28 +1266,25 @@ layout: default
 -->
 
 ---
-layout: default
+layout: inner
+title: 但延遲呢？— 整條鏈路才是重點
 ---
 
-# 但延遲呢？— 整條鏈路才是重點
+<div class="grid grid-cols-2 gap-4 mb-3">
 
-<div class="mt-3 grid grid-cols-2 gap-5">
-
-<div class="rounded-xl p-4 bg-cyan-500/10 border border-cyan-400/30 text-center">
+<div class="rounded-xl p-4 text-center" style="background:rgba(82,150,184,0.1);border:1px solid rgba(82,150,184,0.3);">
   <div class="text-xs uppercase tracking-widest opacity-70">Traditional Kafka · EBS</div>
-  <div class="text-5xl font-black text-cyan-400 mt-1">5–50<span class="text-2xl">ms</span></div>
+  <div class="text-5xl font-black mt-1" style="color:#5296B8;">5–50<span class="text-xl">ms</span></div>
   <div class="text-xs opacity-70 mt-1">Produce ACK P99</div>
 </div>
 
-<div class="rounded-xl p-4 bg-purple-500/10 border border-purple-400/30 text-center">
+<div class="rounded-xl p-4 text-center" style="background:rgba(247,168,107,0.1);border:1px solid rgba(247,168,107,0.35);">
   <div class="text-xs uppercase tracking-widest opacity-70">AutoMQ · S3Stream</div>
-  <div class="text-5xl font-black text-purple-400 mt-1">500<span class="text-2xl">ms</span>–2<span class="text-2xl">s</span></div>
+  <div class="text-5xl font-black mt-1" style="color:#F7A86B;">500<span class="text-xl">ms</span>–2<span class="text-xl">s</span></div>
   <div class="text-xs opacity-70 mt-1">Produce ACK P99</div>
 </div>
 
 </div>
-
-<div class="mt-4">
 
 ```mermaid {theme: 'dark', scale: 0.72}
 flowchart LR
@@ -1409,9 +1301,7 @@ flowchart LR
   scrape → distributor → kafka → ingester → 可讀 · 加上長尾抖動 · <strong>最慢可能 30s 才能查到</strong>
 </div>
 
-</div>
-
-<div v-click class="mt-4">
+<div v-click class="mt-3">
 <Callout type="win" title="為什麼我們敢接受 10×延遲">
 Alert / HPA / KEDA <strong>繼續走 Prom Server</strong>（毫秒級）<br/>
 Mimir 是「秒級」長期後端 · 業務不會因 AutoMQ 延遲受影響 · <strong>這是前面保留 Prom Server 的回報</strong>
@@ -1419,7 +1309,7 @@ Mimir 是「秒級」長期後端 · 業務不會因 AutoMQ 延遲受影響 · <
 </div>
 
 <!--
-- 很多人第一眼看到「500ms–2s」會嚇到
+- 很多人第一眼看到 500ms–2s 會嚇到
 - 但關鍵是整條鏈路：
   - scrape interval 本身就 15-30s
   - remote_write 本身有 batch 延遲
@@ -1430,11 +1320,13 @@ Mimir 是「秒級」長期後端 · 業務不會因 AutoMQ 延遲受影響 · <
   - 短期查詢 / alert / HPA / KEDA 都走 Prom（毫秒）
   - 長期查詢走 Mimir（秒級可接受）
   - 10× 延遲的代價換來跨 AZ 流量歸零 + 運維解放 + 10× 成本結構差異
-- 這是典型的 engineering tradeoff：**知道自己在意什麼，才能做聰明的取捨**
+- 典型的 engineering tradeoff：知道自己在意什麼，才能做聰明的取捨
 -->
 
 ---
-layout: section
+layout: section-blue
+chapter: "04"
+parent: Thanos → Mimir 3.0
 ---
 
 # 成本效能實戰成果
@@ -1442,46 +1334,42 @@ layout: section
 <div class="mt-6 opacity-60">數字說話，數字也認清規模差異</div>
 
 <!--
-這段放輕鬆一點
-但要提醒：每家環境不同，數字僅供參考
+進入成果展示段
+這段要放輕鬆一點，讓聽眾有「哇」的反應
 -->
 
 ---
-layout: default
+layout: split
+title: 實測效能對比
+ratio: "2:3"
 ---
 
-# 實測效能對比
+::left::
 
-<div class="mt-4 grid grid-cols-2 gap-6 items-center">
+<h3 class="!text-sm mb-2" style="color:#F7A86B;">測試設計</h3>
 
-<div>
-
-<h3 class="!text-sm !text-orange-400 mb-2">測試設計</h3>
-
-<div class="text-sm opacity-85 space-y-1.5">
-<div>· 同一 production 環境 · 相同 tenant</div>
-<div>· <strong>8 種 query × 6 個時間範圍 = 48 組</strong></div>
-<div>· Cache busting（random offset）排除 cache hit 誤差</div>
-<div>· 1h → 30d 時間範圍全覆蓋</div>
+<div class="text-sm opacity-85 flex flex-col gap-1.5">
+  <div>· 同一 production 環境 · 相同 tenant</div>
+  <div>· <strong>8 種 query × 6 個時間範圍 = 48 組</strong></div>
+  <div>· Cache busting（random offset）排除 cache hit 誤差</div>
+  <div>· 1h → 30d 時間範圍全覆蓋</div>
 </div>
 
-<div class="mt-4 text-sm">
-  <div class="opacity-75">Mimir 勝出：</div>
-  <div class="text-xl font-bold text-green-400 mt-1">45 / 48 tests</div>
+<div class="mt-4">
+  <div class="text-sm opacity-75">Mimir 勝出：</div>
+  <div class="text-2xl font-bold mt-1" style="color:#35738E;">45 / 48 tests</div>
 </div>
 
-</div>
+::right::
 
 <div class="grid grid-cols-2 gap-3">
-  <Stat value="3.4×" label="平均查詢加速" accent="green" />
-  <Stat value="16.7×" label="Cross-metric Join 30d" accent="orange" />
-  <Stat value="8.4×" label="High-cardinality 1h" accent="purple" />
-  <Stat value="6.3×" label="長期 30d 查詢" accent="cyan" />
+  <Stat value="3.4×" label="平均查詢加速" accent="orange" />
+  <Stat value="16.7×" label="Cross-metric Join 30d" accent="red" />
+  <Stat value="8.4×" label="High-cardinality 1h" accent="sky" />
+  <Stat value="6.3×" label="長期 30d 查詢" accent="blue" />
 </div>
 
-</div>
-
-<div v-click class="mt-4 text-center text-sm">
+<div v-click class="mt-3">
 <Callout type="info" title="最反直覺的發現">
 <strong>長期查詢 Mimir 優勢反而更大</strong>（30d = 6.3×）· 顛覆了「Thanos 擅長長期」的迷思
 </Callout>
@@ -1496,28 +1384,34 @@ layout: default
 -->
 
 ---
-layout: fact
+layout: inner
+align: center
 ---
 
-# ~49% 更便宜
+<div class="text-center w-full">
 
-<div class="mt-4 text-2xl opacity-85 font-normal">
+<h1 class="!text-8xl !mb-6" style="color:#F26D4F;letter-spacing:-0.04em;">~49% 更便宜</h1>
+
+<div class="text-xl opacity-80 mb-8">
   3 週 AWS 帳單實測
 </div>
 
-<div class="mt-10 text-xl opacity-75 font-normal">
-  <span class="text-orange-400 font-bold">3.4× 更快</span> · 
-  <span class="text-orange-400 font-bold">45 / 48 測試勝出</span> · 
-  <span class="text-orange-400 font-bold">~6× 性價比</span>
+<div class="flex items-center justify-center gap-6 text-xl opacity-90">
+  <span class="font-black" style="color:#F7A86B;">3.4× 更快</span>
+  <span class="opacity-40">·</span>
+  <span class="font-black" style="color:#F26D4F;">~49% 更便宜</span>
+  <span class="opacity-40">·</span>
+  <span class="font-black" style="color:#F7A86B;">~6× 性價比</span>
 </div>
 
-<div class="mt-10 text-sm opacity-60 max-w-2xl mx-auto font-normal">
+<!-- <div class="mt-10 text-sm opacity-60 max-w-2xl mx-auto">
   每家環境量級不同，數字僅供參考<br/>
   我們自己的 annual saving 大約落在 <strong>幾十萬美金</strong>量級
+</div> -->
+
 </div>
 
 <!--
-講法：
 - 3 週生產環境並行，AWS Cost Explorer 真實帳單
 - Thanos 這邊 EC2 instance 吃掉大頭（Store Gateway 重度 compute）
 - Mimir + AutoMQ：EC2 instance 省掉一大截
@@ -1527,72 +1421,75 @@ layout: fact
 -->
 
 ---
-layout: section
+layout: section-blue
+chapter: "05"
+parent: Thanos → Mimir 3.0
 ---
 
-# 下一站<br/>可觀測性 2.0?
+# 下一站 —<br/>可觀測性 2.0?
 
 <div class="mt-6 opacity-60">PromCon 2025 帶回來的新東西</div>
 
 <!--
-最後一段 — 帶禮物回家
-聽眾離開時會覺得「我學到新東西，還想回去研究」
+進入最後一段
+這段是「帶禮物回家」的段落
+讓聽眾覺得「我學到新東西，還想回去研究」
 -->
 
 ---
-layout: default
+layout: inner
+title: 可觀測性 2.0 的訊號
+
+align: start
 ---
 
-# 可觀測性 2.0 的訊號
+<div class="obs-signals w-full flex flex-col flex-1 min-h-0">
 
-<div class="mt-2 text-base opacity-80">
-  把 <strong class="text-white">logs / traces / metrics</strong> 全部倒進 <strong class="text-white">DataWarehouse / DataLake</strong>，用統一查詢引擎交叉分析
+<div class="hl-banner">
+  <mdi-lightbulb-on class="hl-banner__icon" />
+  <div>
+    把 <strong>logs / traces / metrics</strong> 全部倒進 <strong>DataWarehouse / DataLake</strong>，用統一查詢引擎交叉分析
+  </div>
 </div>
-
-<div class="mt-3">
 
 <Callout type="info" title="技術主張 · Charity Majors (Honeycomb CTO)">
 <strong>單一事實來源 = Wide Events</strong>（富語境的結構化事件） · metrics / logs / traces 全部從同一份 event 推導出來
 </Callout>
 
+<div class="hl-grid hl-grid--2">
+
+<div class="hl-card hl-card--pos">
+  <div class="hl-card__num">01</div>
+  <div class="hl-card__kicker">✨ 真正在動的勢頭</div>
+  <ul class="list-disc opacity-95">
+    <li><strong>Honeycomb</strong> — wide events 派先驅，商用化 Scuba 的理念</li>
+    <li><strong>ClickHouse / ClickStack</strong> — OTel-native 開源 stack，2025 正式上 ClickHouse Cloud</li>
+    <li><strong>ClickHouse 自家</strong>：observability 平台撐到 <strong>100 PB+</strong>，部分場景已用 wide events 取代 OTel</li>
+    <li><strong>GreptimeDB · Pinot · DuckDB · InfluxDB IOx</strong> — 一整批 OLAP 為底的新玩家</li>
+    <li><strong>Iceberg / Delta Lake</strong> — open lake format 成為匯流點，多引擎同倉分析</li>
+  </ul>
 </div>
 
-<div class="mt-4 grid grid-cols-2 gap-5">
-
-<div class="rounded-lg p-3 bg-cyan-500/5 border border-cyan-400/25">
-
-<div class="text-cyan-400 text-xs uppercase tracking-widest font-bold mb-2">✨ 真正在動的勢頭</div>
-
-<ul class="text-xs opacity-90 space-y-1.5 pl-4">
-  <li><strong>Honeycomb</strong> — wide events 派先驅，商用化 Scuba 的理念</li>
-  <li><strong>ClickHouse / ClickStack</strong> — OTel-native 開源 stack，2025 正式上 ClickHouse Cloud</li>
-  <li><strong>ClickHouse 自家</strong>：observability 平台撐到 <strong>100 PB+</strong>，部分場景已用 wide events 取代 OTel</li>
-  <li><strong>GreptimeDB · Pinot · DuckDB · InfluxDB IOx</strong> — 一整批 OLAP 為底的新玩家</li>
-  <li><strong>Iceberg / Delta Lake</strong> — open lake format 成為匯流點，多引擎同倉分析</li>
-</ul>
-
-</div>
-
-<div class="rounded-lg p-3 bg-red-500/5 border border-red-400/25">
-
-<div class="text-red-400 text-xs uppercase tracking-widest font-bold mb-2">🧱 為什麼 Prom 生態沒被取代</div>
-
-<ul class="text-xs opacity-90 space-y-1.5 pl-4">
-  <li>PromQL + dashboards + alerts + HPA / KEDA <strong>整個生態綁得太深</strong></li>
-  <li>SQL ↔ PromQL 心智模型差異 · 換一次 = <strong>所有 runbook 重寫</strong></li>
-  <li>OpenTelemetry semantic conventions 仍在 stabilize · wide event schema 還未定型</li>
-  <li>大部分團隊<strong>先解 cost，再談 paradigm</strong> · 換 observability vendor 成本驚人</li>
-  <li>Prom 的 alert / HPA / KEDA 穩定性 SLA 還沒有 OLAP 引擎能完整取代</li>
-</ul>
-
+<div class="hl-card hl-card--neg">
+  <div class="hl-card__num">02</div>
+  <div class="hl-card__kicker">🧱 為什麼 Prom 生態沒被取代</div>
+  <ul class="list-disc opacity-95">
+    <li>PromQL + dashboards + alerts + HPA / KEDA <strong>整個生態綁得太深</strong></li>
+    <li>SQL ↔ PromQL 心智模型差異 · 換一次 = <strong>所有 runbook 重寫</strong></li>
+    <li>OpenTelemetry semantic conventions 仍在 stabilize · wide event schema 還未定型</li>
+    <li>大部分團隊<strong>先解 cost，再談 paradigm</strong> · 換 observability vendor 成本驚人</li>
+    <li>Prom 的 alert / HPA / KEDA 穩定性 SLA 還沒有 OLAP 引擎能完整取代</li>
+  </ul>
 </div>
 
 </div>
 
-<div v-click class="mt-3 text-center">
+<div v-click class="text-center flex-shrink-0">
 <Callout type="win">
-但 Prometheus 生態 <strong class="text-orange-400">內部</strong> 也在吸收 wide-event / columnar 的核心價值 → 下一頁：<strong>Parquet Gateway</strong>
+但 Prometheus 生態 <strong style="color:#F7A86B;">內部</strong> 也在吸收 wide-event / columnar 的核心價值 → 下一頁：<strong>Parquet Gateway</strong>
 </Callout>
+</div>
+
 </div>
 
 <!--
@@ -1613,94 +1510,90 @@ layout: default
 -->
 
 ---
-layout: default
+layout: image-callout-split
+title: PromCon 2025 · Parquet Gateway
+align: start
+ratioLeft: 5
+ratioRight: 4
+stackV: top
 ---
 
-# PromCon 2025 · Parquet Gateway
-
-<div class="mt-3 grid grid-cols-5 gap-5 items-center">
-
-<div class="col-span-2">
-  <div class="rounded-lg bg-white/95 p-2 shadow-2xl">
-    <img src="/parquet-gateway-speakers.png" class="rounded w-full" />
-  </div>
-  <div class="text-xs text-center opacity-55 mt-1.5">Grafana · Cloudflare · AWS 同台</div>
-</div>
-
-<div class="col-span-3 space-y-3">
-
 <Callout type="info" title="三大社群聯合發聲">
-<strong>Cortex · Thanos · Mimir</strong> 核心 maintainer 首次同台 — 宣告下一代 Prometheus 長期儲存共同方向
+  <strong>Cortex · Thanos · Mimir</strong> 核心 maintainer <strong>首次</strong>同台 — 宣告下一代 Prometheus 長期儲存共同方向
 </Callout>
 
-<div class="rounded-lg p-3 bg-green-500/10 border border-green-400/30">
-  <div class="text-xs uppercase tracking-widest text-green-400 font-bold mb-1">共同 Artifact</div>
-  <div class="font-mono text-sm"><strong>prometheus-community / parquet-common</strong></div>
-  <ul class="mt-2 text-xs opacity-85 space-y-0.5 pl-4">
-    <li>Passes <strong>100%</strong> PromQL acceptance tests ✅</li>
-    <li>Built-in Queryable implementation</li>
-    <li>TSDB block → Parquet schema converter</li>
+::left::
+
+<img class="pg-parquet__img" src="/parquet-gateway-speakers.png" alt="" />
+
+<div class="text-xs text-center" style="color:#6BAEBE">Grafana · Cloudflare · AWS 同台</div>
+
+::right::
+
+<div class="pg-artifact">
+  <div class="pg-artifact__kicker font-mono">prometheus-community / parquet-common</div>
+  <div class="pg-artifact__title-badge">共同 Artifact</div>
+  <ul class="icon-list li-lg pg-artifact__list">
+    <li><mdi-check-decagram /><span>Passes <strong>100%</strong> PromQL acceptance tests ✅</span></li>
+    <li><mdi-database-search /><span>Built-in Queryable implementation</span></li>
+    <li><mdi-swap-horizontal-variant /><span>TSDB block → Parquet schema converter</span></li>
   </ul>
 </div>
 
-</div>
+::after::
 
-</div>
-
-<div v-click class="mt-4">
-<div class="text-xs uppercase tracking-widest opacity-60 text-center mb-2">Parquet Common 實測</div>
-<div class="grid grid-cols-4 gap-3">
-
-<Stat value="83.6%" label="Faster queries" accent="green" />
-<Stat value="89.3%" label="Less bucket GET-range" accent="cyan" />
-<Stat value="72.4%" label="Less memory" accent="purple" />
-<Stat value="41.6%" label="Fewer allocations" accent="orange" />
-
-</div>
+<div class="pg-parquet-stats grid grid-cols-4 gap-1.5 w-full max-w-6xl mx-auto">
+  <Stat value="83.6%" label="Faster queries" accent="orange" />
+  <Stat value="89.3%" label="Less bucket GET-range" accent="blue" />
+  <Stat value="72.4%" label="Less memory" accent="sky" />
+  <Stat value="41.6%" label="Fewer allocations" accent="ink" />
 </div>
 
 <!--
 - 三家同台本身就是 message：Cortex / Thanos / Mimir 過去是競爭關係，現在合流推 Parquet Gateway
 - 源頭：Shopify Filip Petkovski 的 Thanos Parquet PoC → Cloudflare parquet-tsdb-poc → 匯流到 prometheus-community/parquet-common 共享 library
 - 100% PromQL acceptance tests — 不是新語法，是既有 PromQL 原汁原味
-- 四個數字（83.6% faster、89.3% less GET-range、72.4% less memory、41.6% fewer allocations）是 Parquet Common 這半年的實測進展
-- 下一頁接 First-principles：為什麼 TSDB 在 S3 上天生不對
+- Parquet Common 實測四格數字已併入本頁；下一張接 banner 敘事
 -->
 
+
+
 ---
-layout: default
+layout: inner
+title: 為什麼 TSDB 不適合 Object Storage?
+align: start
 ---
 
-# 為什麼 TSDB 不適合 Object Storage?
+<div class="tsdb-os w-full flex flex-col flex-1 min-h-0 gap-2">
 
-<div class="mt-3 grid grid-cols-3 gap-3 text-xs">
+<div class="grid grid-cols-3 gap-2 text-xs leading-snug">
 
-<div class="rounded-lg p-2.5 bg-cyan-500/8 border border-cyan-400/25">
-  <div class="text-cyan-400 uppercase tracking-widest font-bold mb-1">I/O 經濟學</div>
+<div class="rounded-lg p-2.5" style="background:rgba(82,150,184,0.08);border:1.5px solid rgba(173,211,216,0.55);">
+  <div class="uppercase tracking-widest font-bold mb-1" style="color:#35738E;font-size:0.65rem;">I/O 經濟學</div>
   SSD random read <code>~100μs</code><br/>
-  S3 random read <code class="text-red-400">~10–50ms</code><br/>
-  <strong class="text-orange-400">差異 100–500×</strong>
+  S3 random read <code style="color:#F26D4F;">~10–50ms</code><br/>
+  <strong style="color:#F7A86B;">差異 100–500×</strong>
 </div>
 
-<div class="rounded-lg p-2.5 bg-red-500/8 border border-red-400/25">
-  <div class="text-red-400 uppercase tracking-widest font-bold mb-1">TSDB on S3</div>
-  <div class="text-lg font-bold text-red-400">100+ random GETs</div>
-  <div class="opacity-80 mt-0.5">每個 GET 都是 HTTP round-trip</div>
+<div class="rounded-lg p-2.5" style="background:rgba(242,109,79,0.08);border:1.5px solid rgba(242,109,79,0.35);">
+  <div class="uppercase tracking-widest font-bold mb-1" style="color:#F26D4F;font-size:0.65rem;">TSDB on S3</div>
+  <div class="font-bold" style="font-size:1.1rem;color:#F26D4F;">100+ random GETs</div>
+  <div class="opacity-80 mt-0.5" style="font-size:0.72rem;">每個 GET 都是 HTTP round-trip</div>
 </div>
 
-<div class="rounded-lg p-2.5 bg-green-500/8 border border-green-400/25">
-  <div class="text-green-400 uppercase tracking-widest font-bold mb-1">Parquet on S3</div>
-  <div class="text-lg font-bold text-green-400">3–4 sequential reads</div>
-  <div class="opacity-80 mt-0.5">Row-group index + columnar skip</div>
+<div class="rounded-lg p-2.5" style="background:rgba(82,150,184,0.1);border:1.5px solid rgba(82,150,184,0.38);">
+  <div class="uppercase tracking-widest font-bold mb-1" style="color:#35738E;font-size:0.65rem;">Parquet on S3</div>
+  <div class="font-bold" style="font-size:1.1rem;color:#5296B8;">3–4 sequential reads</div>
+  <div class="opacity-80 mt-0.5" style="font-size:0.72rem;">Row-group index + columnar skip</div>
 </div>
 
 </div>
 
-<div class="mt-4 grid grid-cols-2 gap-4">
+<div class="tsdb-os__cols2 grid grid-cols-2 gap-3">
 
-<div class="rounded-lg p-3 bg-red-500/5 border border-red-400/20">
-  <div class="text-red-400 text-xs uppercase tracking-widest font-bold mb-2">TSDB 的結構性不對</div>
-  <ul class="text-xs opacity-90 space-y-1 pl-4">
+<div class="rounded-lg p-2.5" style="background:rgba(242,109,79,0.06);border:1.5px solid rgba(242,109,79,0.28);">
+  <div class="uppercase tracking-widest font-bold mb-1.5" style="color:#F26D4F;font-size:0.65rem;">TSDB 的結構性不對</div>
+  <ul class="list-disc pl-4 space-y-0.5 opacity-95">
     <li>S3 本質：<strong>高 TTFB + 高 throughput</strong>（適合大塊順讀、怕小塊隨讀）</li>
     <li>TSDB 強制<strong>按 timeseries sequential materialize</strong></li>
     <li>資料有序，但排序方向不利於跳讀</li>
@@ -1709,9 +1602,9 @@ layout: default
   </ul>
 </div>
 
-<div class="rounded-lg p-3 bg-red-500/5 border border-red-400/20">
-  <div class="text-red-400 text-xs uppercase tracking-widest font-bold mb-2">Store Gateway 的連鎖代價</div>
-  <ul class="text-xs opacity-90 space-y-1 pl-4">
+<div class="rounded-lg p-2.5" style="background:rgba(242,109,79,0.06);border:1.5px solid rgba(242,109,79,0.28);">
+  <div class="uppercase tracking-widest font-bold mb-1.5" style="color:#F26D4F;font-size:0.65rem;">Store Gateway 的連鎖代價</div>
+  <ul class="list-disc pl-4 space-y-0.5 opacity-95">
     <li>昂貴的本地 disk cost（index header / cache）</li>
     <li>Sync 時間長（restart / scale 都要等）</li>
     <li>可用性風險（disk 壞 = 段查詢掛）</li>
@@ -1722,10 +1615,12 @@ layout: default
 
 </div>
 
-<div v-click class="mt-3 text-center">
+<div v-click class="text-center flex-shrink-0">
 <Callout type="win">
-<strong class="text-orange-400">Request 數量才是成本，不是 bytes 數量</strong> · Parquet + 無狀態 querier → Store Gateway 的四項代價一次解掉
+<strong style="color:#F7A86B;">Request 數量才是成本，不是 bytes 數量</strong> · Parquet + 無狀態 querier → Store Gateway 的四項代價一次解掉
 </Callout>
+</div>
+
 </div>
 
 <!--
@@ -1741,55 +1636,65 @@ First-principles + 三家共痛：
 -->
 
 ---
-layout: end
+layout: inner
+align: center
 ---
 
+<div class="end-page w-full flex flex-col items-center gap-8">
+
 <div class="text-center">
-
-<h1 class="!text-6xl !font-black">謝謝聆聽</h1>
-
-<div class="mt-4 text-lg opacity-85">
-  Thanos → Mimir 3.0 → AutoMQ → Parquet Gateway
+  <h1 class="!text-7xl !font-black !mb-3" style="letter-spacing:-0.04em;">謝謝聆聽</h1>
+  <div class="text-lg font-mono tracking-wide">
+    Thanos → Mimir 3.0 → AutoMQ → <span class="font-bold text-rose-400">Parquet Gateway</span>
+  </div>
 </div>
 
-<div class="mt-10 grid grid-cols-3 gap-5 text-sm max-w-3xl mx-auto">
+<div class="hl-grid hl-grid--3 w-full max-w-5xl">
 
-<div class="rounded-lg p-4 bg-white/5 border border-white/10">
-  <div class="text-orange-400 font-bold mb-1">選型</div>
-  <div class="opacity-80 text-xs leading-relaxed">理解瓶頸在哪裡<br/>比追新技術更重要</div>
+<div class="hl-card">
+  <div class="hl-card__num">01</div>
+  <div class="hl-card__kicker">選型</div>
+  <div class="hl-card__title">理解瓶頸</div>
+  <div class="hl-card__sub">理解瓶頸在哪裡<br/>比追新技術更重要</div>
 </div>
 
-<div class="rounded-lg p-4 bg-white/5 border border-white/10">
-  <div class="text-purple-400 font-bold mb-1">架構</div>
-  <div class="opacity-80 text-xs leading-relaxed">Stateless 是<br/>運維自由的基礎</div>
+<div class="hl-card">
+  <div class="hl-card__num">02</div>
+  <div class="hl-card__kicker">架構</div>
+  <div class="hl-card__title">Stateless First</div>
+  <div class="hl-card__sub">Stateless 是<br/>運維自由的基礎</div>
 </div>
 
-<div class="rounded-lg p-4 bg-white/5 border border-white/10">
-  <div class="text-cyan-400 font-bold mb-1">心態</div>
-  <div class="opacity-80 text-xs leading-relaxed">Time-sensitive selection<br/>永遠在演進</div>
+<div class="hl-card hl-card--neg">
+  <div class="hl-card__num">03</div>
+  <div class="hl-card__kicker">心態</div>
+  <div class="hl-card__title">Time-Sensitive</div>
+  <div class="hl-card__sub">今天的最優解<br/>可能是明天的 legacy</div>
 </div>
 
 </div>
 
-<div class="mt-10 text-base opacity-90">
-  技術選型永遠是 <strong class="text-orange-400">time-sensitive</strong> 的
+<div class="hl-banner w-full max-w-4xl">
+  <mdi-compass-outline class="hl-banner__icon" />
+  <div>
+    技術選型永遠是 <strong>time-sensitive</strong> — 保持好奇、保持懷疑、保持實驗
+  </div>
 </div>
 
-<div class="mt-2 text-sm opacity-60 max-w-2xl mx-auto">
-  我們今天的最優解，可能是明天的 legacy<br/>
-  保持好奇 · 保持懷疑 · 保持實驗
-</div>
-
-<div class="mt-10 text-xs opacity-60">
-  Mike Hsu · <code>mike.hsu@opennet.tw</code>
+<div class="end-page__contact">
+  <mdi-email-outline />
+  <span>Mike Hsu</span>
+  <span class="end-page__dot">·</span>
+  <code>mike.hsu@opennet.tw</code>
 </div>
 
 </div>
 
 <!--
 結語：
-- 三個 takeaway 是整場精華
-- time-sensitive selection：2024-2025 選 Mimir 是對的，2027 可能是 Parquet-based 的什麼
-- 保持學習 · 保持懷疑 · 保持實驗
+- 三個 takeaway 是整場演講的精華
+- "time-sensitive selection" 這個 takeaway 很重要
+- 我們 2024-2025 年選 Mimir 是對的，但 2027 年的最優解可能是 Parquet-based 的什麼
+- 保持學習、保持懷疑、保持實驗
 - QA 時間
 -->

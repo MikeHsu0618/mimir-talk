@@ -9,17 +9,27 @@ importers:
   .:
     dependencies:
       '@slidev/cli':
-        specifier: ^0.49.0
+        specifier: ^0.49.29
         version: 0.49.29(@babel/parser@7.29.2)(@nuxt/kit@3.21.2)(@types/markdown-it@14.1.2)(@types/node@18.19.130)(@vue/compiler-sfc@3.5.32)(playwright-chromium@1.59.1)(postcss@8.5.10)(rollup@4.60.1)
       '@slidev/theme-default':
         specifier: latest
         version: 0.25.0
+      '@slidev/types':
+        specifier: 0.49.29
+        version: 0.49.29(@nuxt/kit@3.21.2)(@vue/compiler-sfc@3.5.32)(postcss@8.5.10)(rollup@4.60.1)(typescript@5.9.3)(vite@5.4.21(@types/node@18.19.130))
       playwright-chromium:
         specifier: ^1.47.0
         version: 1.59.1
       vue:
-        specifier: ^3.5.0
+        specifier: ^3.5.12
         version: 3.5.32(typescript@5.9.3)
+    devDependencies:
+      '@iconify-json/carbon':
+        specifier: ^1.2.20
+        version: 1.2.20
+      '@iconify-json/mdi':
+        specifier: ^1.2.0
+        version: 1.2.3
 
 packages:
 
@@ -630,6 +640,9 @@ packages:
 
   '@iconify-json/carbon@1.2.20':
     resolution: {integrity: sha512-wqyxKEbIRdzGdfCAwQqn8iSfO6jx0m1toZAAQdx1NFjxd6iFl1YY4eKI1woWt7XOxs7s7phMW530kDD867JZGw==}
+
+  '@iconify-json/mdi@1.2.3':
+    resolution: {integrity: sha512-O3cLwbDOK7NNDf2ihaQOH5F9JglnulNDFV7WprU2dSoZu3h3cWH//h74uQAB87brHmvFVxIOkuBX2sZSzYhScg==}
 
   '@iconify-json/ph@1.2.2':
     resolution: {integrity: sha512-PgkEZNtqa8hBGjHXQa4pMwZa93hmfu8FUSjs/nv4oUU6yLsgv+gh9nu28Kqi8Fz9CCVu4hj1MZs9/60J57IzFw==}
@@ -3576,6 +3589,10 @@ snapshots:
   '@floating-ui/utils@0.2.11': {}
 
   '@iconify-json/carbon@1.2.20':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/mdi@1.2.3':
     dependencies:
       '@iconify/types': 2.0.0
 
