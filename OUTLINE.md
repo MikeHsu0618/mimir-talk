@@ -3,7 +3,7 @@
 > **講者**：Mike Hsu
 > **場合**：PromConf Taiwan 2026
 > **時長**：40 分鐘
-> **核心故事**：AI 時代對可觀測性基礎設施的壓力 → Thanos 架構撞牆 → 選型思考 → Mimir 3.0 + AutoMQ 實戰 → 成本效能實測 → Parquet Gateway 的未來
+> **核心故事**：AI 時代觀測者變 agent → Thanos 垂直撞牆 → 三維度選型 → Mimir 3.0 Ingest Storage → AutoMQ 跨 AZ 歸零 → 延遲伏筆回收 → 成本實測 → Parquet Gateway 的未來
 
 ---
 

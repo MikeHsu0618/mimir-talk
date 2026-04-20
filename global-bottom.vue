@@ -1,6 +1,6 @@
 <template>
   <footer class="slide-footer">
-    <span class="footer-title">PromConf Taiwan 2026</span>
+    <span class="footer-title">Observability Day 2026</span>
     <span class="footer-author">Mike Hsu</span>
   </footer>
 </template>

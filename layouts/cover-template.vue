@@ -5,7 +5,7 @@
 
     <div class="top-bar">
       <span class="arrow-deco">————→</span>
-      <span class="event-name">PromConf Taiwan 2026</span>
+      <span class="event-name">Observability Day 2026</span>
     </div>
 
     <div class="content">
