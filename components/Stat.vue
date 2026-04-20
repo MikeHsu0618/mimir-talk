@@ -1,50 +1,66 @@
-<script setup lang="ts">
-defineProps<{
-  value: string
-  label: string
-  accent?: 'orange' | 'green' | 'red' | 'cyan' | 'purple'
-}>()
-</script>
-
 <template>
-  <div class="stat-card" :class="accent ?? 'orange'">
-    <div class="value">{{ value }}</div>
-    <div class="label">{{ label }}</div>
+  <div class="stat-card">
+    <div class="stat-value" :class="accentClass">{{ value }}</div>
+    <div class="stat-label">{{ label }}</div>
   </div>
 </template>
 
+<script setup lang="ts">
+import { computed } from 'vue'
+
+const props = defineProps<{
+  value: string
+  label: string
+  accent?: 'default' | 'blue' | 'ink' | 'sky' | 'orange' | 'red' | 'cyan' | 'green' | 'purple'
+}>()
+
+const accentClass = computed(() => {
+  const map: Record<string, string> = {
+    blue: 'accent-blue',
+    ink: 'accent-ink',
+    sky: 'accent-sky',
+    orange: 'accent-orange',
+    red: 'accent-red',
+    cyan: 'accent-sky',
+    green: 'accent-ink',
+    purple: 'accent-blue',
+  }
+  return props.accent ? (map[props.accent] ?? '') : ''
+})
+</script>
+
 <style scoped>
 .stat-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #141a2e;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 1.2em 1.8em;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  padding: 2.25rem 1.25rem 2rem;
+  border: 1.5px solid rgba(173, 211, 216, 0.65);
+  border-radius: 16px;
+  background: rgba(255, 250, 247, 0.85);
+  box-shadow: 0 2px 18px rgba(14, 63, 78, 0.07);
+  container-type: inline-size;
+  overflow: hidden;
 }
 
-.value {
-  font-size: 3em;
+.stat-value {
+  font-size: clamp(2.5rem, 30cqw, 6rem);
   font-weight: 900;
   line-height: 1;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  letter-spacing: -0.03em;
+  color: #0E3F4E;
+  white-space: nowrap;
 }
 
-.stat-card.orange .value { background-image: linear-gradient(135deg, #f46800 0%, #ff9b44 100%); }
-.stat-card.green  .value { background-image: linear-gradient(135deg, #52c41a 0%, #95de64 100%); }
-.stat-card.red    .value { background-image: linear-gradient(135deg, #f5222d 0%, #ff7a7a 100%); }
-.stat-card.cyan   .value { background-image: linear-gradient(135deg, #42a5f5 0%, #90caf9 100%); }
-.stat-card.purple .value { background-image: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%); }
-
-.label {
-  font-size: 0.85em;
-  color: #94a0b8;
-  margin-top: 0.5em;
-  letter-spacing: 0.03em;
-  text-align: center;
+.stat-label {
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  color: #6BAEBE;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
+
+.accent-sky    { color: #6BAEBE; }
+.accent-ink    { color: #35738E; }
+.accent-blue   { color: #5296B8; }
+.accent-orange { color: #F7A86B; }
+.accent-red    { color: #F26D4F; }
 </style>
