@@ -320,19 +320,20 @@ flowchart LR
 
 ::right::
 
-<div v-click class="text-center">
-  <div class="rounded-2xl p-5 bg-red-500/10 border-2 border-red-400/50">
-    <div class="text-xs uppercase tracking-widest opacity-60 mb-1">Single Prometheus Pod</div>
-    <div class="text-7xl font-black text-red-400 leading-none">512</div>
-    <div class="text-base mt-1 opacity-90">GiB RAM</div>
-    <div class="text-xs mt-3 opacity-75 leading-relaxed">
-      <strong>Prometheus:</strong> 400+ GiB<br/>
-      <strong>Thanos Sidecar:</strong> 數十 GiB
+<div v-click class="h-full">
+  <div class="h-full rounded-[18px] px-8 pt-8 pb-7 flex flex-col" style="background:linear-gradient(160deg,rgba(242,109,79,0.10) 0%,rgba(255,250,247,0.55) 100%);border:1.5px solid rgba(242,109,79,0.30);color:#0E3F4E;box-shadow:0 4px 20px rgba(14,63,78,0.06);">
+    <div class="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full w-fit" style="color:#C0502E;border:1.5px solid #C0502E;">Single Prometheus Pod</div>
+    <div class="mt-8 text-[9rem] leading-[0.86] font-black" style="color:#F26D4F;letter-spacing:-0.03em;">512</div>
+    <div class="text-[2rem] leading-none font-semibold -mt-1" style="color:#0E3F4E;">GiB RAM</div>
+    <div class="mt-6 border-t" style="border-color:rgba(14,63,78,0.12);"></div>
+    <div class="mt-6 text-[1rem] leading-relaxed">
+      <div><strong>Prometheus</strong> 400+ GiB</div>
+      <div><strong>Sidecar</strong> 數十 GiB</div>
+    </div>
+    <div class="mt-auto pt-6 text-sm leading-relaxed italic opacity-75">
+      Sidecar 幫短期查詢扛 remote-read buffer，<strong>記憶體壓力被放大。</strong>
     </div>
   </div>
-  <!-- <div v-click class="text-xs opacity-75 mt-3 leading-relaxed">
-    Sidecar 要為短期查詢扛 remote-read buffer<br/>→ <strong style="color:#F26D4F;">記憶體壓力被放大</strong>
-  </div> -->
 </div>
 
 <!--
