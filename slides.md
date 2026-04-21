@@ -226,7 +226,7 @@ title: 為什麼需要長期指標後端？
 -->
 
 ---
-layout: inner
+layout: split
 title: 兩種整合模式
 kicker: Sidecar vs. Remote-Write.
 ratio: "1:1"
@@ -234,19 +234,11 @@ ratio: "1:1"
 
 ::left::
 
-<div class="flex flex-col h-full gap-2">
-<div class="text-center text-xl font-bold" style="color:#F26D4F;">Sidecar Mode</div>
-<div class="text-center text-md">Sidecar 寄生於 Prom Pod · 直接上傳 TSDB block</div>
-<img src="/close-integration.png" class="flex-1 min-h-0 object-contain mx-auto" style="border:none;box-shadow:none;width:100%;" />
-</div>
+<IntegrationCompare pane="sidecar" />
 
 ::right::
 
-<div class="flex flex-col h-full gap-2">
-<div class="text-center text-xl font-bold" style="color:#5296B8;">Remote-Write Mode</div>
-<div class="text-center text-md">Prom push 給後端 · 後端負責壓縮與 index</div>
-<img src="/external-client.png" class="flex-1 min-h-0 object-contain mx-auto" style="border:none;box-shadow:none;width:100%;" />
-</div>
+<IntegrationCompare pane="remote" />
 
 <!--
 補充：

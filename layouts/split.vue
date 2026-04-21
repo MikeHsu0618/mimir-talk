@@ -1,7 +1,7 @@
 <template>
   <div
     class="split-layout slidev-layout"
-    :class="[`ratio-${(($frontmatter.ratio || '1-1').replace(':', '-'))}`]"
+    :class="[`ratio-${String($frontmatter.ratio ?? '1-1').replace(':', '-')}`]"
   >
     <header v-if="$frontmatter.title || $frontmatter.kicker" class="head">
       <h1 v-if="$frontmatter.title" v-html="$frontmatter.title" />
