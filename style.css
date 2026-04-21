@@ -948,7 +948,7 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   letter-spacing: -0.01em;
   text-transform: none;
   color: #0E3F4E;
-  margin-top: -0.2rem;
+  margin-top: 2rem;
   line-height: 1.2;
 }
 
@@ -1028,6 +1028,7 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   margin: 0.2rem 0 0.4rem !important;
 }
 .hl-card--pos .hl-card__title { color: #F7A86B !important; }
+
 .hl-card--neg .hl-card__title { color: #F26D4F !important; }
 
 .hl-card__sub {
