@@ -1,0 +1,422 @@
+/* Editorial deck — Stripe Press / 報章雜誌 */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;0,8..60,900;1,8..60,400;1,8..60,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --paper: #f4efe6;
+  --paper-2: #ece5d6;
+  --ink: #1a1a1a;
+  --ink-2: #2b2b2b;
+  --ink-soft: #4a4a4a;
+  --ink-faint: #8a8275;
+  --rule: #d9d0be;
+  --rule-strong: #1a1a1a;
+  --accent: #c8472b;        /* vermilion — like vintage print */
+  --accent-2: #0a5d74;      /* deep teal */
+  --accent-3: #c49a3a;      /* old gold */
+  --highlight: #f7e9a1;     /* marker yellow */
+
+  --serif: 'Source Serif 4', 'Noto Serif TC', Georgia, serif;
+  --serif-tc: 'Noto Serif TC', 'Source Serif 4', Georgia, serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+section.slide {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-feature-settings: "ss01", "kern", "liga";
+  padding: 96px 128px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle paper texture */
+section.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(0,0,0,0.015) 0 1px, transparent 2px),
+    radial-gradient(circle at 80% 60%, rgba(0,0,0,0.012) 0 1px, transparent 2px),
+    radial-gradient(circle at 40% 80%, rgba(0,0,0,0.01) 0 1px, transparent 2px);
+  background-size: 180px 180px, 240px 240px, 320px 320px;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+
+/* ── Folio / masthead ─────────────────────────────────── */
+.folio {
+  position: absolute;
+  top: 48px;
+  left: 128px;
+  right: 128px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--serif);
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 14px;
+  z-index: 2;
+}
+.folio .folio-l { font-weight: 600; color: var(--ink-2); }
+.folio .folio-c { font-style: italic; letter-spacing: 0.08em; text-transform: none; font-size: 17px; }
+.folio .folio-r { font-variant-numeric: tabular-nums; }
+
+/* ── Typography ───────────────────────────────────────── */
+h1, h2, h3, h4 { font-family: var(--serif-tc); font-weight: 500; margin: 0; letter-spacing: -0.01em; line-height: 1.08; }
+h1 { font-size: 128px; font-weight: 500; }
+h2 { font-size: 88px; font-weight: 500; }
+h3 { font-size: 54px; font-weight: 500; }
+h4 { font-size: 36px; font-weight: 500; }
+
+p { margin: 0; line-height: 1.5; }
+.lead { font-size: 34px; line-height: 1.35; color: var(--ink-2); font-weight: 400; }
+.body { font-size: 24px; line-height: 1.55; color: var(--ink-2); }
+.body-sm { font-size: 20px; line-height: 1.55; color: var(--ink-soft); }
+.caption { font-size: 16px; line-height: 1.45; color: var(--ink-faint); font-style: italic; }
+
+.kicker {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.eyebrow {
+  font-family: var(--serif);
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.drop-cap::first-letter {
+  font-size: 5em;
+  float: left;
+  line-height: 0.85;
+  padding: 6px 14px 0 0;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.mono { font-family: var(--mono); }
+.num { font-variant-numeric: tabular-nums; }
+.italic { font-style: italic; }
+
+.underline-acc {
+  background: linear-gradient(180deg, transparent 62%, var(--highlight) 62%, var(--highlight) 92%, transparent 92%);
+  padding: 0 0.08em;
+}
+
+.rule { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+.rule-strong { border: 0; border-top: 2px solid var(--rule-strong); margin: 0; }
+.rule-vert { border-left: 1px solid var(--rule); }
+
+/* ── Layout utils ─────────────────────────────────────── */
+.flex { display: flex; }
+.col { display: flex; flex-direction: column; }
+.grid { display: grid; }
+.gap-sm { gap: 16px; } .gap-md { gap: 28px; } .gap-lg { gap: 48px; } .gap-xl { gap: 72px; }
+.mt-sm { margin-top: 16px; } .mt-md { margin-top: 28px; } .mt-lg { margin-top: 48px; } .mt-xl { margin-top: 80px; }
+.flex-1 { flex: 1; }
+
+/* ── Stat / figure block ──────────────────────────────── */
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.stat .num-xl {
+  font-family: var(--serif);
+  font-size: 140px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--ink);
+}
+.stat .num-md {
+  font-family: var(--serif);
+  font-size: 88px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+}
+.stat .num-sm {
+  font-family: var(--serif);
+  font-size: 56px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+.stat .label {
+  font-size: 18px;
+  color: var(--ink-soft);
+  font-style: italic;
+  max-width: 240px;
+  line-height: 1.35;
+}
+
+.accent { color: var(--accent); }
+.accent-2 { color: var(--accent-2); }
+.accent-3 { color: var(--accent-3); }
+.soft { color: var(--ink-soft); }
+.faint { color: var(--ink-faint); }
+
+/* ── Callout / marginalia ─────────────────────────────── */
+.margin-note {
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  font-style: italic;
+  border-left: 2px solid var(--accent);
+  padding-left: 14px;
+}
+
+.pull-quote {
+  font-family: var(--serif-tc);
+  font-size: 52px;
+  line-height: 1.2;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.pull-quote .mark { color: var(--accent); font-family: var(--serif); }
+
+/* ── Image placeholder ────────────────────────────────── */
+.placeholder {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--ink-faint);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  position: relative;
+}
+.placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed var(--rule);
+  pointer-events: none;
+}
+.placeholder .ph-label { font-size: 14px; letter-spacing: 0.18em; text-transform: uppercase; font-style: normal; color: var(--ink-faint); }
+.placeholder .ph-file { font-family: var(--mono); font-size: 14px; font-style: normal; color: var(--ink-soft); }
+
+/* ── Real image frame ─────────────────────────────────── */
+.img-frame {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.img-frame img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+.img-frame.dark { background: #0a0a0a; }
+.img-frame.tight { padding: 0; }
+.img-frame.tight img { width: 100%; height: 100%; }
+
+/* ── Table (editorial) ────────────────────────────────── */
+.tbl { width: 100%; border-collapse: collapse; font-family: var(--serif); }
+.tbl th {
+  text-align: left;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding: 14px 18px;
+  border-bottom: 2px solid var(--rule-strong);
+}
+.tbl td {
+  padding: 18px;
+  font-size: 22px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl td.num-col { font-variant-numeric: tabular-nums; font-weight: 500; }
+.tbl .chosen { background: rgba(200,71,43,0.06); }
+.tbl .chosen td:first-child::before { content: "▸  "; color: var(--accent); font-weight: 700; }
+
+/* ── Timeline ─────────────────────────────────────────── */
+.timeline { display: flex; flex-direction: column; }
+.timeline-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 32px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+.timeline-row:last-child { border-bottom: 0; }
+.timeline-row .date {
+  font-family: var(--mono);
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.timeline-row .event { font-size: 22px; color: var(--ink-2); line-height: 1.4; }
+.timeline-row.key .date { color: var(--accent); }
+.timeline-row.key .event { color: var(--ink); font-weight: 500; }
+
+/* ── Diagram box ──────────────────────────────────────── */
+.diagram {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  padding: 32px;
+  position: relative;
+}
+.diagram-title {
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  background: var(--paper);
+  padding: 0 10px;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ── Node (for diagrams) ──────────────────────────────── */
+.node {
+  border: 1.5px solid var(--ink);
+  padding: 10px 16px;
+  font-family: var(--serif);
+  font-size: 18px;
+  background: var(--paper);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+}
+.node.red { border-color: var(--accent); color: var(--accent); }
+.node.teal { border-color: var(--accent-2); color: var(--accent-2); }
+.node.gold { border-color: var(--accent-3); color: var(--accent-3); }
+.node.filled-red { background: var(--accent); color: white; border-color: var(--accent); }
+.node.filled-teal { background: var(--accent-2); color: white; border-color: var(--accent-2); }
+.node.dashed { border-style: dashed; }
+
+/* ── Chapter / section opener ─────────────────────────── */
+.chapter-num {
+  font-family: var(--serif);
+  font-size: 280px;
+  font-weight: 300;
+  line-height: 0.8;
+  color: var(--accent);
+  letter-spacing: -0.04em;
+  font-style: italic;
+}
+
+/* ── Quote / statement slide ──────────────────────────── */
+.statement h1 {
+  font-size: 120px;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  max-width: 1400px;
+}
+
+/* ── Cover ────────────────────────────────────────────── */
+.cover-title {
+  font-size: 180px;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+}
+.cover-arrow {
+  font-family: var(--serif);
+  color: var(--accent);
+  font-weight: 400;
+}
+
+/* ── List ─────────────────────────────────────────────── */
+.ed-list { list-style: none; padding: 0; margin: 0; }
+.ed-list li {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--ink-2);
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 16px;
+  align-items: baseline;
+}
+.ed-list li:last-child { border-bottom: 0; }
+.ed-list .marker {
+  font-family: var(--serif);
+  font-weight: 500;
+  color: var(--accent);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Badge / tag ──────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border: 1px solid var(--ink-2);
+  padding: 4px 10px;
+  font-weight: 500;
+}
+.badge.accent { border-color: var(--accent); color: var(--accent); }
+
+/* ── Two-column running text ──────────────────────────── */
+.two-col { columns: 2; column-gap: 64px; column-rule: 1px solid var(--rule); font-size: 22px; line-height: 1.55; color: var(--ink-2); }
+.two-col p { break-inside: avoid; margin-bottom: 16px; }
+
+/* ── Dashboard grid placeholder ───────────────────────── */
+.chart-card {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.chart-card .chart-label {
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 600;
+}
+
+/* sparkline svg fills */
+.spark-before { stroke: var(--ink-faint); stroke-width: 1.5; fill: none; opacity: 0.5; }
+.spark-after { stroke: var(--accent); stroke-width: 2; fill: none; }
+.spark-drop-marker { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 3 3; }

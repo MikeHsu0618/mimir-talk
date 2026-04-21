@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DevOpsDays Taipei 2025 — Slide Template</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; background: #000; font-family: var(--font-sans); }
+
+  /* Slide base — cream paper + soft blue radial blob backdrop (all slides) */
+  section.slide {
+    background:
+      radial-gradient(38% 46% at 72% 42%, rgba(130,198,224,0.55) 0%, rgba(160,206,230,0.22) 45%, rgba(160,206,230,0) 72%),
+      radial-gradient(22% 30% at 10% 88%, rgba(194,229,245,0.50) 0%, rgba(194,229,245,0) 70%),
+      var(--bg-0);
+    color: #111;
+    padding: 80px 96px 64px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Variant placements keep each slide visually distinct */
+  section.slide.blob-tl {
+    background:
+      radial-gradient(36% 44% at 22% 28%, rgba(130,198,224,0.55) 0%, rgba(160,206,230,0.22) 45%, rgba(160,206,230,0) 72%),
+      radial-gradient(22% 28% at 92% 82%, rgba(194,229,245,0.45) 0%, rgba(194,229,245,0) 70%),
+      var(--bg-0);
+  }
+  section.slide.blob-br {
+    background:
+      radial-gradient(40% 48% at 82% 78%, rgba(130,198,224,0.55) 0%, rgba(160,206,230,0.22) 45%, rgba(160,206,230,0) 72%),
+      radial-gradient(22% 28% at 10% 12%, rgba(194,229,245,0.45) 0%, rgba(194,229,245,0) 70%),
+      var(--bg-0);
+  }
+  section.slide.blob-center {
+    background:
+      radial-gradient(48% 56% at 50% 45%, rgba(130,198,224,0.55) 0%, rgba(160,206,230,0.22) 50%, rgba(160,206,230,0) 78%),
+      var(--bg-0);
+  }
+
+  /* Footer bar */
+  .footer {
+    position: absolute; left: 96px; right: 96px; bottom: 44px;
+    display: flex; gap: 32px; align-items: center;
+    font-size: 16px; letter-spacing: 0.12em; color: var(--fg-3); font-weight: 500;
+  }
+  .footer b { color: #111; font-weight: 700; letter-spacing: 0.12em; }
+  .footer .dot { width: 5px; height: 5px; border-radius: 999px; background: var(--brand-blue); }
+  .footer .page { margin-left: auto; font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.04em; }
+
+  .eyebrow {
+    font-size: 22px; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--brand-blue);
+  }
+
+  /* ============ Slide 01 — Cover (matches template) ============ */
+  .cover { padding: 70px 96px 70px; justify-content: flex-start; }
+  .cover h1 {
+    font-size: 220px; font-weight: 900; line-height: 0.98; letter-spacing: -0.035em;
+    margin: 0; color: #111;
+    font-feature-settings: "ss01" 1;
+  }
+  .cover h1 .glyph-stop { color: #111; }
+  .cover .author-row {
+    position: absolute; right: 96px; top: 50%; transform: translateY(-50%);
+    text-align: right; font-size: 24px; color: #111; line-height: 1.5; font-weight: 500;
+  }
+  .cover .author-row .name { color: #111; font-weight: 500; font-size: 24px; letter-spacing: 0; }
+  .cover .author-row .event { color: #111; font-size: 24px; font-weight: 500; }
+
+  /* ============ Slide 02 — Agenda ============ */
+  .agenda h2 {
+    font-size: 72px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 72px; line-height: 1;
+  }
+  .agenda .items { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 48px; flex: 1; }
+  .agenda .item {
+    display: flex; flex-direction: column; gap: 18px;
+    border-top: 3px solid var(--brand-ink);
+    padding-top: 24px;
+  }
+  .agenda .item .n {
+    font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: var(--brand-blue); letter-spacing: 0;
+  }
+  .agenda .item h3 {
+    font-size: 48px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; margin: 0;
+  }
+  .agenda .item p { font-size: 22px; color: var(--fg-2); line-height: 1.5; margin: 0; }
+
+  /* ============ Slide 03 — Section divider (LIGHT) ============ */
+  .section-div { justify-content: center; align-items: flex-start; }
+  .section-div .big-num {
+    font-size: 420px; font-weight: 900; letter-spacing: -0.08em; line-height: 0.85;
+    color: var(--brand-sky); margin-bottom: 40px;
+  }
+  .section-div .eyebrow { margin-bottom: 20px; color: var(--brand-teal); }
+  .section-div .title {
+    font-size: 160px; font-weight: 900; line-height: 0.9; letter-spacing: -0.035em;
+    color: #111;
+  }
+  .section-div .title .highlight { color: var(--brand-blue); }
+
+  /* ============ Slide 04 — Quote ============ */
+  .quote { justify-content: center; align-items: flex-start; }
+  .quote .mark {
+    font-family: var(--font-serif); font-size: 260px; line-height: 0.6; color: var(--brand-cyan);
+    font-style: italic; font-weight: 600; margin-bottom: -20px;
+  }
+  .quote blockquote {
+    margin: 0; font-size: 96px; font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.05; max-width: 22ch; color: #111;
+  }
+  .quote blockquote em { font-family: var(--font-serif); font-style: italic; font-weight: 600; color: var(--brand-blue); }
+  .quote .attrib {
+    margin-top: 40px; font-size: 22px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-3); font-weight: 600;
+  }
+  .quote .attrib span { color: var(--brand-blue); }
+
+  /* ============ Slide 05 — Comparison ============ */
+  .compare h2 {
+    font-size: 72px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin: 0 0 12px;
+  }
+  .compare .kicker { font-size: 22px; color: var(--fg-3); margin-bottom: 48px; }
+  .compare table { width: 100%; border-collapse: collapse; flex: 1; }
+  .compare thead th {
+    text-align: left; font-size: 16px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--fg-3); font-weight: 700; padding: 14px 0; border-bottom: 3px solid var(--brand-ink);
+  }
+  .compare thead th .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 4px 14px; border-radius: 999px; font-size: 16px; font-weight: 700; letter-spacing: 0.08em;
+  }
+  .compare .pill.trad { background: rgba(53,115,142,0.14); color: var(--fg-2); }
+  .compare .pill.llm  { background: rgba(82,150,184,0.22); color: var(--brand-deep); }
+  .compare tbody td {
+    padding: 22px 20px 22px 0; border-bottom: 1px solid var(--line-1); vertical-align: top;
+    font-size: 26px; line-height: 1.3; color: var(--fg-2);
+  }
+  .compare tbody td:first-child { font-weight: 700; color: #111; width: 26%; letter-spacing: -0.01em; }
+
+  /* ============ Slide 06 — Features ============ */
+  .features h2 {
+    font-size: 60px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin: 0 0 56px;
+  }
+  .features .grid-4 { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 52px 80px; flex: 1; }
+  .features .cell { display: flex; flex-direction: column; gap: 14px; }
+  .features .cell h3 {
+    font-size: 34px; font-weight: 700; letter-spacing: -0.01em; margin: 0;
+    padding-bottom: 10px; border-bottom: 2px solid var(--brand-cyan); display: inline-block;
+    align-self: flex-start;
+  }
+  .features .cell p { font-size: 21px; color: var(--fg-2); line-height: 1.5; margin: 0; max-width: 40ch; }
+
+  /* ============ Slide 07 — Bullets ============ */
+  .bullets h2 {
+    font-size: 60px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 12px; line-height: 1;
+  }
+  .bullets .sub { font-size: 22px; color: var(--fg-3); margin-bottom: 40px; }
+  .bullets .row { display: grid; grid-template-columns: 60px 1fr auto; gap: 24px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--line-1);}
+  .bullets .row:last-child { border-bottom: 0; }
+  .bullets .row .arrow { color: var(--brand-sky); font-size: 26px; font-weight: 700; }
+  .bullets .row .text { font-size: 28px; color: #111; line-height: 1.35; }
+  .bullets .row .tag {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--bg-tint-1); color: var(--brand-deep); padding: 10px 18px; border-radius: 999px;
+    font-size: 20px; font-weight: 600; letter-spacing: 0;
+  }
+  .bullets .row .tag::before { content: ""; width: 10px; height: 10px; border-radius: 999px; background: var(--brand-amber); }
+  .bullets .row .tag.success::before { background: var(--brand-cool); }
+  .bullets .row .tag.blue::before { background: var(--brand-blue); }
+  .bullets .row .tag.coral::before { background: var(--brand-coral); }
+
+  /* ============ Slide 08 — Big stats ============ */
+  .stats h2 {
+    font-size: 60px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 12px; line-height: 1;
+  }
+  .stats .sub { font-size: 26px; color: var(--fg-2); margin-bottom: 70px; max-width: 50ch; line-height: 1.45; }
+  .stats .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 56px; flex: 1; }
+  .stats .item { display: flex; flex-direction: column; gap: 10px; border-top: 4px solid #111; padding-top: 28px; }
+  .stats .num { font-size: 160px; font-weight: 900; letter-spacing: -0.05em; line-height: 1; color: #111; }
+  .stats .num .u { color: var(--brand-coral); }
+  .stats .label { font-size: 20px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; }
+
+  /* ============ Slide 09 — Code / attribute (dark panel on cream page) ============ */
+  .codepage h2 { font-size: 60px; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 12px; line-height: 1; }
+  .codepage .sub { font-size: 22px; color: var(--fg-3); margin-bottom: 40px; }
+  .codepage .box {
+    background: var(--bg-tint-1); border-radius: 18px; padding: 36px 44px;
+    font-family: var(--font-mono); font-size: 26px; line-height: 1.7; color: var(--fg-1);
+    flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; align-content: start;
+    border: 1px solid var(--line-cool);
+  }
+  .codepage .box .k { color: var(--brand-teal); padding: 6px 0; border-bottom: 1px solid var(--line-cool); }
+  .codepage .box .v { color: var(--fg-1); padding: 6px 0; border-bottom: 1px solid var(--line-cool); }
+  .codepage .box .num { color: var(--brand-amber); }
+
+  /* ============ Slide 10 — Thanks (LIGHT) ============ */
+  .thanks { justify-content: center; align-items: center; text-align: center; }
+  .thanks .big {
+    font-size: 220px; font-weight: 900; letter-spacing: -0.04em; line-height: 0.95; color: #111;
+  }
+  .thanks .big span { color: var(--brand-coral); }
+  .thanks .sub { margin-top: 40px; font-size: 34px; color: var(--fg-2); letter-spacing: -0.01em; }
+  .thanks .meta { margin-top: 64px; display: flex; gap: 28px; align-items: center; font-size: 20px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-3); }
+  .thanks .meta .pip { width: 10px; height: 10px; background: var(--brand-blue); border-radius: 2px; }
+</style>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+
+  <section class="slide cover" data-label="Cover">
+    <h1>Exploration<br>of<br>LLM<br>Observability</h1>
+    <div class="author-row">
+      <div class="event">DevOpsDays Taipei 2025</div>
+      <div class="name">Mike Hsu</div>
+    </div>
+  </section>
+
+  <section class="slide agenda" data-label="Agenda">
+    <div class="eyebrow" style="margin-bottom:12px">Agenda</div>
+    <h2>Three threads we'll pull today.</h2>
+    <div class="items">
+      <div class="item"><div class="n">01</div><h3>LLM Observability</h3><p>Why it matters, how it differs from traditional telemetry.</p></div>
+      <div class="item"><div class="n">02</div><h3>Platform Landscape</h3><p>OpenLIT, LangFuse, OpenLLMetry, Phoenix — stars, storage, OTel support.</p></div>
+      <div class="item"><div class="n">03</div><h3>LLM Application</h3><p>Models vs. Agents, MCP vs. function calling, Google ADK.</p></div>
+    </div>
+    <div class="footer"><b>DevOpsDays Taipei 2025</b><span class="dot"></span><span>Mike Hsu</span><span class="page">02 / 10</span></div>
+  </section>
+
+  <section class="slide section-div" data-label="Section Divider">
+    <div class="big-num">01</div>
+    <div class="eyebrow">Exploration of LLM Observability</div>
+    <div class="title">LLM<br><span class="highlight">Observability.</span></div>
+    <div class="footer"><b>DevOpsDays Taipei 2025</b><span class="dot"></span><span>Mike Hsu</span><span class="page">03 / 10</span></div>
+  </section>
+
+  <section class="slide quote" data-label="Big Quote">
+    <div class="mark">“</div>
+    <blockquote>Without&nbsp;it,<br>we're flying<br><em>blind</em> inside<br>a Black Box.</blockquote>
+    <div class="attrib">That's why <span>LLM observability</span> is essential</div>
+    <div class="footer"><b>DevOpsDays Taipei 2025</b><span class="dot"></span><span>Mike Hsu</span><span class="page">04 / 10</span></div>
+  </section>
+
+  <section class="slide compare" data-label="Comparison Table">
+    <h2>Traditional vs. LLM Observability</h2>
+    <div class="kicker">Same objective, different signal surface.</div>
+    <table>
+      <thead><tr><th></th><th><span class="pill trad">Traditional</span></th><th><span class="pill llm">LLM</span></th></tr></thead>
+      <tbody>
+        <tr><td>Telemetry</td><td>CPU usage, application logs</td><td>Prompt, response, token usage, model params</td></tr>
+        <tr><td>Output</td><td>Same input, same output</td><td>Same input, different outputs</td></tr>
+        <tr><td>Success / Failure</td><td>Status codes, error rates</td><td>Semantic correctness, toxicity, relevance</td></tr>
+        <tr><td>Cost</td><td>CPU, memory</td><td>API cost, token usage, per-model pricing</td></tr>
+      </tbody>
+    </table>
+    <div class="footer"><b>DevOpsDays Taipei 2025</b><span class="dot"></span><span>Mike Hsu</span><span class="page">05 / 10</span></div>
+  </section>
+
+  <section class="slide features" data-label="Four Features">
+    <div class="eyebrow" style="margin-bottom:12px">Why it matters</div>
+    <h2>Four reasons to instrument your LLM.</h2>
+    <div class="grid-4">
+      <div class="cell"><h3>Model Improvement</h3><p>Observability enables the collection of user interaction data, so you can continuously tune and improve your models for higher-quality results.</p></div>
+      <div class="cell"><h3>Issue Tracking</h3><p>Effective logging and traceability make it possible to quickly pinpoint and resolve abnormal outputs — improving development efficiency.</p></div>
+      <div class="cell"><h3>Risk Management</h3><p>Without observability it's difficult to detect inappropriate or risky outputs in time — leading to regulatory and brand risks.</p></div>
+      <div class="cell"><h3>Cost Optimization</h3><p>Track resource usage and token consumption so you can control costs and optimize your infrastructure.</p></div>
+    </div>
+    <div class="footer"><b>DevOpsDays Taipei 2025</b><span class="dot"></span><span>Mike Hsu</span><span class="page">06 / 10</span></div>
+  </section>
+
+  <section class="slide bullets" data-label="Evaluation Bullets">
+    <div class="eyebrow" style="margin-bottom:12px">Evaluation</div>
+    <h2>How do we "evaluate" our LLM?</h2>
+    <div class="sub">Five practical approaches, paired with their academic names.</div>
+    <div class="row"><div class="arrow">▶</div><div class="text">Manually review outputs every day, correcting each one by hand.</div><div class="tag">Human Evaluation</div></div>
+    <div class="row"><div class="arrow">▶</div><div class="text">Ask another AI to grade its answers.</div><div class="tag blue">LLM-as-a-Judge</div></div>
+    <div class="row"><div class="arrow">▶</div><div class="text">Design test questions and feed them to the model.</div><div class="tag success">Benchmark (MMLU, GSM8K)</div></div>
+    <div class="row"><div class="arrow">▶</div><div class="text">Track how many emails it got wrong today.</div><div class="tag coral">Metric-based</div></div>
+    <div class="row"><div class="arrow">▶</div><div class="text">Set up rules: if you see XXX, reply YYY.</div><div class="tag blue">Rule-based</div></div>
+    <div class="footer"><b>DevOpsDays Taipei 2025</b><span class="dot"></span><span>Mike Hsu</span><span class="page">07 / 10</span></div>
+  </section>
+
+  <section class="slide stats" data-label="Big Numbers">
+    <div class="eyebrow" style="margin-bottom:12px">By the numbers</div>
+    <h2>What good observability looks like.</h2>
+    <div class="sub">Target envelope once OTel-driven tracing + semantic evaluation are wired into a production LLM stack.</div>
+    <div class="row">
+      <div class="item"><div class="num">99.9<span class="u">%</span></div><div class="label">Trace Completeness</div></div>
+      <div class="item"><div class="num">3<span class="u">×</span></div><div class="label">Faster root-cause</div></div>
+      <div class="item"><div class="num">&lt;50<span class="u">ms</span></div><div class="label">p95 instrumentation overhead</div></div>
+    </div>
+    <div class="footer"><b>DevOpsDays Taipei 2025</b><span class="dot"></span><span>Mike Hsu</span><span class="page">08 / 10</span></div>
+  </section>
+
+  <section class="slide codepage" data-label="Attributes">
+    <div class="eyebrow" style="margin-bottom:12px">OpenTelemetry · GenAI semconv</div>
+    <h2>What we capture per span.</h2>
+    <div class="sub">Span name: <code style="font-family:var(--font-mono);background:var(--bg-2);padding:2px 8px;border-radius:4px;">"chat gpt-4"</code></div>
+    <div class="box">
+      <div class="k">gen_ai.system</div><div class="v">"openai"</div>
+      <div class="k">gen_ai.request.model</div><div class="v">"gpt-4"</div>
+      <div class="k">gen_ai.request.max_tokens</div><div class="v num">200</div>
+      <div class="k">gen_ai.request.top_p</div><div class="v num">1.0</div>
+      <div class="k">gen_ai.response.id</div><div class="v">"chatcmpl-TeYBR3l"</div>
+      <div class="k">gen_ai.response.model</div><div class="v">"gpt-4-0613"</div>
+      <div class="k">gen_ai.usage.input_tokens</div><div class="v num">47</div>
+      <div class="k">gen_ai.usage.output_tokens</div><div class="v num">17</div>
+      <div class="k">gen_ai.response.finish_reasons</div><div class="v">["tool_calls"]</div>
+    </div>
+    <div class="footer"><b>DevOpsDays Taipei 2025</b><span class="dot"></span><span>Mike Hsu</span><span class="page">09 / 10</span></div>
+  </section>
+
+  <section class="slide thanks" data-label="Thank You">
+    <div class="big">Hands-on<br>Time<span>.</span></div>
+    <div class="sub">Bring a laptop. We're instrumenting a real LLM app.</div>
+    <div class="meta"><span class="pip"></span>DevOpsDays Taipei 2025<span class="pip"></span>Mike Hsu<span class="pip"></span>@MikeHsu0618</div>
+  </section>
+
+</deck-stage>
+
+<script src="deck-stage.js"></script>
+</body>
+</html>

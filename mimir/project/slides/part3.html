@@ -1,0 +1,357 @@
+<!-- SLIDE 21 · DASHBOARD GRID -->
+<section class="slide" data-label="Dashboard 2x2">
+  <div class="folio">
+    <span class="folio-l">§ 4 · Mimir 3.0</span>
+    <span class="folio-c">Production · before & after</span>
+    <span class="folio-r">21</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">遷移後</div>
+    <h3 style="margin-top:14px;">寫讀兩端同時掉下來。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:24px;margin-top:40px;flex:1;">
+    <div class="chart-card">
+      <div class="chart-label" style="color:var(--accent);">Ingester · CPU</div>
+      <div class="img-frame dark tight" style="flex:1;min-height:200px;">
+        <img src="images/mimir3-ingester-cpu.png" alt="Ingester CPU"/>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label" style="color:var(--accent);">Ingester · Memory</div>
+      <div class="img-frame dark tight" style="flex:1;min-height:200px;">
+        <img src="images/mimir3-ingester-memory.png" alt="Ingester Memory"/>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label" style="color:var(--accent-2);">Querier · CPU</div>
+      <div class="img-frame dark tight" style="flex:1;min-height:200px;">
+        <img src="images/mimir3-querier-cpu.png" alt="Querier CPU"/>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label" style="color:var(--accent-2);">Querier · Memory</div>
+      <div class="img-frame dark tight" style="flex:1;min-height:200px;">
+        <img src="images/mimir3-querier-memory.png" alt="Querier Memory"/>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding-top:24px;border-top:2px solid var(--ink);display:grid;grid-template-columns:1fr 1fr;gap:56px;">
+    <div>
+      <div class="eyebrow accent">寫路徑</div>
+      <p class="body" style="margin-top:8px;">RF 3 → 2 · Ingest Storage · 斷崖下降。</p>
+    </div>
+    <div>
+      <div class="eyebrow" style="color:var(--accent-2);">讀路徑</div>
+      <p class="body" style="margin-top:8px;">MQE streaming · Peak 被壓平。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 22 · PART IV OPENER -->
+<section class="slide" data-label="Part IV Opener">
+  <div class="folio">
+    <span class="folio-l">Part IV</span>
+    <span class="folio-c">The Kafka question</span>
+    <span class="folio-r">22</span>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:auto 1fr;gap:96px;align-items:end;">
+    <div class="chapter-num">IV</div>
+    <div style="padding-bottom:60px;">
+      <div class="eyebrow">第四章</div>
+      <h2 style="margin-top:20px;font-size:96px;">Kafka 選型。</h2>
+      <p class="lead italic" style="margin-top:40px;max-width:800px;color:var(--ink-soft);">
+        多一個元件 —— 我們是不是在自找麻煩？
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 23 · QUESTION + LITTLE'S LAW -->
+<section class="slide" data-label="Little's Law">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">A small detour into queueing theory</span>
+    <span class="folio-r">23</span>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1500px;">
+    <div class="kicker" style="margin-bottom:24px;">先打個岔</div>
+    <h2 style="font-size:84px;line-height:1.1;">
+      多加一個 Kafka——<br/>
+      是不是把事情<span style="color:var(--accent);font-style:italic;">搞更複雜</span>？
+    </h2>
+    <p class="lead" style="margin-top:40px;max-width:1100px;color:var(--ink-soft);">
+      回答這個問題之前，我想先拉出一條基礎定律。<br/>
+      任何有 queue 的系統，都躲不過它。
+    </p>
+
+    <div style="margin-top:56px;padding:40px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);">
+      <div class="eyebrow accent">Little&rsquo;s Law · 李氏定理</div>
+      <div class="mono" style="font-size:104px;font-weight:600;color:var(--accent);letter-spacing:-0.02em;line-height:1;margin-top:20px;white-space:nowrap;">L = λ · W</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;margin-top:36px;">
+        <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono accent" style="font-size:44px;font-weight:600;">L</div><p class="body-sm">queue 中的平均任務數</p></div>
+        <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono accent" style="font-size:44px;font-weight:600;">λ</div><p class="body-sm">到達速率<br/>（samples/s）</p></div>
+        <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono accent" style="font-size:44px;font-weight:600;">W</div><p class="body-sm">每件事花的處理時間</p></div>
+      </div>
+    </div>
+
+    <p class="lead italic" style="margin-top:48px;">
+      L 堆積 = 流入（控不住）× 處理時間（下游拖慢）。<br/>
+      <span style="color:var(--accent);">這就是背壓的來源。</span>
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 24 · BACKPRESSURE -->
+<section class="slide" data-label="Backpressure">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">One link slows, the whole chain backs up</span>
+    <span class="folio-r">24</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">整條鏈路</div>
+    <h3 style="margin-top:14px;">牽一髮，動全身。</h3>
+  </div>
+
+  <div style="margin-top:48px;flex:1;display:flex;flex-direction:column;gap:24px;">
+    <div class="img-frame" style="min-height:300px;">
+      <img src="images/kafka-backpressure-flow.png" alt="Backpressure flow"/>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:16px;">
+      <div>
+        <div class="eyebrow accent">真實踩過的坑</div>
+        <p class="body" style="margin-top:14px;">
+          Ingester 卡住 → Kafka 堆積 → Distributor produce timeout → Prom queue full → 全環境噴 alert。
+        </p>
+        <p class="body-sm" style="margin-top:16px;">
+          根因在最下游，但你看到的是最上游在叫。
+        </p>
+      </div>
+      <div style="border-left:1px solid var(--rule);padding-left:32px;">
+        <div class="eyebrow">我們學到的</div>
+        <p class="body" style="margin-top:14px;">
+          Kafka 不永遠低延遲。Rebalance、leader 切換、consumer lag——任一件都能把 5ms 變 5 秒。
+        </p>
+        <p class="body-sm" style="margin-top:16px;">
+          加 Kafka 不是免費的午餐。複雜度不會消失，只是換地方放。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 25 · STATEMENT · still chose it -->
+<section class="slide statement" data-label="But still — Kafka">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">So why sign up</span>
+    <span class="folio-r">25</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1500px;">
+    <div class="kicker" style="margin-bottom:32px;">但我們還是選了它</div>
+    <h1 style="font-size:108px;line-height:1.08;">
+      因為我們賭的<br/>
+      不是<span class="italic" style="color:var(--ink-faint);">今天的 Kafka</span>——<br/>
+      是<span style="color:var(--accent);">明天的</span>。
+    </h1>
+    <p class="lead" style="margin-top:64px;max-width:1100px;color:var(--ink-soft);">
+      如果只是要解耦，我們不會踩這個坑。<br/>
+      社群這兩年悄悄改寫了 Kafka——下一頁。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 26 · DISKLESS TIMELINE -->
+<section class="slide" data-label="Diskless Timeline">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">The Diskless Wars · two years in</span>
+    <span class="folio-r">26</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">下一個十年</div>
+    <h3 style="margin-top:14px;">Diskless Kafka。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:72px;margin-top:48px;flex:1;">
+    <div class="timeline">
+      <div class="timeline-row"><div class="date">Aug 2023</div><div class="event">WarpStream 發表 · Kafka-API on S3 首發</div></div>
+      <div class="timeline-row"><div class="date">May 2024</div><div class="event">Confluent Freight 發表</div></div>
+      <div class="timeline-row"><div class="date">Jul 2024</div><div class="event"><strong>AutoMQ 1.0</strong> · S3 Direct 寫入</div></div>
+      <div class="timeline-row"><div class="date">Sep 2024</div><div class="event">Confluent 收購 WarpStream · $220M</div></div>
+      <div class="timeline-row"><div class="date">Apr 2025</div><div class="event">Aiven 提出 <strong>KIP-1150</strong> Diskless Topics</div></div>
+      <div class="timeline-row"><div class="date">Nov 2025</div><div class="event">Redpanda 發表 Cloud Topics</div></div>
+      <div class="timeline-row key"><div class="date">Mar 2026</div><div class="event">KIP-1150 正式通過——Apache Kafka 擁抱 diskless</div></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:32px;">
+      <div class="img-frame" style="flex:1;min-height:320px;">
+        <img src="images/kip1150-xiaohongshu.png" alt="KIP-1150 announcement"/>
+      </div>
+      <div class="margin-note">
+        9 binding + 5 non-binding。不是 PR 稿，是真人真投票。<br/>
+        AutoMQ 不是冒險——是共識方向上最早的一批。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 27 · AUTOMQ PHILOSOPHY -->
+<section class="slide" data-label="AutoMQ Philosophy">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">Surgical replacement</span>
+    <span class="folio-r">27</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">AutoMQ</div>
+    <h3 style="margin-top:14px;">不重寫 Kafka，只換 store / fetch。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:64px;margin-top:48px;flex:1;">
+    <div class="img-frame" style="min-height:460px;">
+      <img src="images/automq-architecture.png" alt="Kafka vs AutoMQ architecture"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:28px;">
+      <div>
+        <div class="eyebrow accent">傳統 Kafka 三痛</div>
+        <ul class="ed-list" style="margin-top:12px;">
+          <li><span class="marker">·</span><span>Broker 有狀態——每次重啟都搬資料。</span></li>
+          <li><span class="marker">·</span><span>Rebalance storm——加縮 broker 觸發大遷移。</span></li>
+          <li><span class="marker">·</span><span>跨 AZ 流量吃掉 60–70% 成本。</span></li>
+        </ul>
+      </div>
+      <hr class="rule-strong"/>
+      <div>
+        <div class="eyebrow" style="color:var(--accent-2);">AutoMQ 換介面 · 全解</div>
+        <ul class="ed-list" style="margin-top:12px;">
+          <li><span class="marker" style="color:var(--accent-2);">·</span><span>Broker stateless · spot-friendly · 秒級 rebalance。</span></li>
+          <li><span class="marker" style="color:var(--accent-2);">·</span><span>S3 自帶多副本 · broker 間 zero replication。</span></li>
+          <li><span class="marker" style="color:var(--accent-2);">·</span><span>100% Kafka API · Producer/Consumer 0 改動。</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 28 · CROSS-AZ BLACK HOLE -->
+<section class="slide" data-label="Cross-AZ Black Hole">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">The Kafka bill, dissected</span>
+    <span class="folio-r">28</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">跨 AZ 流量</div>
+    <h3 style="margin-top:14px;">傳統 Kafka 的黑洞。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:64px;margin-top:48px;flex:1;">
+    <div class="img-frame" style="min-height:460px;">
+      <img src="images/kafka-inter-zone.png" alt="Cross-AZ traffic"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div style="border-left:3px solid var(--accent);padding-left:20px;">
+        <div class="eyebrow accent">① Producer → Broker</div>
+        <p class="body-sm" style="margin-top:6px;">寫入可能 hit 其他 AZ 的 leader。</p>
+      </div>
+      <div style="border-left:3px solid var(--accent);padding-left:20px;">
+        <div class="eyebrow accent">② Broker ↔ Broker</div>
+        <p class="body-sm" style="margin-top:6px;">Replication 幾乎必定跨 AZ。</p>
+      </div>
+      <div style="border-left:3px solid var(--accent);padding-left:20px;">
+        <div class="eyebrow accent">③ Consumer ← Broker</div>
+        <p class="body-sm" style="margin-top:6px;">Consumer 不一定跟 leader 同 AZ。</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding:24px 32px;background:rgba(200,71,43,0.06);border-left:3px solid var(--accent);">
+    <p class="body">
+      AutoMQ 官方：大叢集跨 AZ 流量占 <span class="accent" style="font-weight:600;">60–70%</span> 的 Kafka 總成本——不是花在業務，是花在 AWS 網路。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 29 · ZERO ZONE ROUTER · HIGH POINT -->
+<section class="slide" data-label="Zero Zone Router">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">The trick</span>
+    <span class="folio-r">29</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">AutoMQ 的解法</div>
+    <h3 style="margin-top:14px;">Zero-Zone Router。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:64px;margin-top:48px;flex:1;">
+    <div class="img-frame" style="min-height:460px;">
+      <img src="images/automq-zero-zone-router.png" alt="Zero-zone router"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--rule);">
+        <div class="num-col" style="color:var(--accent-2);font-size:22px;font-weight:600;">01</div>
+        <p class="body">Producer 寫本地 AZ 的 broker。</p>
+      </div>
+      <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--rule);">
+        <div class="num-col" style="color:var(--accent-2);font-size:22px;font-weight:600;">02</div>
+        <p class="body">Rack-aware Router 透過 S3 路由給 leader partition。</p>
+      </div>
+      <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--rule);">
+        <div class="num-col" style="color:var(--accent-2);font-size:22px;font-weight:600;">03</div>
+        <p class="body">其他 AZ 從 S3 同步拉 readonly 副本。</p>
+      </div>
+      <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:baseline;padding:12px 0;">
+        <div class="num-col" style="color:var(--accent-2);font-size:22px;font-weight:600;">04</div>
+        <p class="body">Consumer 從本地 AZ 的 readonly replica 讀。</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding:28px 36px;border:2px solid var(--accent-2);background:rgba(10,93,116,0.04);">
+    <p class="lead">
+      唯一跨 AZ 流量：<span class="italic">broker ↔ S3</span>——而 AWS 同 region S3 <span class="underline-acc">免費</span>。
+      <span class="soft" style="font-size:24px;">把 60–70% 的 Kafka 帳單直接歸零。</span>
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 30 · ELASTIC CAPACITY -->
+<section class="slide" data-label="Elastic Capacity">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">Capacity as a dial</span>
+    <span class="folio-r">30</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">容量與彈性</div>
+    <h3 style="margin-top:14px;">從「預留」到「按用量」。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:64px;margin-top:48px;flex:1;">
+    <div class="img-frame" style="min-height:440px;">
+      <img src="images/automq-elastic-capacity.png" alt="Elastic capacity"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div style="border:1px solid var(--accent);padding:24px;">
+        <div class="eyebrow accent">Apache Kafka</div>
+        <h4 style="margin-top:8px;font-size:28px;">Fixed · Wasted &gt; 50%</h4>
+        <p class="body-sm" style="margin-top:12px;">Local disk 預配足 peak · scaling 以「小時」計。</p>
+      </div>
+      <div style="border:1px solid var(--accent-2);padding:24px;background:rgba(10,93,116,0.04);">
+        <div class="eyebrow" style="color:var(--accent-2);">AutoMQ</div>
+        <h4 style="margin-top:8px;font-size:28px;">Pay-as-you-go</h4>
+        <p class="body-sm" style="margin-top:12px;">S3 近乎無限 · partition 搬移以「秒」計 · Broker 可跑 spot。</p>
+      </div>
+    </div>
+  </div>
+</section>

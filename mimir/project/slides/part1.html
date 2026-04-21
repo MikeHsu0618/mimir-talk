@@ -1,0 +1,415 @@
+<!-- SLIDE 1 · COVER -->
+<section class="slide" data-label="Cover">
+  <div class="folio">
+    <span class="folio-l">PromConf Taiwan 2026</span>
+    <span class="folio-c">A Field Journal</span>
+    <span class="folio-r">№ 01</span>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;margin-top:40px;">
+    <div class="eyebrow" style="margin-bottom:40px;">An engineering notebook · 40 分鐘</div>
+    <h1 class="cover-title">
+      從 Thanos<br/>
+      <span class="cover-arrow">到</span> Mimir 3.0.
+    </h1>
+    <p class="lead italic" style="margin-top:56px;max-width:1100px;color:var(--ink-soft);">
+      AI 時代下 · 我們如何重構可觀測性的地基
+    </p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;border-top:2px solid var(--ink);padding-top:28px;">
+    <div>
+      <div class="eyebrow">講者</div>
+      <div class="body" style="margin-top:6px;font-weight:500;">Mike Hsu</div>
+    </div>
+    <div>
+      <div class="eyebrow">關鍵字</div>
+      <div class="body" style="margin-top:6px;">Mimir 3.0 · AutoMQ · Parquet</div>
+    </div>
+    <div style="text-align:right;">
+      <div class="eyebrow">場合</div>
+      <div class="body" style="margin-top:6px;">PromConf Taiwan 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 2 · STATEMENT / HOOK -->
+<section class="slide statement" data-label="Hook">
+  <div class="folio">
+    <span class="folio-l">§ 1 · Opening</span>
+    <span class="folio-c">The first user is no longer human</span>
+    <span class="folio-r">02</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1500px;">
+    <div class="kicker" style="margin-bottom:32px;">開場</div>
+    <h1 style="font-size:112px;line-height:1.08;">
+      我們 metrics 後端<br/>
+      <span style="color:var(--accent);">第一個打爆</span>它的<br/>
+      已經不是人類。
+    </h1>
+    <p class="lead" style="margin-top:56px;max-width:900px;">
+      觀測者從<span class="italic">人</span>換成<span class="italic">agent</span>——
+      從偶爾查一次，變成 24/7 連續追問。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 3 · SRE AGENT DEMO -->
+<section class="slide" data-label="SRE Agent Demo">
+  <div class="folio">
+    <span class="folio-l">§ 1 · Opening</span>
+    <span class="folio-c">Live demo — 20 seconds, tops</span>
+    <span class="folio-r">03</span>
+  </div>
+  <div style="margin-top:80px;">
+    <div class="kicker">現場 Demo</div>
+    <h3 style="margin-top:16px;">SRE Agent 正在打我們的後端。</h3>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;gap:40px;margin-top:40px;">
+    <div class="placeholder" style="flex:1;min-height:420px;">
+      <div class="ph-label">Live Demo Video</div>
+      <div class="ph-file">20–30 秒上限</div>
+      <div style="font-size:14px;color:var(--ink-faint);">▶ SRE Agent 查 dashboard</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;">
+      <div>
+        <div class="eyebrow accent">現在</div>
+        <p class="body" style="margin-top:10px;">幾個 agent 在跑。尚未飽和。</p>
+      </div>
+      <div>
+        <div class="eyebrow accent">即將到來</div>
+        <p class="body" style="margin-top:10px;">DB · Service · Cost · Security agents。</p>
+      </div>
+      <div>
+        <div class="eyebrow accent">兩年後</div>
+        <p class="body" style="margin-top:10px;">負載是現在的幾倍。地基得現在打。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 4 · SCALE -->
+<section class="slide" data-label="Scale">
+  <div class="folio">
+    <span class="folio-l">§ 1 · Opening</span>
+    <span class="folio-c">The numbers we run against</span>
+    <span class="folio-r">04</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">量級</div>
+    <h3 style="margin-top:14px;">我們面對的數字。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:48px;margin-top:64px;padding:48px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);">
+    <div class="stat"><div class="num-md">40</div><div class="label">EKS clusters</div></div>
+    <div class="stat"><div class="num-md accent">120M</div><div class="label">peak active series</div></div>
+    <div class="stat"><div class="num-md">8M</div><div class="label">samples / sec</div></div>
+    <div class="stat"><div class="num-md">365</div><div class="label">天 保留週期</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:72px;margin-top:56px;">
+    <div>
+      <div class="eyebrow">為什麼盯 Active Series</div>
+      <p class="body" style="margin-top:14px;">
+        Ingester 記憶體 ≈ <span class="mono">8 KB × active series</span>。
+        TSDB head、倒排 index、label set 全堆在 RAM。
+      </p>
+      <p class="body" style="margin-top:20px;">
+        <span class="mono" style="font-size:28px;font-weight:600;">120M × 8 KB ≈ 960 GB RAM</span>——
+        光 ingester 層。
+      </p>
+    </div>
+    <div style="border-left:1px solid var(--rule);padding-left:32px;">
+      <div class="eyebrow">2023</div>
+      <p class="body" style="margin-top:10px;">選了 Thanos。<br/>當時最成熟，唯一能無侵入掛 Sidecar。</p>
+      <p class="body-sm" style="margin-top:16px;">服役三年，踩遍所有坑。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 5 · SECTION 2 OPENER -->
+<section class="slide" data-label="Part II Opener">
+  <div class="folio">
+    <span class="folio-l">Part II</span>
+    <span class="folio-c">Architecture of a long-term metrics backend</span>
+    <span class="folio-r">05</span>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:auto 1fr;gap:96px;align-items:end;">
+    <div class="chapter-num">II</div>
+    <div style="padding-bottom:60px;">
+      <div class="eyebrow">第二章</div>
+      <h2 style="margin-top:20px;font-size:96px;">長期指標<br/>後端架構。</h2>
+      <p class="lead italic" style="margin-top:40px;max-width:700px;color:var(--ink-soft);">
+        兩種整合模式 · 兩種設計哲學
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6 · WHY LONG-TERM -->
+<section class="slide" data-label="Why Long-Term">
+  <div class="folio">
+    <span class="folio-l">§ 2 · Architecture</span>
+    <span class="folio-c">Prometheus alone stops here</span>
+    <span class="folio-r">06</span>
+  </div>
+  <div style="margin-top:72px;">
+    <h3>Prometheus 一個人撐不住。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;margin-top:56px;flex:1;">
+    <div>
+      <div class="eyebrow accent">先天限制</div>
+      <ul class="ed-list" style="margin-top:16px;">
+        <li><span class="marker">01</span><span>本地留 14 天就滿。</span></li>
+        <li><span class="marker">02</span><span>單機儲存，單點壞掉就沒了。</span></li>
+        <li><span class="marker">03</span><span>跨集群無法統一查詢。</span></li>
+        <li><span class="marker">04</span><span>記憶體用量跟著 active series 線性成長（垂直擴展瓶頸）。</span></li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow accent">被要求做的事</div>
+      <ul class="ed-list" style="margin-top:16px;">
+        <li><span class="marker">01</span><span>看上個月的 baseline。</span></li>
+        <li><span class="marker">02</span><span>熱門節日 vs. 平日。</span></li>
+        <li><span class="marker">03</span><span>算 SLO 年度達成率。</span></li>
+        <li><span class="marker">04</span><span>讓 AI agent 連續回溯歷史（一個窗口可能發幾千個 PromQL）。</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:48px;padding-top:32px;border-top:2px solid var(--ink);">
+    <p class="lead">
+      要的是一個<span class="underline-acc">高吞吐 · 低延遲 · 便宜</span> 而且能擺脫單機天花板的長期儲存後端。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 7 · TWO INTEGRATION MODES -->
+<section class="slide" data-label="Two Modes">
+  <div class="folio">
+    <span class="folio-l">§ 2 · Architecture</span>
+    <span class="folio-c">Two ways to bolt on a backend</span>
+    <span class="folio-r">07</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">兩種整合模式</div>
+    <h3 style="margin-top:14px;">Sidecar vs. Remote-Write。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1px 1fr;gap:56px;margin-top:56px;flex:1;">
+    <div>
+      <div class="badge accent" style="border-color:var(--accent);color:var(--accent);">Sidecar Mode</div>
+      <h4 style="margin-top:20px;color:var(--accent);">Thanos 獨有架構</h4>
+      <div class="diagram" style="margin-top:28px;min-height:280px;">
+        <span class="diagram-title">Data path</span>
+        <div style="display:flex;flex-direction:column;gap:20px;align-items:center;margin-top:16px;">
+          <div style="border:1.5px dashed var(--ink);padding:16px;display:flex;gap:16px;align-items:center;">
+            <span class="node">Prometheus</span>
+            <span class="faint">—</span>
+            <span class="node red">Sidecar</span>
+          </div>
+          <div class="faint mono" style="font-size:14px;">同一個 Pod</div>
+          <div style="font-size:28px;color:var(--accent);">↓</div>
+          <div class="node" style="padding:10px 28px;">S3 · Object Storage</div>
+        </div>
+      </div>
+      <p class="caption" style="margin-top:24px;">Sidecar 寄生 Prom Pod · 直接上傳 TSDB block。</p>
+    </div>
+
+    <div class="rule-vert"></div>
+
+    <div>
+      <div class="badge" style="border-color:var(--accent-2);color:var(--accent-2);">Remote-Write Mode</div>
+      <h4 style="margin-top:20px;color:var(--accent-2);">Thanos / Mimir / Cortex 主流支持</h4>
+      <div class="diagram" style="margin-top:28px;min-height:280px;">
+        <span class="diagram-title">Data path</span>
+        <div style="display:flex;flex-direction:column;gap:20px;align-items:center;margin-top:16px;">
+          <span class="node">Prometheus</span>
+          <div style="font-size:28px;color:var(--accent-2);">↓ push protobuf</div>
+          <span class="node teal" style="padding:14px 28px;">Backend</span>
+          <div class="faint" style="font-size:16px;">解碼 · 重壓縮 · 建 index</div>
+          <div style="font-size:28px;color:var(--accent-2);">↓</div>
+          <div class="node" style="padding:10px 28px;">S3 · Object Storage</div>
+        </div>
+      </div>
+      <p class="caption" style="margin-top:24px;">Prom push 給後端 · 後端負責所有處理。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 8 · SIDECAR ELEGANCE -->
+<section class="slide" data-label="Sidecar Elegance">
+  <div class="folio">
+    <span class="folio-l">§ 2 · Architecture</span>
+    <span class="folio-c">Credit where credit is due</span>
+    <span class="folio-r">08</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">SIDECAR 的巧妙之處</div>
+    <h3 style="margin-top:14px;">它不重工，效率至上。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:72px;margin-top:56px;flex:1;">
+    <div class="img-frame" style="min-height:480px;">
+      <img src="images/sidecar-mode.png" alt="Sidecar mode flow"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:36px;">
+      <div>
+        <div class="eyebrow accent">關鍵洞察</div>
+        <p class="body" style="margin-top:14px;">
+          S3 上的 block 跟本地 disk <span class="italic">完全一樣</span>。<br/>
+          Sidecar 不做任何運算。
+        </p>
+      </div>
+      <hr class="rule"/>
+      <div>
+        <div class="eyebrow">對比 Remote-Write</div>
+        <p class="body" style="margin-top:14px;">
+          Backend 要解 protobuf、重壓縮、重建 index——<br/>
+          同一份運算做了兩次。
+        </p>
+      </div>
+      <div class="margin-note">
+        所以當初選 Sidecar，是合理的。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 9 · BUT WE HIT THE WALL -->
+<section class="slide statement" data-label="But — wall">
+  <div class="folio">
+    <span class="folio-l">§ 3 · Pain & Selection</span>
+    <span class="folio-c">Interlude</span>
+    <span class="folio-r">09</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+    <div class="kicker" style="margin-bottom:40px;">但是，三年之後</div>
+    <h1 style="font-size:160px;letter-spacing:-0.03em;">
+      我們<br/>
+      <span style="color:var(--accent);font-style:italic;">撞牆了。</span>
+    </h1>
+    <p class="lead" style="margin-top:72px;max-width:900px;color:var(--ink-soft);">
+      Thanos Sidecar 架構下的兩處侷限。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 10 · MONEY SHOT #1 · 512 GIB -->
+<section class="slide" data-label="Pain 1 — 512 GiB">
+  <div class="folio">
+    <span class="folio-l">§ 3 · Pain & Selection</span>
+    <span class="folio-c">Money shot № 1</span>
+    <span class="folio-r">10</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">痛點 ① 短期查詢</div>
+    <h3 style="margin-top:14px;">垂直瓶頸被 Sidecar 放大。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:72px;margin-top:56px;flex:1;align-items:center;">
+    <div class="diagram" style="min-height:360px;padding:48px;">
+      <span class="diagram-title">Query path</span>
+      <div style="display:flex;flex-direction:column;gap:18px;align-items:center;margin-top:16px;">
+        <div style="display:flex;gap:16px;">
+          <span class="node">Grafana</span>
+          <span class="node">AI Agent</span>
+        </div>
+        <div style="font-size:22px;color:var(--ink-faint);">↓</div>
+        <span class="node" style="padding:12px 32px;">Thanos Querier</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;width:100%;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <div class="caption">短期</div>
+            <div style="font-size:18px;">remote-read →</div>
+            <span class="node filled-red">💥 Prometheus</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <div class="caption">長期</div>
+            <div style="font-size:18px;">→</div>
+            <span class="node teal">Store Gateway</span>
+            <div style="font-size:22px;color:var(--ink-faint);">↓</div>
+            <span class="node">S3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border:2px solid var(--accent);padding:48px 40px;background:rgba(200,71,43,0.04);">
+      <div class="eyebrow accent">Single Prometheus Pod</div>
+      <div style="font-family:var(--serif);font-size:220px;font-weight:500;line-height:0.85;color:var(--accent);letter-spacing:-0.05em;margin-top:20px;">512</div>
+      <div class="body" style="margin-top:12px;font-weight:500;">GiB RAM</div>
+      <hr class="rule" style="margin:32px 0;"/>
+      <p class="body-sm">Prometheus <span class="mono">400+ GiB</span></p>
+      <p class="body-sm">Sidecar <span class="mono">數十 GiB</span></p>
+      <p class="caption" style="margin-top:20px;">
+        Sidecar 幫短期查詢扛 remote-read buffer——<br/>記憶體壓力被放大。
+      </p>
+    </div>
+  </div>
+
+  <p class="lead italic" style="margin-top:40px;color:var(--ink-soft);">
+    繼續走，只剩兩條路：買更大的機器，或換架構。
+  </p>
+</section>
+
+<!-- SLIDE 11 · PAIN 2 · STORE GATEWAY -->
+<section class="slide" data-label="Pain 2 — Store Gateway">
+  <div class="folio">
+    <span class="folio-l">§ 3 · Pain & Selection</span>
+    <span class="folio-c">Store Gateway, up close</span>
+    <span class="folio-r">11</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">痛點 ② 長期查詢</div>
+    <h3 style="margin-top:14px;">Thanos Store Gateway<br/>撐不住我們這個量級。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px 72px;margin-top:56px;flex:1;align-content:start;">
+
+    <div style="border-top:3px solid var(--accent);padding-top:24px;">
+      <div class="eyebrow accent">① 啟動慢</div>
+      <h4 style="margin-top:10px;font-size:32px;">冷啟動數十分鐘。</h4>
+      <p class="body" style="margin-top:14px;">
+        啟動要先 <span class="italic">sync bucket</span> + 下載 index header，
+        block 越多越慢——擴 Pod、rolling update、節點重建都在等它。
+      </p>
+    </div>
+
+    <div style="border-top:3px solid var(--accent);padding-top:24px;">
+      <div class="eyebrow accent">② Sharding 不靈活</div>
+      <h4 style="margin-top:10px;font-size:32px;">靜態切 · relabel 硬刻。</h4>
+      <p class="body" style="margin-top:14px;">
+        不像 Mimir 的 consistent hash ring——
+        Thanos 得用 relabel 規則把 block 綁在特定 SG 上，改一次要重啟。
+      </p>
+    </div>
+
+    <div style="border-top:3px solid var(--accent);padding-top:24px;">
+      <div class="eyebrow accent">③ 擴展困難</div>
+      <h4 style="margin-top:10px;font-size:32px;">水平加機器 ≠ 加容量。</h4>
+      <p class="body" style="margin-top:14px;">
+        新 SG 必須重新 sync 自己負責的 block，熱資料得重刷一遍 cache——
+        擴容期間整體反而變慢。
+      </p>
+    </div>
+
+    <div style="border-top:3px solid var(--accent);padding-top:24px;">
+      <div class="eyebrow accent">④ Cache 碎片化</div>
+      <h4 style="margin-top:10px;font-size:32px;">每個 SG 各自為政。</h4>
+      <p class="body" style="margin-top:14px;">
+        Index cache、chunks cache 各自獨立——
+        同一份熱 block 在多台 SG 重複佔記憶體，命中率低、OOM 容易。
+      </p>
+    </div>
+  </div>
+
+  <div style="margin-top:40px;padding:24px 32px;background:rgba(200,71,43,0.05);border-left:3px solid var(--accent);">
+    <p class="lead">
+      四件事都指向同一個根——<span class="italic">SG 是 stateful 的</span>。
+      擴 / 縮 / 改 / 重開，都要重新同步。
+    </p>
+  </div>
+</section>

@@ -1,0 +1,252 @@
+/* ============================================================
+   DevOpsDays Taipei 2025 – Slide Template Design System
+   Colors + Typography tokens
+   ============================================================ */
+
+/* --- Fonts -----------------------------------------------------
+   The original PDF uses a bilingual Latin + 繁體中文 pairing.
+   Substitutions (flagged to user):
+     Latin display/body  -> Inter (closest neutral sans to modern
+                            tech-conference decks)
+     Latin serif accent  -> Fraunces (occasional emphasis)
+     Traditional Chinese -> Noto Sans TC (Google Fonts)
+     Mono / code         -> JetBrains Mono (used for metrics /
+                            attribute names like gen_ai.*)
+   All four are loaded via Google Fonts in each HTML file.
+   ----------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Ubuntu:wght@300;400;500;700&display=swap');
+
+:root {
+  /* ---------- Color: Core brand (user-supplied palette) ----------
+     #FFFAF7 cream · #C2E5F5 pale sky · #5296B8 mid teal-blue
+     #135669 deep teal · #A0CEE6 soft sky · #6BAEBE cool teal
+     #35738E darker blue-teal · #F7A86B warm orange
+     #ADD3D8 pale mint-teal · #F26D4F coral
+  -----------------------------------------------------------------*/
+  --brand-paper:    #FFFAF7;   /* cream — 米白色 (page bg) */
+  --brand-deep:     #135669;   /* deep teal — primary ink */
+  --brand-teal:     #35738E;   /* darker blue-teal — secondary dark */
+  --brand-blue:     #5296B8;   /* mid teal-blue — primary accent */
+  --brand-cool:     #6BAEBE;   /* cool teal — mid tone */
+  --brand-sky:      #A0CEE6;   /* soft sky */
+  --brand-pale:     #C2E5F5;   /* pale sky — surface tint */
+  --brand-mint:     #ADD3D8;   /* pale mint-teal — surface tint */
+  --brand-amber:    #F7A86B;   /* warm orange — highlight / warning */
+  --brand-coral:    #F26D4F;   /* coral — danger / emphasis */
+  --brand-sage:     #8FB89C;   /* muted sage — success (distinct from teal family) */
+
+  /* Legacy aliases (kept so old references still resolve) */
+  --brand-ink:      var(--brand-deep);
+  --brand-cyan:     var(--brand-blue);
+  --brand-crimson:  var(--brand-coral);
+  --brand-jade:     var(--brand-cool);
+
+  /* ---------- Color: Neutrals ---------- */
+  --bg-0:   #FFFAF7;           /* page background — 米白色 */
+  --bg-1:   #F7EFE7;           /* subtle warm surface */
+  --bg-2:   #EFE3D6;           /* tonal divider panel */
+  --bg-tint-1: #ECF5FA;        /* cool tint surface (pale-sky wash) */
+  --bg-tint-2: #DCEBF3;        /* slightly stronger cool wash */
+  --bg-dark:        #0E3F4E;   /* inverted page — deeper than brand-deep */
+  --bg-dark-2:      #135669;   /* dark lift = brand-deep */
+
+  --fg-1:   #0E3F4E;           /* primary text — deep teal */
+  --fg-2:   #35738E;           /* secondary text */
+  --fg-3:   #6BAEBE;           /* muted / captions */
+  --fg-4:   #A0CEE6;           /* placeholder / disabled */
+  --fg-on-dark-1:   #FFFAF7;
+  --fg-on-dark-2:   #C2E5F5;
+  --fg-on-dark-3:   #6BAEBE;
+
+  --line-1: #E4D8C8;           /* warm rules */
+  --line-2: #C9BDA9;           /* stronger warm rules */
+  --line-cool: #C2E5F5;        /* cool rule (on tint surfaces) */
+  --line-on-dark:   #1F6179;
+
+  /* ---------- Color: Semantic ---------- */
+  --fg:         var(--fg-1);
+  --muted:      var(--fg-3);
+  --accent:     var(--brand-blue);
+  --accent-2:   var(--brand-deep);
+  --success:    var(--brand-sage);
+  --warning:    var(--brand-amber);
+  --danger:     var(--brand-coral);
+  --link:       var(--brand-teal);
+
+  /* ---------- Type: Families ---------- */
+  --font-sans:    'Inter', 'Noto Sans TC', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif:   'Fraunces', 'Noto Serif TC', Georgia, serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-cjk:     'Noto Sans TC', 'Inter', sans-serif;
+  --font-ubuntu:  'Ubuntu', 'Inter', 'Noto Sans TC', sans-serif;
+
+  /* ---------- Type: Scale (slide-optimised, 1920×1080) ---------- */
+  --fs-hero:       120px;   /* cover titles */
+  --fs-display:    88px;    /* section header words */
+  --fs-h1:         64px;    /* slide title */
+  --fs-h2:         44px;    /* subsection */
+  --fs-h3:         32px;    /* callout heading */
+  --fs-lead:       28px;    /* lead paragraph */
+  --fs-body:       22px;    /* body text */
+  --fs-small:      18px;    /* captions, table body */
+  --fs-micro:      14px;    /* footers, page numbers */
+
+  /* ---------- Type: Weights ---------- */
+  --fw-light:   300;
+  --fw-reg:     400;
+  --fw-med:     500;
+  --fw-semi:    600;
+  --fw-bold:    700;
+  --fw-black:   900;
+
+  /* ---------- Type: Line-height / tracking ---------- */
+  --lh-tight:   1.05;
+  --lh-snug:    1.2;
+  --lh-normal:  1.45;
+  --lh-loose:   1.6;
+  --tr-tight:   -0.02em;
+  --tr-normal:  0;
+  --tr-wide:    0.08em;
+  --tr-xwide:   0.18em;   /* section eyebrows */
+
+  /* ---------- Spacing ---------- */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  24px;
+  --sp-6:  32px;
+  --sp-7:  48px;
+  --sp-8:  64px;
+  --sp-9:  96px;
+  --sp-10: 128px;
+  --slide-padding: 80px;   /* inner padding of 1920×1080 slides */
+
+  /* ---------- Radii ---------- */
+  --r-xs: 2px;
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 14px;
+  --r-pill: 999px;
+
+  /* ---------- Shadows (restrained – decks use minimal shadow) ---------- */
+  --sh-1: 0 1px 2px rgba(11,27,43,0.06), 0 2px 6px rgba(11,27,43,0.04);
+  --sh-2: 0 4px 10px rgba(11,27,43,0.08), 0 10px 30px rgba(11,27,43,0.06);
+  --sh-card: 0 1px 0 rgba(11,27,43,0.04), 0 12px 40px -12px rgba(11,27,43,0.18);
+}
+
+/* ============================================================
+   Semantic element styles — drop-in defaults for slide bodies
+   ============================================================ */
+
+.ds-body { font-family: var(--font-sans); color: var(--fg-1); font-size: var(--fs-body); line-height: var(--lh-normal); }
+
+.ds-h1,
+h1.ds {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tr-tight);
+  line-height: var(--lh-tight);
+  color: var(--fg-1);
+  margin: 0 0 var(--sp-6);
+}
+.ds-h2,
+h2.ds {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tr-tight);
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+  margin: 0 0 var(--sp-5);
+}
+.ds-h3,
+h3.ds {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semi);
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+  margin: 0 0 var(--sp-4);
+}
+.ds-lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-reg);
+  color: var(--fg-2);
+}
+.ds-p {
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--fg-1);
+  margin: 0 0 var(--sp-4);
+}
+.ds-small,
+.ds-caption { font-size: var(--fs-small); color: var(--fg-3); }
+.ds-micro { font-size: var(--fs-micro); color: var(--fg-3); letter-spacing: var(--tr-wide); }
+
+.ds-eyebrow {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tr-xwide);
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+
+.ds-code,
+code.ds {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--bg-2);
+  padding: 2px 6px;
+  border-radius: var(--r-sm);
+  color: var(--fg-1);
+}
+
+.ds-display {
+  font-family: var(--font-sans);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--tr-tight);
+  line-height: 0.95;
+  color: var(--fg-1);
+}
+
+.ds-hero {
+  font-family: var(--font-sans);
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-black);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--fg-1);
+}
+
+.ds-section-number {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-black);
+  font-size: 240px;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--accent);
+}
+
+/* Dark-mode (section dividers) */
+.ds-on-dark { background: var(--bg-dark); color: var(--fg-on-dark-1); }
+.ds-on-dark .ds-h1,
+.ds-on-dark .ds-h2,
+.ds-on-dark .ds-h3,
+.ds-on-dark .ds-body,
+.ds-on-dark .ds-lead,
+.ds-on-dark .ds-display,
+.ds-on-dark .ds-hero { color: var(--fg-on-dark-1); }
+.ds-on-dark .ds-small,
+.ds-on-dark .ds-micro,
+.ds-on-dark .ds-caption { color: var(--fg-on-dark-3); }
+
+/* Utility */
+.ds-accent  { color: var(--accent); }
+.ds-accent2 { color: var(--accent-2); }
+.ds-danger  { color: var(--danger); }
+.ds-warn    { color: var(--warning); }
+.ds-success { color: var(--success); }

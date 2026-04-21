@@ -1,0 +1,1469 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<title>從 Thanos 到 Mimir 3.0 · Observability Day 2026</title>
+<link rel="stylesheet" href="styles.css"/>
+<script src="deck-stage.js"></script>
+<style>html, body { margin:0; padding:0; background:#000; }</style>
+</head>
+<body>
+<deck-stage>
+<!-- SLIDE 1 · COVER -->
+<section class="slide" data-label="Cover">
+  <div class="folio">
+    <span class="folio-l">Observability Day 2026</span>
+    <span class="folio-c">A Field Journal</span>
+    <span class="folio-r">№ 01</span>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;margin-top:40px;">
+    <div class="eyebrow" style="margin-bottom:40px;">An engineering notebook · 40 分鐘</div>
+    <h1 class="cover-title">
+      從 Thanos<br/>
+      <span class="cover-arrow">到</span> Mimir 3.0.
+    </h1>
+    <p class="lead italic" style="margin-top:56px;max-width:1100px;color:var(--ink-soft);">
+      AI 時代下 · 我們如何重新打造可觀測性地基
+    </p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;border-top:2px solid var(--ink);padding-top:28px;">
+    <div>
+      <div class="eyebrow">講者</div>
+      <div class="body" style="margin-top:6px;font-weight:500;">Mike Hsu</div>
+    </div>
+    <div>
+      <div class="eyebrow">關鍵字</div>
+      <div class="body" style="margin-top:6px;">Mimir 3.0 · AutoMQ · Parquet</div>
+    </div>
+    <div style="text-align:right;">
+      <div class="eyebrow">場合</div>
+      <div class="body" style="margin-top:6px;">Observability Day 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 2 · STATEMENT / HOOK -->
+<section class="slide statement" data-label="Hook">
+  <div class="folio">
+    <span class="folio-l">§ 1 · Opening</span>
+    <span class="folio-c">The first user is no longer human</span>
+    <span class="folio-r">02</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1500px;">
+    <div class="kicker" style="margin-bottom:32px;">開場</div>
+    <h1 style="font-size:112px;line-height:1.08;">
+      我們 metrics 後端的<br/>
+      <br/>
+      <span style="color:var(--accent);">主要使用者</span><br/>
+      已經不是人類。
+    </h1>
+    <p class="lead" style="margin-top:56px;max-width:900px;">
+      觀測者從<span class="italic">人</span>換成 <span class="italic">Agent</span>，
+      從偶爾查到 24/7。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 3 · SRE AGENT DEMO -->
+<section class="slide" data-label="SRE Agent Demo">
+  <div class="folio">
+    <span class="folio-l">§ 1 · Opening</span>
+    <span class="folio-c">Live demo — 20 seconds, tops</span>
+    <span class="folio-r">03</span>
+  </div>
+  <div style="margin-top:80px;">
+    <div class="kicker">現場 Demo</div>
+    <h3 style="margin-top:16px;">AI Agent 時代下，基礎設施備受考驗。</h3>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;gap:40px;margin-top:40px;">
+    <div class="placeholder" style="flex:1;min-height:420px;">
+      <div class="ph-label">Live Demo Video</div>
+      <div class="ph-file">20–30 秒上限</div>
+      <div style="font-size:14px;color:var(--ink-faint);">▶ SRE Agent 查 dashboard</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;">
+      <div>
+        <div class="eyebrow accent">現在</div>
+        <p class="body" style="margin-top:10px;">幾個 agent 在跑。尚未飽和。</p>
+      </div>
+      <div>
+        <div class="eyebrow accent">即將到來</div>
+        <p class="body" style="margin-top:10px;">DB · Service · Cost · Security agents。</p>
+      </div>
+      <div>
+        <div class="eyebrow accent">兩年後</div>
+        <p class="body" style="margin-top:10px;">負載是現在的幾倍。地基得現在打。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 4 · SCALE -->
+<section class="slide" data-label="Scale">
+  <div class="folio">
+    <span class="folio-l">§ 1 · Opening</span>
+    <span class="folio-c">The numbers we run against</span>
+    <span class="folio-r">04</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">量級</div>
+    <h3 style="margin-top:14px;">我們目前的規模。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:48px;margin-top:64px;padding:48px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);">
+    <div class="stat"><div class="num-md">40</div><div class="label">EKS clusters</div></div>
+    <div class="stat"><div class="num-md accent">120M</div><div class="label">peak active series</div></div>
+    <div class="stat"><div class="num-md">8M</div><div class="label">samples / sec</div></div>
+    <div class="stat"><div class="num-md">365</div><div class="label">天 保留週期</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:72px;margin-top:56px;">
+    <div>
+      <div class="eyebrow">為什麼盯 Active Series</div>
+      <p class="body" style="margin-top:14px;">
+        常駐記憶體 ≈ <span class="mono">8 KB × active series</span>；
+        (TSDB head chunk / 倒排索引 / labelset)。
+      </p>
+      <p class="body" style="margin-top:20px;">
+        <span class="mono" style="font-size:28px;font-weight:600;">120M × 8 KB ≈ 960 GB RAM</span>
+      </p>
+    </div>
+    <div style="border-left:1px solid var(--rule);padding-left:32px;">
+      <div class="eyebrow">2023</div>
+      <p class="body" style="margin-top:10px;">選了 Thanos（當時最成熟，唯一能無侵入掛 Sidecar）。</p>
+      <p class="body-sm" style="margin-top:16px;">服役時間超過三年。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 5 · SECTION 2 OPENER -->
+<section class="slide" data-label="Part II Opener">
+  <div class="folio">
+    <span class="folio-l">Part II</span>
+    <span class="folio-c">Architecture of a long-term metrics backend</span>
+    <span class="folio-r">05</span>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:auto 1fr;gap:96px;align-items:end;">
+    <div class="chapter-num">II</div>
+    <div style="padding-bottom:60px;">
+      <div class="eyebrow">第二章</div>
+      <h2 style="margin-top:20px;font-size:96px;">長期指標<br/>後端架構。</h2>
+      <p class="lead italic" style="margin-top:40px;max-width:700px;color:var(--ink-soft);">
+        兩種架構 · 兩種設計哲學
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6 · WHY LONG-TERM -->
+<section class="slide" data-label="Why Long-Term">
+  <div class="folio">
+    <span class="folio-l">§ 2 · Architecture</span>
+    <span class="folio-c">Prometheus alone stops here</span>
+    <span class="folio-r">06</span>
+  </div>
+  <div style="margin-top:72px;">
+    <h3>Prometheus 孤掌難鳴。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;margin-top:56px;flex:1;">
+    <div>
+      <div class="eyebrow accent">先天限制</div>
+      <ul class="ed-list" style="margin-top:16px;">
+        <li><span class="marker">01</span><span>本地留 14 天就滿。</span></li>
+        <li><span class="marker">02</span><span>單機儲存，單點壞掉就沒了。</span></li>
+        <li><span class="marker">03</span><span>跨集群無法統一查詢。</span></li>
+        <li><span class="marker">04</span><span>記憶體用量跟著 active series 線性成長（垂直擴展瓶頸）。</span></li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow accent">被要求做的事</div>
+      <ul class="ed-list" style="margin-top:16px;">
+        <li><span class="marker">01</span><span>看上個月的 baseline。</span></li>
+        <li><span class="marker">02</span><span>熱門節日 vs. 平日。</span></li>
+        <li><span class="marker">03</span><span>算 SLO 年度達成率。</span></li>
+        <li><span class="marker">04</span><span>讓 AI agent 連續回溯歷史（一個窗口可能發幾千個 PromQL）。</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:48px;padding-top:32px;border-top:2px solid var(--ink);">
+    <p class="lead">
+      要的是一個<span class="underline-acc">高吞吐 · 低延遲 · 便宜</span> 而且能擺脫單機天花板的長期儲存後端。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 7 · TWO INTEGRATION MODES -->
+<section class="slide" data-label="Two Modes">
+  <div class="folio">
+    <span class="folio-l">§ 2 · Architecture</span>
+    <span class="folio-c">Two ways to bolt on a backend</span>
+    <span class="folio-r">07</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">兩種架構模式</div>
+    <h3 style="margin-top:14px;">Sidecar vs. Remote-Write。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1px 1fr;gap:56px;margin-top:56px;flex:1;">
+    <div>
+      <div class="badge accent" style="border-color:var(--accent);color:var(--accent);">Sidecar Mode</div>
+      <h4 style="margin-top:20px;color:var(--accent);">Thanos 獨有</h4>
+      <div class="diagram" style="margin-top:28px;min-height:280px;">
+        <span class="diagram-title">Data path</span>
+        <div style="display:flex;flex-direction:column;gap:20px;align-items:center;margin-top:16px;">
+          <div style="border:1.5px dashed var(--ink);padding:16px;display:flex;gap:16px;align-items:center;">
+            <span class="node">Prometheus</span>
+            <span class="faint">—</span>
+            <span class="node red">Sidecar</span>
+          </div>
+          <div class="faint mono" style="font-size:14px;">同一個 Pod</div>
+          <div style="font-size:28px;color:var(--accent);">↓</div>
+          <div class="node" style="padding:10px 28px;">S3 · Object Storage</div>
+        </div>
+      </div>
+      <p class="caption" style="margin-top:24px;">Sidecar 寄生 Prom Pod · 直接上傳 TSDB block。</p>
+    </div>
+
+    <div class="rule-vert"></div>
+
+    <div>
+      <div class="badge" style="border-color:var(--accent-2);color:var(--accent-2);">Remote-Write Mode</div>
+      <h4 style="margin-top:20px;color:var(--accent-2);">Thanos / Mimir / Cortex 主流支持</h4>
+      <div class="diagram" style="margin-top:28px;min-height:280px;">
+        <span class="diagram-title">Data path</span>
+        <div style="display:flex;flex-direction:column;gap:20px;align-items:center;margin-top:16px;">
+          <span class="node">Prometheus</span>
+          <div style="font-size:28px;color:var(--accent-2);">↓ push protobuf</div>
+          <span class="node teal" style="padding:14px 28px;">Backend</span>
+          <div class="faint" style="font-size:16px;">解碼 · 重壓縮 · 建 index</div>
+          <div style="font-size:28px;color:var(--accent-2);">↓</div>
+          <div class="node" style="padding:10px 28px;">S3 · Object Storage</div>
+        </div>
+      </div>
+      <p class="caption" style="margin-top:24px;">Prom push 給後端 · 後端負責所有處理。</p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 8 · SIDECAR ELEGANCE -->
+<section class="slide" data-label="Sidecar Elegance">
+  <div class="folio">
+    <span class="folio-l">§ 2 · Architecture</span>
+    <span class="folio-c">Credit where credit is due</span>
+    <span class="folio-r">08</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">SIDECAR 的巧妙之處</div>
+    <h3 style="margin-top:14px;">它不重工，效率至上。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:72px;margin-top:56px;flex:1;">
+    <div class="img-frame" style="min-height:480px;">
+      <img src="images/sidecar-mode.png" alt="sidecar-mode.png"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:36px;">
+      <div>
+        <div class="eyebrow accent">關鍵洞察</div>
+        <p class="body" style="margin-top:14px;">
+          S3 上的 block 跟本地 disk <span class="italic">完全一樣</span>。<br/>
+          Sidecar 不做任何運算。
+        </p>
+      </div>
+      <hr class="rule"/>
+      <div>
+        <div class="eyebrow">對比 Remote-Write</div>
+        <p class="body" style="margin-top:14px;">
+          Backend 要解 protobuf、壓縮、重建 index——<br/>
+          同一份運算做了兩次。
+        </p>
+      </div>
+      <div class="margin-note">
+        所以當初選 Sidecar，是合理的。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 9 · BUT WE HIT THE WALL -->
+<section class="slide statement" data-label="But — wall">
+  <div class="folio">
+    <span class="folio-l">§ 3 · Pain & Selection</span>
+    <span class="folio-c">Interlude</span>
+    <span class="folio-r">09</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+    <div class="kicker" style="margin-bottom:40px;">但是，三年之後</div>
+    <h1 style="font-size:160px;letter-spacing:-0.03em;">
+      我們<br/>
+      <span style="color:var(--accent);font-style:italic;">面臨的痛點。</span>
+    </h1>
+    <p class="lead" style="margin-top:72px;max-width:900px;color:var(--ink-soft);">
+      Thanos Sidecar 架構下的兩處侷限。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 10 · MONEY SHOT #1 · 512 GIB -->
+<section class="slide" data-label="Pain 1 — 512 GiB">
+  <div class="folio">
+    <span class="folio-l">§ 3 · Pain & Selection</span>
+    <span class="folio-c">Money shot № 1</span>
+    <span class="folio-r">10</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">痛點 ① 短期查詢</div>
+    <h3 style="margin-top:14px;">垂直擴展瓶頸被 Sidecar 放大。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:72px;margin-top:56px;flex:1;align-items:center;">
+    <div class="diagram" style="min-height:360px;padding:48px;">
+      <span class="diagram-title">Query path</span>
+      <div style="display:flex;flex-direction:column;gap:18px;align-items:center;margin-top:16px;">
+        <div style="display:flex;gap:16px;">
+          <span class="node">Grafana</span>
+          <span class="node">AI Agent</span>
+        </div>
+        <div style="font-size:22px;color:var(--ink-faint);">↓</div>
+        <span class="node" style="padding:12px 32px;">Thanos Querier</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;width:100%;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <div class="caption">短期</div>
+            <div style="font-size:18px;">remote-read →</div>
+            <span class="node filled-red">💥 Prometheus</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <div class="caption">長期</div>
+            <div style="font-size:18px;">→</div>
+            <span class="node teal">Store Gateway</span>
+            <div style="font-size:22px;color:var(--ink-faint);">↓</div>
+            <span class="node">S3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border:2px solid var(--accent);padding:48px 40px;background:rgba(200,71,43,0.04);">
+      <div class="eyebrow accent">Single Prometheus Pod</div>
+      <div style="font-family:var(--serif);font-size:220px;font-weight:500;line-height:0.85;color:var(--accent);letter-spacing:-0.05em;margin-top:20px;">512</div>
+      <div class="body" style="margin-top:12px;font-weight:500;">GiB RAM</div>
+      <hr class="rule" style="margin:32px 0;"/>
+      <p class="body-sm">Prometheus <span class="mono">400+ GiB</span></p>
+      <p class="body-sm">Sidecar <span class="mono">數十 GiB</span></p>
+      <p class="caption" style="margin-top:20px;">
+        Sidecar 幫短期查詢扛 remote-read buffer——<br/>記憶體壓力被放大。
+      </p>
+    </div>
+  </div>
+
+  <p class="lead italic" style="margin-top:40px;color:var(--ink-soft);">
+    繼續走，只剩兩條路：買更大的機器，或換架構。
+  </p>
+</section>
+
+<!-- SLIDE 11 · PAIN 2 · STORE GATEWAY -->
+<section class="slide" data-label="Pain 2 — Store Gateway">
+  <div class="folio">
+    <span class="folio-l">§ 3 · Pain & Selection</span>
+    <span class="folio-c">Store Gateway, up close</span>
+    <span class="folio-r">11</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">痛點 ② 長期查詢</div>
+    <h3 style="margin-top:14px;">Thanos 與 Mimir 查詢<br/>細節差異。</h3>
+    <p class="body-sm" style="margin-top:16px;color:var(--ink-soft);max-width:900px;">
+      不是 Thanos 撐不住——是我們這樣的查詢型態，把 SG 的假設逼擠了出來。
+    </p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px 64px;margin-top:44px;flex:1;align-content:start;">
+
+    <div style="border-top:3px solid var(--accent);padding-top:22px;">
+      <div class="eyebrow accent">① 靜態 Sharding</div>
+      <h4 style="margin-top:10px;font-size:30px;">寫死在 manifest，改一次需要全部 block 重分配。</h4>
+      <p class="body-sm" style="margin-top:12px;">
+        Mimir：Hash Ring 自動 rebalance。
+      </p>
+    </div>
+
+    <div style="border-top:3px solid var(--accent);padding-top:22px;">
+      <div class="eyebrow accent">② 多租戶不友善</div>
+      <h4 style="margin-top:10px;font-size:30px;">一個 heavy long-range 查詢佔滿所有 worker，其他租戶全部排隊。</h4>
+      <p class="body-sm" style="margin-top:12px;">
+        Mimir：有 per-tenant fair queuing，吵鬧鄰居影響不到其他人。
+      </p>
+    </div>
+
+    <div style="border-top:3px solid var(--accent);padding-top:22px;">
+      <div class="eyebrow accent">③ 社群開發節奏慢</div>
+      <h4 style="margin-top:10px;font-size:30px;">Mimir 2.7 已支援，Thanos 直到 2026-01 才 merge。</h4>
+      <p class="body-sm" style="margin-top:12px;">
+        Mimir 2.7（2023-01）預設 batched streaming StoreGateway：5000 series / gRPC message。
+        Thanos 直到 2026-01 才 merge PR #8623 補齊——我們 2025-12 做決定時，它還沒出來。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- SLIDE 12 · THREE AXES -->
+<section class="slide" data-label="Three Axes">
+  <div class="folio">
+    <span class="folio-l">§ 3 · Pain & Selection</span>
+    <span class="folio-c">Three axes, spread out</span>
+    <span class="folio-r">12</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">三條決策維度</div>
+    <h3 style="margin-top:14px;">開始之前，再想清楚。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;margin-top:64px;flex:1;">
+    <div style="border-top:3px solid var(--ink);padding-top:28px;display:flex;flex-direction:column;gap:20px;">
+      <div class="chapter-num" style="font-size:140px;line-height:0.9;color:var(--ink-faint);">01</div>
+      <div class="eyebrow accent">短期瓶頸</div>
+      <h4>Sidecar<br/>vs. Remote-Write</h4>
+      <p class="body">把壓縮、建 index 丟給後端，<br/>緩解 Prometheus 瓶頸。</p>
+    </div>
+    <div style="border-top:3px solid var(--ink);padding-top:28px;display:flex;flex-direction:column;gap:20px;">
+      <div class="chapter-num" style="font-size:140px;line-height:0.9;color:var(--ink-faint);">02</div>
+      <div class="eyebrow accent">長期瓶頸</div>
+      <h4>Thanos<br/>vs. Mimir</h4>
+      <p class="body">bucket-index、動態 sharding、<br/>為多租戶規模而生。</p>
+    </div>
+    <div style="border-top:3px solid var(--accent);padding-top:28px;display:flex;flex-direction:column;gap:20px;">
+      <div class="chapter-num" style="font-size:140px;line-height:0.9;color:var(--accent);">03</div>
+      <div class="eyebrow accent">採集端</div>
+      <h4>Prom Server<br/>vs. Prom Agent</h4>
+      <p class="body">所有查詢只依賴統一儲存後端——<br/>最激進。風險最高。</p>
+    </div>
+  </div>
+
+  <p class="lead italic" style="margin-top:48px;color:var(--ink-soft);">
+    三個維度互相獨立。下一頁把排列組合一一刪去。
+  </p>
+</section>
+
+<!-- SLIDE 13 · COMBINATIONS -->
+<section class="slide" data-label="Combinations">
+  <div class="folio">
+    <span class="folio-l">§ 3 · Pain & Selection</span>
+    <span class="folio-c">The elimination table</span>
+    <span class="folio-r">13</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">刪去法</div>
+    <h3 style="margin-top:14px;">五個排列組合，活下來一個。</h3>
+  </div>
+
+  <table class="tbl" style="margin-top:40px;">
+    <thead>
+      <tr>
+        <th style="width:56px;">№</th>
+        <th>組合</th>
+        <th>結果</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num-col faint">①</td>
+        <td>Sidecar · Thanos · Prom Server</td>
+        <td class="soft">維持現況</td>
+      </tr>
+      <tr>
+        <td class="num-col faint">②</td>
+        <td>Remote-Write · Thanos · Prom Server</td>
+        <td class="soft">短期解了，長期查詢沒解</td>
+      </tr>
+      <tr>
+        <td class="num-col faint">③</td>
+        <td>Remote-Write · Thanos · Prom Agent</td>
+        <td class="soft">長期沒解，還疊加 alert 風險</td>
+      </tr>
+      <tr class="chosen">
+        <td class="num-col accent" style="font-weight:700;">④</td>
+        <td><strong>Remote-Write · Mimir · Prom Server</strong></td>
+        <td>短期緩解 + 長期解 · Prom Server 留作最後防線</td>
+      </tr>
+      <tr>
+        <td class="num-col faint">⑤</td>
+        <td>Remote-Write · Mimir · Prom Agent</td>
+        <td class="soft">HPA / KEDA / Alert 全依賴 Mimir，穩定後的終極優化</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="margin-note" style="margin-top:40px;">
+    保留 Prom Server 是保險決策。這個選擇會在 Slide 31 回收。
+  </div>
+</section>
+
+<!-- SLIDE 14 · PART III OPENER -->
+<section class="slide" data-label="Part III Opener">
+  <div class="folio">
+    <span class="folio-l">Part III</span>
+    <span class="folio-c">Mimir 3.0 · the architecture</span>
+    <span class="folio-r">14</span>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:auto 1fr;gap:96px;align-items:end;">
+    <div class="chapter-num">III</div>
+    <div style="padding-bottom:60px;">
+      <div class="eyebrow">第三章</div>
+      <h2 style="margin-top:20px;font-size:96px;">Mimir 3.0<br/>的新地基。</h2>
+      <p class="lead italic" style="margin-top:40px;max-width:700px;color:var(--ink-soft);">
+        為什麼偏偏現在換。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 15 · WHY NOW -->
+<!--<section class="slide" data-label="Why Now">-->
+<!--  <div class="folio">-->
+<!--    <span class="folio-l">§ 4 · Mimir 3.0</span>-->
+<!--    <span class="folio-c">Timing</span>-->
+<!--    <span class="folio-r">15</span>-->
+<!--  </div>-->
+<!--  <div style="margin-top:72px;">-->
+<!--    <div class="kicker">時機</div>-->
+<!--    <h3 style="margin-top:14px;">Mimir 3.0 剛好到位。</h3>-->
+<!--  </div>-->
+
+<!--  <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;margin-top:56px;flex:1;">-->
+<!--    <div>-->
+<!--      <div class="eyebrow accent">版本紅利</div>-->
+<!--      <ul class="ed-list" style="margin-top:16px;">-->
+<!--        <li><span class="marker">·</span><span>2025 九月推出 · 三主題 Reliability / Performance / Cost。</span></li>-->
+<!--        <li><span class="marker">·</span><span><span class="italic">Ingest Storage</span>——Kafka 讀寫解耦。</span></li>-->
+<!--        <li><span class="marker">·</span><span><span class="italic">Mimir Query Engine</span>——streaming + optimization。</span></li>-->
+<!--        <li><span class="marker">·</span><span>Grafana Cloud dogfood 省 ~25% TCO。</span></li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--    <div style="border-left:1px solid var(&#45;&#45;rule);padding-left:48px;">-->
+<!--      <div class="eyebrow accent">個人觀察</div>-->
+<!--      <ul class="ed-list" style="margin-top:16px;">-->
+<!--        <li><span class="marker">·</span><span>Grafana Labs 全力押 LGTM stack。</span></li>-->
+<!--        <li><span class="marker">·</span><span>Mimir 持續優化底層架構。</span></li>-->
+<!--        <li><span class="marker">·</span><span>Thanos 社群冷清 · 文件不全 · 有問題得翻 source code。</span></li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+
+<!-- SLIDE 16 · THREE PILLARS -->
+<section class="slide" data-label="Three Pillars">
+  <div class="folio">
+    <span class="folio-l">§ 4 · Mimir 3.0</span>
+    <span class="folio-c">Three pillars</span>
+    <span class="folio-r">16</span>
+  </div>
+    <div style="margin-top:72px;">
+        <div class="kicker">時機</div>
+        <h3 style="margin-top:14px;">Mimir 3.0 剛好到位。</h3>
+    </div>
+
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:64px;margin-top:56px;flex:1;">
+    <div class="img-frame dark" style="min-height:520px;">
+      <img src="images/mimir3-architecture-official.png" alt="mimir3-architecture-official.png"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:28px;">
+      <div style="border-left:3px solid var(--accent);padding-left:24px;">
+        <div class="eyebrow accent">Reliability</div>
+        <h4 style="margin-top:8px;font-size:36px;">讀寫徹底解耦。</h4>
+        <p class="body" style="margin-top:10px;">Kafka 當中繼實現持久性 · 讀掛掉寫照常 · quorum 從 2/3 降到 1。</p>
+      </div>
+      <hr class="rule"/>
+      <div style="border-left:3px solid var(--accent-2);padding-left:24px;">
+        <div class="eyebrow" style="color:var(--accent-2);">Performance</div>
+        <h4 style="margin-top:8px;font-size:36px;">MQE streaming。</h4>
+        <p class="body" style="margin-top:10px;">Peak CPU ↓80% · Peak Mem ↓3×。</p>
+      </div>
+      <hr class="rule"/>
+      <div style="border-left:3px solid var(--accent-3);padding-left:24px;">
+        <div class="eyebrow" style="color:var(--accent-3);">Cost</div>
+        <h4 style="margin-top:8px;font-size:36px;">Querier / Ingester 使用量減半。</h4>
+        <p class="body" style="margin-top:10px;">不再靠 RF=3 · ~25% TCO ↓。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 17 · INGEST STORAGE -->
+<section class="slide" data-label="Ingest Storage">
+  <div class="folio">
+    <span class="folio-l">§ 4 · Mimir 3.0</span>
+    <span class="folio-c">From 3 writes to 1 Kafka produce</span>
+    <span class="folio-r">17</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">Ingest Storage</div>
+    <h3 style="margin-top:14px;">寫 3 次 → 寫 1 次。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:48px;flex:1;">
+    <div>
+      <div class="badge" style="border-color:var(--accent);color:var(--accent);">Classic · v2</div>
+      <div class="diagram" style="margin-top:16px;padding:32px;">
+        <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
+          <span class="node">Distributor</span>
+          <div class="mono faint" style="font-size:14px;">RF=3 · gRPC Push</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;width:100%;">
+            <span class="node red" style="font-size:14px;">Ingester a</span>
+            <span class="node red" style="font-size:14px;">Ingester b</span>
+            <span class="node red" style="font-size:14px;">Ingester c</span>
+          </div>
+          <div class="mono faint" style="font-size:14px;">↓ 2/3 quorum</div>
+          <span class="node">Querier</span>
+        </div>
+      </div>
+      <div style="margin-top:24px;padding:20px;background:rgba(200,71,43,0.06);border-left:3px solid var(--accent);">
+        <div class="eyebrow accent">為什麼要 2/3 quorum</div>
+        <p class="body-sm" style="margin-top:8px;">Dynamo 不變式 <span class="mono">R + W &gt; N</span>。W=2 · R=2 · N=3 → 4 &gt; 3 ✓<br/>讀集合要跟最新寫入交集才讀得到。</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="badge" style="border-color:var(--accent-2);color:var(--accent-2);">Ingest Storage · v3</div>
+      <div class="diagram" style="margin-top:16px;padding:32px;">
+        <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
+          <span class="node">Distributor</span>
+          <div class="mono faint" style="font-size:14px;">寫 1 次</div>
+          <span class="node filled-teal" style="padding:10px 36px;">Kafka</span>
+          <div class="mono faint" style="font-size:14px;">↓ consume</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;">
+            <span class="node teal" style="font-size:14px;">Ingester</span>
+            <span class="node teal" style="font-size:14px;">Block Builder</span>
+          </div>
+          <div class="mono faint" style="font-size:14px;">↓ quorum=1</div>
+          <span class="node">Querier</span>
+        </div>
+      </div>
+      <div style="margin-top:24px;padding:20px;background:rgba(10,93,116,0.06);border-left:3px solid var(--accent-2);">
+        <div class="eyebrow" style="color:var(--accent-2);">為什麼 quorum=1 就夠</div>
+        <p class="body-sm" style="margin-top:8px;">Kafka partition = linearized log。<br/>每個 consumer 都 replay 同一份 log · 無分歧 · 不需 overlap。</p>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+<!-- SLIDE 18 · DECOUPLE -->
+<section class="slide" data-label="Decouple">
+  <div class="folio">
+    <span class="folio-l">§ 4 · Mimir 3.0</span>
+    <span class="folio-c">Write stays healthy</span>
+    <span class="folio-r">18</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">Quorum = 1</div>
+    <h3 style="margin-top:14px;">讀掛了 · 寫照常。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:64px;margin-top:56px;flex:1;">
+    <div class="img-frame dark" style="min-height:460px;">
+      <img src="images/mimir3-decouple.png" alt="mimir3-decouple.png"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:32px;justify-content:center;">
+      <div>
+        <div class="eyebrow accent">讀取可用性</div>
+        <p class="body" style="margin-top:14px;">
+          v2：過半 zone 健康才算活。<br/>
+          v3：<span class="underline-acc">每個 partition 有 1 個消費者就算活</span>。
+        </p>
+      </div>
+      <hr class="rule"/>
+      <div>
+        <div class="eyebrow accent">可用性解耦</div>
+        <p class="body" style="margin-top:14px;">
+          熱查詢再兇，寫入只到 Kafka 就結束。<br/>
+          <span class="underline-acc">Write 永遠 HEALTHY。</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 19 · RF TABLE -->
+<section class="slide" data-label="Replica Math">
+  <div class="folio">
+    <span class="folio-l">§ 4 · Mimir 3.0</span>
+    <span class="folio-c">The biggest cost cut</span>
+    <span class="folio-r">19</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">Rethinking Replication</div>
+    <h3 style="margin-top:14px;">可用性不一定要靠 Replication。</h3>
+  </div>
+
+  <table class="tbl" style="margin-top:40px;">
+    <thead>
+      <tr>
+        <th style="width:220px;">維度</th>
+        <th style="text-align:center;">Classic<br/><span class="caption">RF=3 + 3 zones</span></th>
+        <th style="text-align:center;">Ingest<br/><span class="caption">3 zones</span></th>
+        <th class="chosen" style="text-align:center;background:rgba(200,71,43,0.06);">Ingest<br/><span class="caption">2 zones ✦</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>副本決定方式</td>
+        <td class="num-col" style="text-align:center;">RF=3（寫 3 次）</td>
+        <td class="num-col" style="text-align:center;">zone 數</td>
+        <td class="chosen num-col" style="text-align:center;">zone 數</td>
+      </tr>
+      <tr>
+        <td>實際副本</td>
+        <td class="num-col accent" style="text-align:center;font-size:28px;">3×</td>
+        <td class="num-col" style="text-align:center;font-size:28px;">3×</td>
+        <td class="chosen num-col" style="text-align:center;font-size:28px;color:var(--accent-2);font-weight:600;">2×</td>
+      </tr>
+      <tr>
+        <td>Write 容錯</td>
+        <td class="num-col" style="text-align:center;">1 zone · 2/3 quorum</td>
+        <td class="num-col" style="text-align:center;">Kafka 負責</td>
+        <td class="chosen num-col" style="text-align:center;">Kafka 負責</td>
+      </tr>
+      <tr>
+        <td>Read quorum</td>
+        <td class="num-col accent" style="text-align:center;">2/3</td>
+        <td class="num-col" style="text-align:center;color:var(--accent-2);">1/3</td>
+        <td class="chosen num-col" style="text-align:center;color:var(--accent-2);">1/2</td>
+      </tr>
+      <tr>
+        <td>Read 容錯</td>
+        <td class="num-col" style="text-align:center;">1 zone</td>
+        <td class="num-col" style="text-align:center;color:var(--accent-2);font-weight:600;">2 zones</td>
+        <td class="chosen num-col" style="text-align:center;">1 zone</td>
+      </tr>
+      <tr>
+        <td>Ingester 成本</td>
+        <td class="num-col accent" style="text-align:center;font-size:26px;">3×</td>
+        <td class="num-col" style="text-align:center;font-size:26px;">3×</td>
+        <td class="chosen num-col" style="text-align:center;font-size:26px;color:var(--accent-2);font-weight:600;">2×</td>
+      </tr>
+      <tr>
+        <td>額外元件</td>
+        <td class="faint" style="text-align:center;">—</td>
+        <td style="text-align:center;">Kafka</td>
+        <td class="chosen" style="text-align:center;">Kafka</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:40px;padding:28px 36px;border:2px solid var(--accent);background:rgba(200,71,43,0.04);">
+    <p class="lead">
+      把可用性從<span class="italic">「RF 堆出來」</span>換成<span class="italic">「Kafka 保證 + partition 調整」</span>。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 20 · MQE -->
+<section class="slide" data-label="MQE">
+  <div class="folio">
+    <span class="folio-l">§ 4 · Mimir 3.0</span>
+    <span class="folio-c">Read side, for free</span>
+    <span class="folio-r">20</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">Mimir Query Engine</div>
+    <h3 style="margin-top:14px;">無痛升級。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:64px;margin-top:56px;flex:1;">
+    <div class="img-frame dark" style="min-height:460px;">
+      <img src="images/mimir3-mqe-benchmark.png" alt="mimir3-mqe-benchmark.png"/>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-content:center;">
+      <div class="stat"><div class="num-sm accent">92%</div><div class="label">less memory<br/>vs Prom engine</div></div>
+      <div class="stat"><div class="num-sm">38%</div><div class="label">faster execution</div></div>
+      <div class="stat"><div class="num-sm accent">3×</div><div class="label">querier peak mem ↓</div></div>
+      <div class="stat"><div class="num-sm">80%</div><div class="label">querier peak CPU ↓</div></div>
+    </div>
+  </div>
+
+  <p class="caption" style="margin-top:40px;">
+    MQE 在 Mimir 3.0 預設開啟 · 不用改 query、不用加設定 · 覆蓋 100% 穩定 PromQL。
+  </p>
+</section>
+
+
+<!-- SLIDE 21 · DASHBOARD GRID -->
+<section class="slide" data-label="Dashboard 2x2">
+  <div class="folio">
+    <span class="folio-l">§ 4 · Mimir 3.0</span>
+    <span class="folio-c">Production · before & after</span>
+    <span class="folio-r">21</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">遷移後</div>
+    <h3 style="margin-top:14px;">寫讀兩端同時掉下來。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:24px;margin-top:40px;flex:1;">
+    <div class="chart-card">
+      <div class="chart-label" style="color:var(--accent);">Ingester · CPU</div>
+      <div class="img-frame dark tight" style="flex:1;min-height:200px;">
+      <img src="images/mimir3-ingester-cpu.png" alt="mimir3-ingester-cpu.png"/>
+    </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label" style="color:var(--accent);">Ingester · Memory</div>
+      <div class="img-frame dark tight" style="flex:1;min-height:200px;">
+      <img src="images/mimir3-ingester-memory.png" alt="mimir3-ingester-memory.png"/>
+    </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label" style="color:var(--accent-2);">Querier · CPU</div>
+      <div class="img-frame dark tight" style="flex:1;min-height:200px;">
+      <img src="images/mimir3-querier-cpu.png" alt="mimir3-querier-cpu.png"/>
+    </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-label" style="color:var(--accent-2);">Querier · Memory</div>
+      <div class="img-frame dark tight" style="flex:1;min-height:200px;">
+      <img src="images/mimir3-querier-memory.png" alt="mimir3-querier-memory.png"/>
+    </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- SLIDE 22 · PART IV OPENER -->
+<section class="slide" data-label="Part IV Opener">
+  <div class="folio">
+    <span class="folio-l">Part IV</span>
+    <span class="folio-c">The Kafka question</span>
+    <span class="folio-r">22</span>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:auto 1fr;gap:96px;align-items:end;">
+    <div class="chapter-num">IV</div>
+    <div style="padding-bottom:60px;">
+      <div class="eyebrow">第四章</div>
+      <h2 style="margin-top:20px;font-size:96px;">Kafka 選型。</h2>
+      <p class="lead italic" style="margin-top:40px;max-width:800px;color:var(--ink-soft);">
+        多一個元件 —— 我們是不是在自找麻煩？
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 23 · QUESTION + LITTLE'S LAW -->
+<section class="slide" data-label="Little's Law">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">A small detour into queueing theory</span>
+    <span class="folio-r">23</span>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1500px;">
+    <div class="kicker" style="margin-bottom:24px;">先打個岔</div>
+    <h2 style="font-size:84px;line-height:1.1;">
+      多加一個 Kafka 是不是把事情<span style="color:var(--accent);font-style:italic;">搞更複雜</span>？
+    </h2>
+    <p class="lead" style="margin-top:40px;max-width:1100px;color:var(--ink-soft);">
+      回答這個問題之前，我想先拉出一條基礎定律。<br/>
+      任何有 queue 的系統，都躲不過它。
+    </p>
+
+    <div style="margin-top:56px;padding:40px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);">
+      <div class="eyebrow accent">Little&rsquo;s Law · 李氏定理</div>
+      <div class="mono" style="font-size:104px;font-weight:600;color:var(--accent);letter-spacing:-0.02em;line-height:1;margin-top:20px;white-space:nowrap;">L = λ · W</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;margin-top:36px;">
+        <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono accent" style="font-size:44px;font-weight:600;">L</div><p class="body-sm">queue 中的平均任務數</p></div>
+        <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono accent" style="font-size:44px;font-weight:600;">λ</div><p class="body-sm">到達速率<br/>（samples/s）</p></div>
+        <div style="display:flex;gap:20px;align-items:baseline;"><div class="mono accent" style="font-size:44px;font-weight:600;">W</div><p class="body-sm">每件事花的處理時間</p></div>
+      </div>
+    </div>
+
+    <p class="lead italic" style="margin-top:48px;">
+      L 堆積 = 流入（控不住）× 處理時間（下游拖慢）。<br/>
+      <span style="color:var(--accent);">這就是背壓的來源。</span>
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 24 · BACKPRESSURE -->
+<section class="slide" data-label="Backpressure">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">One link slows, the whole chain backs up</span>
+    <span class="folio-r">24</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">整條鏈路</div>
+    <h3 style="margin-top:14px;">牽一髮，動全身。</h3>
+  </div>
+
+  <div style="margin-top:48px;flex:1;display:flex;flex-direction:column;gap:24px;">
+    <div class="img-frame" style="min-height:300px;">
+      <img src="images/kafka-backpressure-flow.png" alt="kafka-backpressure-flow.png"/>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:16px;">
+      <div>
+        <div class="eyebrow accent">真實踩過的坑</div>
+        <p class="body" style="margin-top:14px;">
+          Ingester 卡住 → Kafka 堆積 → Distributor produce timeout → Prom queue full → 全環境噴 alert。
+        </p>
+        <p class="body-sm" style="margin-top:16px;">
+          根因在最下游，但你看到的是最上游在叫。
+        </p>
+      </div>
+      <div style="border-left:1px solid var(--rule);padding-left:32px;">
+        <div class="eyebrow">我們學到的</div>
+        <p class="body" style="margin-top:14px;">
+          Kafka 不永遠低延遲。Rebalance、leader 切換、consumer lag，任一件都能把 5ms 變 5 秒。
+        </p>
+        <p class="body-sm" style="margin-top:16px;">
+          沒有免費的午餐。複雜度不會消失，只是換地方放。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 25 · STATEMENT · still chose it -->
+<section class="slide statement" data-label="But still — Kafka">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">So why sign up</span>
+    <span class="folio-r">25</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1500px;">
+    <div class="kicker" style="margin-bottom:32px;">但我們還是選了它</div>
+    <h1 style="font-size:108px;line-height:1.08;">
+      因為我們賭的<br/>
+      不是<span class="italic" style="color:var(--ink-faint);">今天的 Kafka</span><br/>
+      是<span style="color:var(--accent);">明天的</span>。
+    </h1>
+    <p class="lead" style="margin-top:64px;max-width:1100px;color:var(--ink-soft);">
+      如果只是要解耦，我們不會跳進這個坑。<br/>
+      社群這兩年悄悄決定了 Kafka 的未來。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 26 · DISKLESS TIMELINE -->
+<section class="slide" data-label="Diskless Timeline">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">The Diskless Wars · two years in</span>
+    <span class="folio-r">26</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">下一個十年</div>
+    <h3 style="margin-top:14px;">Diskless Kafka。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:72px;margin-top:48px;flex:1;">
+    <div class="timeline">
+      <div class="timeline-row"><div class="date">Aug 2023</div><div class="event">WarpStream 發表 · Kafka-API on S3 首發</div></div>
+      <div class="timeline-row"><div class="date">May 2024</div><div class="event">Confluent Freight 發表</div></div>
+      <div class="timeline-row"><div class="date">Jul 2024</div><div class="event"><strong>AutoMQ 1.0</strong> · S3 Direct 寫入</div></div>
+      <div class="timeline-row"><div class="date">Sep 2024</div><div class="event">Confluent 收購 WarpStream · $220M</div></div>
+      <div class="timeline-row"><div class="date">Apr 2025</div><div class="event">Aiven 提出 <strong>KIP-1150</strong> Diskless Topics</div></div>
+      <div class="timeline-row"><div class="date">Nov 2025</div><div class="event">Redpanda 發表 Cloud Topics</div></div>
+      <div class="timeline-row key"><div class="date">Mar 2026</div><div class="event">KIP-1150 正式通過——Apache Kafka 擁抱 diskless</div></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:32px;">
+      <div class="img-frame" style="flex:1;min-height:320px;">
+      <img src="images/kip1150-xiaohongshu.png" alt="kip1150-xiaohongshu.png"/>
+    </div>
+      <div class="margin-note">
+        9 binding + 5 non-binding。不是 PR 稿，是真人真投票。<br/>
+        AutoMQ 不是冒險——是共識方向上最早的一批。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 27 · AUTOMQ PHILOSOPHY -->
+<section class="slide" data-label="AutoMQ Philosophy">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">Surgical replacement</span>
+    <span class="folio-r">27</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">AutoMQ</div>
+    <h3 style="margin-top:14px;">最小改動的 Diskless Kafka 分支。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:64px;margin-top:48px;flex:1;">
+    <div class="img-frame" style="min-height:460px;">
+      <img src="images/kafka-vs-automq.png" alt="automq-architecture.png"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:28px;">
+      <div>
+        <div class="eyebrow accent">傳統 Kafka 三痛</div>
+        <ul class="ed-list" style="margin-top:12px;">
+          <li><span class="marker">·</span><span>Broker 有狀態——每次重啟都搬資料。</span></li>
+          <li><span class="marker">·</span><span>Rebalance storm——加縮 broker 觸發大遷移。</span></li>
+          <li><span class="marker">·</span><span>跨 AZ 流量吃掉 60–70% 成本。</span></li>
+        </ul>
+      </div>
+      <hr class="rule-strong"/>
+      <div>
+        <div class="eyebrow" style="color:var(--accent-2);">AutoMQ 換介面 · 全解</div>
+        <ul class="ed-list" style="margin-top:12px;">
+          <li><span class="marker" style="color:var(--accent-2);">·</span><span>Broker stateless · spot-friendly · 秒級 rebalance。</span></li>
+          <li><span class="marker" style="color:var(--accent-2);">·</span><span>S3 自帶多副本 · broker 間 zero replication。</span></li>
+          <li><span class="marker" style="color:var(--accent-2);">·</span><span>100% Kafka API · Producer/Consumer 0 改動。</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 28 · CROSS-AZ BLACK HOLE -->
+<section class="slide" data-label="Cross-AZ Black Hole">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">The Kafka bill, dissected</span>
+    <span class="folio-r">28</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">跨 AZ 流量</div>
+    <h3 style="margin-top:14px;">傳統 Kafka 的黑洞。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:64px;margin-top:48px;flex:1;">
+    <div class="img-frame" style="min-height:460px;">
+      <img src="images/kafka-inter-zone.png" alt="kafka-inter-zone.png"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div style="border-left:3px solid var(--accent);padding-left:20px;">
+        <div class="eyebrow accent">① Producer → Broker</div>
+        <p class="body-sm" style="margin-top:6px;">寫入可能 hit 其他 AZ 的 leader。</p>
+      </div>
+      <div style="border-left:3px solid var(--accent);padding-left:20px;">
+        <div class="eyebrow accent">② Broker ↔ Broker</div>
+        <p class="body-sm" style="margin-top:6px;">Replication 幾乎必定跨 AZ。</p>
+      </div>
+      <div style="border-left:3px solid var(--accent);padding-left:20px;">
+        <div class="eyebrow accent">③ Consumer ← Broker</div>
+        <p class="body-sm" style="margin-top:6px;">Consumer 不一定跟 leader 同 AZ。</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding:24px 32px;background:rgba(200,71,43,0.06);border-left:3px solid var(--accent);">
+    <p class="body">
+      AutoMQ 官方：大叢集跨 AZ 流量占 <span class="accent" style="font-weight:600;">60–70%</span> 的 Kafka 總成本——不是花在業務，是花在跨區網路傳輸。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 29 · ZERO ZONE ROUTER · HIGH POINT -->
+<section class="slide" data-label="Zero Zone Router">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">The trick</span>
+    <span class="folio-r">29</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">AutoMQ 的解法</div>
+    <h3 style="margin-top:14px;">Zero-Zone Router。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:64px;margin-top:48px;flex:1;">
+    <div class="img-frame" style="min-height:460px;">
+      <img src="images/automq-zero-zone-router.png" alt="automq-zero-zone-router.png"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--rule);">
+        <div class="num-col" style="color:var(--accent-2);font-size:22px;font-weight:600;">01</div>
+        <p class="body">Producer 寫本地 AZ 的 broker。</p>
+      </div>
+      <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--rule);">
+        <div class="num-col" style="color:var(--accent-2);font-size:22px;font-weight:600;">02</div>
+        <p class="body">Rack-aware Router 透過 S3 路由給 leader partition。</p>
+      </div>
+      <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--rule);">
+        <div class="num-col" style="color:var(--accent-2);font-size:22px;font-weight:600;">03</div>
+        <p class="body">其他 AZ 從 S3 同步拉 readonly 副本。</p>
+      </div>
+      <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;align-items:baseline;padding:12px 0;">
+        <div class="num-col" style="color:var(--accent-2);font-size:22px;font-weight:600;">04</div>
+        <p class="body">Consumer 從本地 AZ 的 readonly replica 讀。</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding:28px 36px;border:2px solid var(--accent-2);background:rgba(10,93,116,0.04);">
+    <p class="lead">
+      AWS 同 region S3 <span class="underline-acc">免費</span>。
+      <span class="soft" style="font-size:24px;">把 60–70% 的 Kafka 帳單直接歸零。</span>
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 30 · ELASTIC CAPACITY -->
+<section class="slide" data-label="Elastic Capacity">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">Capacity as a dial</span>
+    <span class="folio-r">30</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">容量與彈性</div>
+    <h3 style="margin-top:14px;">從「預留」到「按用量」。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:64px;margin-top:48px;flex:1;">
+    <div class="img-frame" style="min-height:440px;">
+      <img src="images/automq-elastic-capacity.png" alt="automq-elastic-capacity.png"/>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      <div style="border:1px solid var(--accent);padding:24px;">
+        <div class="eyebrow accent">Apache Kafka</div>
+        <h4 style="margin-top:8px;font-size:28px;">Fixed · Wasted &gt; 50%</h4>
+        <p class="body-sm" style="margin-top:12px;">Local disk 預配足 peak · scaling 以「小時」計。</p>
+      </div>
+      <div style="border:1px solid var(--accent-2);padding:24px;background:rgba(10,93,116,0.04);">
+        <div class="eyebrow" style="color:var(--accent-2);">AutoMQ</div>
+        <h4 style="margin-top:8px;font-size:28px;">Pay-as-you-go</h4>
+        <p class="body-sm" style="margin-top:12px;">S3 近乎無限 · partition 搬移以「秒」計 · Broker 可跑 spot。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SLIDE 31 · LATENCY PAYOFF -->
+<section class="slide" data-label="Latency Payoff">
+  <div class="folio">
+    <span class="folio-l">§ 5 · Kafka</span>
+    <span class="folio-c">The callback · Slide 13 returns</span>
+    <span class="folio-r">31</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">優點都說完了</div>
+    <h3 style="margin-top:14px;">那缺點呢？</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px;">
+    <div style="border:1px solid var(--accent-2);padding:32px;">
+      <div class="eyebrow" style="color:var(--accent-2);">Traditional Kafka · EBS</div>
+      <div class="stat" style="margin-top:16px;"><div class="num-md" style="color:var(--accent-2);">5–50<span style="font-size:36px;"> ms</span></div><div class="label">Produce ACK P99</div></div>
+    </div>
+    <div style="border:1px solid var(--accent);padding:32px;background:rgba(200,71,43,0.04);">
+      <div class="eyebrow accent">AutoMQ · S3Stream</div>
+      <div class="stat" style="margin-top:16px;"><div class="num-md accent">500 ms – 1 s</div><div class="label">Produce ACK P99（10× 的差距）極端情況 ~30 秒才能在 Mimir 讀取</div></div>
+    </div>
+  </div>
+
+<!--  <div class="diagram" style="margin-top:36px;padding:28px 40px;">-->
+<!--    <span class="diagram-title">Full pipeline</span>-->
+<!--    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:18px;margin-top:8px;">-->
+<!--      <span class="node">scrape</span>-->
+<!--      <span class="faint">→</span>-->
+<!--      <span class="node">remote_write</span>-->
+<!--      <span class="faint">→</span>-->
+<!--      <span class="node">Distributor</span>-->
+<!--      <span class="faint">→</span>-->
+<!--      <span class="node filled-teal">Kafka</span>-->
+<!--      <span class="faint">→</span>-->
+<!--      <span class="node">Ingester</span>-->
+<!--      <span class="faint">→</span>-->
+<!--      <span class="node">可查詢</span>-->
+<!--    </div>-->
+<!--    <p class="caption" style="margin-top:14px;">極端情況 ~30 秒才能在 Mimir 讀取。</p>-->
+<!--  </div>-->
+
+  <div style="margin-top:36px;padding:28px 36px;border:2px solid var(--accent);background:rgba(200,71,43,0.04);">
+    <div class="eyebrow accent">划算的取捨</div>
+    <p class="lead" style="margin-top:10px;">
+      Alert · HPA · KEDA <span class="italic">繼續走 Prom Server</span>（毫秒）——Mimir 是「秒級」長期後端，業務不受影響。
+    </p>
+<!--    <p class="body italic" style="margin-top:16px;color:var(&#45;&#45;ink-soft);">-->
+<!--      這就是 Slide 13 保留 Prom Server 的回報。-->
+<!--    </p>-->
+  </div>
+</section>
+
+<!-- SLIDE 32 · PART V OPENER -->
+<section class="slide" data-label="Part V Opener">
+  <div class="folio">
+    <span class="folio-l">Part V</span>
+    <span class="folio-c">Cost & performance · the scoreboard</span>
+    <span class="folio-r">32</span>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:auto 1fr;gap:96px;align-items:end;">
+    <div class="chapter-num">V</div>
+    <div style="padding-bottom:60px;">
+      <div class="eyebrow">第五章</div>
+      <h2 style="margin-top:20px;font-size:96px;">數字<br/>說話。</h2>
+      <p class="lead italic" style="margin-top:40px;max-width:700px;color:var(--ink-soft);">
+        三週生產並行 · AWS 真實帳單
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 33 · BENCHMARK -->
+<section class="slide" data-label="Benchmark">
+  <div class="folio">
+    <span class="folio-l">§ 6 · Results</span>
+    <span class="folio-c">48 queries, head to head</span>
+    <span class="folio-r">33</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">實測</div>
+    <h3 style="margin-top:14px;">Mimir 勝 45 / 48。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:72px;margin-top:48px;flex:1;">
+    <div>
+      <div class="eyebrow">測試設計</div>
+      <ul class="ed-list" style="margin-top:16px;">
+        <li><span class="marker">·</span><span>同一 production 環境 · 同 tenant。</span></li>
+        <li><span class="marker">·</span><span>8 種 query × 6 個時間範圍 = <strong>48 組</strong>。</span></li>
+        <li><span class="marker">·</span><span>Cache busting。</span></li>
+        <li><span class="marker">·</span><span>1h → 30d 全覆蓋。</span></li>
+      </ul>
+      <div style="margin-top:36px;padding:24px;border:2px solid var(--accent-2);">
+        <div class="eyebrow" style="color:var(--accent-2);">勝出</div>
+        <div class="num-md" style="color:var(--accent-2);margin-top:6px;">45 <span class="faint" style="font-size:28px;">/ 48 tests</span></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-content:center;">
+      <div class="stat"><div class="num-sm">3.4×</div><div class="label">平均查詢加速</div></div>
+      <div class="stat"><div class="num-sm accent">16.7×</div><div class="label">Cross-metric join 30d</div></div>
+      <div class="stat"><div class="num-sm">8.4×</div><div class="label">High-cardinality 1h</div></div>
+      <div class="stat"><div class="num-sm accent">6.3×</div><div class="label">長期 30d 查詢</div></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- SLIDE 34 · MONEY SHOT #3 -->
+<section class="slide statement" data-label="-49 percent">
+  <div class="folio">
+    <span class="folio-l">§ 6 · Results</span>
+    <span class="folio-c">Money shot № 3</span>
+    <span class="folio-r">34</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+    <div class="eyebrow" style="margin-bottom:32px;">3 週 AWS 帳單實測</div>
+    <h1 style="font-size:260px;line-height:0.9;color:var(--accent);letter-spacing:-0.05em;">
+      省 49%.
+    </h1>
+    <div style="margin-top:64px;display:flex;gap:56px;align-items:baseline;padding-top:32px;border-top:2px solid var(--ink);">
+      <div><div class="num-sm">3.4×</div><p class="caption" style="margin-top:6px;">更快</p></div>
+      <div style="font-size:28px;color:var(--ink-faint);">·</div>
+      <div><div class="num-sm accent">多數場景</div><p class="caption" style="margin-top:6px;">勝出</p></div>
+      <div style="font-size:28px;color:var(--ink-faint);">·</div>
+      <div><div class="num-sm">~6×</div><p class="caption" style="margin-top:6px;">性價比</p></div>
+    </div>
+    <p class="caption" style="margin-top:40px;max-width:900px;">
+      不同環境量級——絕對數字僅供參考。Annual Saving 落在幾十萬美金量級。
+    </p>
+  </div>
+</section>
+
+<!-- SLIDE 35 · PART VI OPENER -->
+<section class="slide" data-label="Part VI Opener">
+  <div class="folio">
+    <span class="folio-l">Part VI</span>
+    <span class="folio-c">What comes next</span>
+    <span class="folio-r">35</span>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:auto 1fr;gap:96px;align-items:end;">
+    <div class="chapter-num">VI</div>
+    <div style="padding-bottom:60px;">
+      <div class="eyebrow">第六章</div>
+      <h2 style="margin-top:20px;font-size:96px;">下一站——<br/>可觀測性 2.0?</h2>
+      <p class="lead italic" style="margin-top:40px;max-width:700px;color:var(--ink-soft);">
+        PromCon 2025 · 關注社群的前沿趨勢
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 36 · OBSERVABILITY 2.0 -->
+<section class="slide" data-label="Observability 2.0">
+  <div class="folio">
+    <span class="folio-l">§ 7 · What&rsquo;s Next</span>
+    <span class="folio-c">Signals from the edges</span>
+    <span class="folio-r">36</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">可觀測性 2.0</div>
+    <h3 style="margin-top:14px;">單一事實來源 · Wide Events。</h3>
+    <p class="caption" style="margin-top:10px;">Charity Majors · 2024 命名 · 原型是 Meta Scuba (VLDB 2013)</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;margin-top:48px;flex:1;">
+    <div>
+      <div class="eyebrow" style="color:var(--accent-2);">主力提倡者</div>
+      <ul class="ed-list" style="margin-top:16px;">
+        <li><span class="marker" style="color:var(--accent-2);">·</span><span><strong>Honeycomb</strong>——wide events 先驅，把 Scuba 商用化。</span></li>
+        <li><span class="marker" style="color:var(--accent-2);">·</span><span><strong>ClickHouse</strong> 自家 observability 撐到 100 PB+。</span></li>
+        <li><span class="marker" style="color:var(--accent-2);">·</span><span><strong>Iceberg / DeltaLake</strong>——open lake format 成匯流點。</span></li>
+      </ul>
+    </div>
+    <div style="border-left:1px solid var(--rule);padding-left:48px;">
+      <div class="eyebrow accent">為什麼 Prom 還沒被取代</div>
+      <ul class="ed-list" style="margin-top:16px;">
+        <li><span class="marker">·</span><span>PromQL + Alerts + HPA / KEDA 生態深度綁定。</span></li>
+        <li><span class="marker">·</span><span>OTel semantic conventions 尚沒成熟。</span></li>
+        <li><span class="marker">·</span><span>新興技術，大多數團隊仍在觀望。</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="margin-note" style="margin-top:40px;">
+    Prometheus 生態不是被外部吃掉——是自己吸收 columnar / wide-event 的精華。
+  </div>
+</section>
+
+<!-- SLIDE 37 · PARQUET GATEWAY -->
+<section class="slide" data-label="Parquet Gateway">
+  <div class="folio">
+    <span class="folio-l">§ 7 · What&rsquo;s Next</span>
+    <span class="folio-c">Three communities, one artifact</span>
+    <span class="folio-r">37</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">PromCon 2025</div>
+    <h3 style="margin-top:14px;">Parquet Gateway · 三大專案核心成員同台。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:64px;margin-top:48px;flex:1;">
+    <div class="img-frame" style="min-height:420px;">
+      <img src="images/parquet-gateway-speakers.png" alt="parquet-gateway-speakers.png"/>
+    </div>
+
+    <div>
+      <div class="eyebrow accent">Cortex · Thanos · Mimir maintainer 首次同台</div>
+      <p class="body" style="margin-top:18px;">
+        共享 artifact：<span class="mono">prometheus-community/parquet-common</span>——<br/>
+        100% PromQL acceptance · TSDB → Parquet schema converter · Queryable 實作內建。
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px;">
+        <div class="stat"><div class="num-sm accent">83.6%</div><div class="label">faster queries</div></div>
+        <div class="stat"><div class="num-sm">89.3%</div><div class="label">less bucket GET-range</div></div>
+        <div class="stat"><div class="num-sm accent">72.4%</div><div class="label">less memory</div></div>
+        <div class="stat"><div class="num-sm">41.6%</div><div class="label">fewer allocations</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 38 · WHY TSDB WRONG HOME -->
+<section class="slide" data-label="TSDB Wrong Home">
+  <div class="folio">
+    <span class="folio-l">§ 7 · What&rsquo;s Next</span>
+    <span class="folio-c">First principles</span>
+    <span class="folio-r">38</span>
+  </div>
+  <div style="margin-top:72px;">
+    <div class="kicker">為什麼 TSDB 不該住在 S3</div>
+    <h3 style="margin-top:14px;">I/O 經濟學 · 資料結構特性才是關鍵。</h3>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:48px;">
+    <div style="border-top:3px solid var(--ink);padding-top:24px;">
+      <div class="eyebrow">I/O Performance</div>
+      <p class="body" style="margin-top:12px;">
+        SSD random read <span class="mono">~100μs</span><br/>
+        S3 random read <span class="mono">~10–50ms</span>
+      </p>
+      <p class="num-md accent" style="margin-top:12px;">100–500×</p>
+    </div>
+    <div style="border-top:3px solid var(--accent);padding-top:24px;">
+      <div class="eyebrow accent">TSDB on S3</div>
+      <p class="body" style="margin-top:12px;">
+        <span class="num-md accent">100+</span> random GETs<br/>
+        每個都是 HTTP round-trip。
+      </p>
+    </div>
+    <div style="border-top:3px solid var(--accent-2);padding-top:24px;">
+      <div class="eyebrow" style="color:var(--accent-2);">Parquet on S3</div>
+      <p class="body" style="margin-top:12px;">
+        <span class="num-md" style="color:var(--accent-2);">3–4</span> sequential reads<br/>
+        Row-group index + columnar skip。
+      </p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:48px;">
+    <div style="border-left:3px solid var(--accent);padding-left:24px;">
+      <div class="eyebrow accent">TSDB 的結構性不對</div>
+      <p class="body-sm" style="margin-top:10px;">
+        TSDB 為本地 SSD 的 random read 設計——搬到 S3 變成大量小 random GET。
+      </p>
+    </div>
+    <div style="border-left:3px solid var(--accent);padding-left:24px;">
+      <div class="eyebrow accent">Store Gateway 的連鎖代價</div>
+      <p class="body-sm" style="margin-top:10px;">
+        被迫 stateful · 昂貴本地 disk · 啟動時間長。
+      </p>
+    </div>
+  </div>
+
+<!--  <div style="margin-top:36px;padding:24px 32px;background:rgba(10,93,116,0.06);border-left:3px solid var(&#45;&#45;accent-2);">-->
+<!--    <p class="lead"><span class="italic">Request 數量才是成本，不是 bytes 數量。</span>Parquet + 無狀態 querier → Store Gateway 的四項代價一次解掉。</p>-->
+<!--  </div>-->
+</section>
+
+<!-- SLIDE 39 · END -->
+<section class="slide" data-label="End">
+  <div class="folio">
+    <span class="folio-l">Colophon</span>
+    <span class="folio-c">Thank you</span>
+    <span class="folio-r">39</span>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+    <div class="kicker" style="margin-bottom:32px;">謝謝聆聽</div>
+    <h1 style="font-size:140px;line-height:0.95;">
+      Thanos <span class="cover-arrow">→</span> Mimir 3.0<br/>
+      <span class="cover-arrow">→</span> AutoMQ <span class="cover-arrow">→</span> Parquet Gateway
+    </h1>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:72px;padding-top:48px;border-top:2px solid var(--ink);">
+      <div>
+        <div class="eyebrow accent">選型</div>
+        <p class="body" style="margin-top:10px;">理解瓶頸在哪裡比追新技術更重要。</p>
+      </div>
+      <div>
+        <div class="eyebrow accent">架構</div>
+        <p class="body" style="margin-top:10px;">Stateless 是運維自由的基礎。</p>
+      </div>
+      <div>
+        <div class="eyebrow accent">心態</div>
+        <p class="body" style="margin-top:10px;">技術選型永遠是 time-sensitive。</p>
+      </div>
+    </div>
+
+    <p class="pull-quote" style="margin-top:72px;max-width:1400px;">
+      <span class="mark">&ldquo;</span>保持好奇 · 保持懷疑 · 保持實驗。<span class="mark">&rdquo;</span>
+    </p>
+
+    <div style="margin-top:64px;display:flex;justify-content:space-between;align-items:baseline;">
+      <div class="eyebrow">Mike Hsu · Observability Day 2026</div>
+      <div class="caption">End · № 39 of 39</div>
+    </div>
+  </div>
+</section>
+
+</deck-stage>
+</body>
+</html>
