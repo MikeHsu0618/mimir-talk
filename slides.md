@@ -38,9 +38,9 @@ layout: cover-template
 </div>
 
 <div class="abs-br m-8 flex gap-2">
-  <span class="tag">40 min</span>
   <span class="tag new">Mimir 3.0</span>
   <span class="tag new">AutoMQ</span>
+  <span class="tag new">Parquet</span>
 </div>
 
 <!--
@@ -75,7 +75,7 @@ title: 這不是想像 — 我們公司的 SRE Agent
 ---
 
 <div class="w-full flex flex-col gap-5">
-<div class="flex justify-center items-center rounded-2xl relative" style="border:1.5px dashed rgba(82,150,184,0.4);background:rgba(82,150,184,0.04);height:240px;">
+<div class="flex justify-center items-center rounded-2xl relative" style="border:1.5px dashed rgba(82,150,184,0.4);background:rgba(82,150,184,0.04);height:400px;">
   <div class="text-center" style="opacity:0.5;">
     <div class="text-xs uppercase tracking-widest mb-2">Reserved for Live Demo</div>
     <div class="text-base">▶ SRE Agent Videos</div>
@@ -83,9 +83,9 @@ title: 這不是想像 — 我們公司的 SRE Agent
   <div style="position:absolute;bottom:0.75rem;right:1rem;font-size:0.75rem;opacity:0.4;">⏱ 20–30 sec budget</div>
 </div>
 <div class="grid grid-cols-3 gap-4">
-<Callout type="info" title="現在">數個 agent 正在跑<br/>使用人數尚未飽和</Callout>
-<Callout type="info" title="即將到來">DB agent · Service agent<br/>Cost agent · Security agent</Callout>
-<Callout type="win" title="這只是開始">提前預知趨勢，才有時間把地基打好</Callout>
+<LabelText title="現在">數個 agent 正在跑<br/>使用人數尚未飽和</LabelText>
+<LabelText title="即將到來">DB agent · Service agent<br/>Cost agent · Security agent</LabelText>
+<LabelText title="這只是開始">提前預知趨勢，才有時間把地基打好</LabelText>
 </div>
 </div>
 
@@ -130,7 +130,7 @@ title: 我們面對的量級
   </div>
 </div>
 <div class="pain-card col-span-2">
-  <div class="pain-card__num">2023</div>
+  <div class="pain-card__num">2023 年</div>
   <div class="pain-card__kicker">我們選 Thanos</div>
   <div class="pain-card__body">當時最成熟的開源選項，唯一有 <strong>Sidecar Mode</strong> 可無侵入接上現有 Prometheus</div>
 </div>
@@ -167,7 +167,7 @@ layout: inner
 title: 為什麼需要長期指標後端？
 ---
 
-<div class="w-full flex flex-col gap-6">
+<div class="w-full flex flex-col h-full pt-22 gap-10">
 
 <div class="grid grid-cols-2 gap-6 items-stretch">
 
@@ -215,6 +215,8 @@ title: 為什麼需要長期指標後端？
   <span class="why-conclusion__label">且能擺脫單機天花板的後端</span>
 </div>
 
+  
+
 </div>
 
 <!--
@@ -224,8 +226,9 @@ title: 為什麼需要長期指標後端？
 -->
 
 ---
-layout: split
+layout: inner
 title: 兩種整合模式
+kicker: Sidecar vs. Remote-Write.
 ratio: "1:1"
 ---
 
