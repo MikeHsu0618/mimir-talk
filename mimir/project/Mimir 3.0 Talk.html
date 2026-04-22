@@ -117,7 +117,7 @@
     <div class="stat"><div class="num-md">40</div><div class="label">EKS clusters</div></div>
     <div class="stat"><div class="num-md accent">120M</div><div class="label">peak active series</div></div>
     <div class="stat"><div class="num-md">8M</div><div class="label">samples / sec</div></div>
-    <div class="stat"><div class="num-md">365</div><div class="label">天 保留週期</div></div>
+    <div class="stat"><div class="num-md">365</div><div class="label">retention period </div></div>
   </div>
 
   <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:72px;margin-top:56px;">
@@ -125,7 +125,7 @@
       <div class="eyebrow">為什麼盯 Active Series</div>
       <p class="body" style="margin-top:14px;">
         常駐記憶體 ≈ <span class="mono">8 KB × active series</span>；
-        (TSDB head chunk / 倒排索引 / labelset)。
+        (TSDB head chunk / Posting Index / Labelset)。
       </p>
       <p class="body" style="margin-top:20px;">
         <span class="mono" style="font-size:28px;font-weight:600;">120M × 8 KB ≈ 960 GB RAM</span>
@@ -354,7 +354,7 @@
       <div class="body" style="margin-top:12px;font-weight:500;">GiB RAM</div>
       <hr class="rule" style="margin:32px 0;"/>
       <p class="body-sm">Prometheus <span class="mono">400+ GiB</span></p>
-      <p class="body-sm">Sidecar <span class="mono">數十 GiB</span></p>
+      <p class="body-sm">Sidecar <span class="mono">50+ GiB</span></p>
       <p class="caption" style="margin-top:20px;">
         Sidecar 幫短期查詢扛 remote-read buffer——<br/>記憶體壓力被放大。
       </p>
@@ -377,7 +377,7 @@
     <div class="kicker">痛點 ② 長期查詢</div>
     <h3 style="margin-top:14px;">Thanos 與 Mimir 查詢<br/>細節差異。</h3>
     <p class="body-sm" style="margin-top:16px;color:var(--ink-soft);max-width:900px;">
-      不是 Thanos 撐不住——是我們這樣的查詢型態，把 SG 的假設逼擠了出來。
+      不是 Thanos 不好，只是我們踩坑踩到心力憔悴。
     </p>
   </div>
 
@@ -497,10 +497,6 @@
       </tr>
     </tbody>
   </table>
-
-  <div class="margin-note" style="margin-top:40px;">
-    保留 Prom Server 是保險決策。這個選擇會在 Slide 31 回收。
-  </div>
 </section>
 
 <!-- SLIDE 14 · PART III OPENER -->
@@ -870,8 +866,8 @@
       多加一個 Kafka 是不是把事情<span style="color:var(--accent);font-style:italic;">搞更複雜</span>？
     </h2>
     <p class="lead" style="margin-top:40px;max-width:1100px;color:var(--ink-soft);">
-      回答這個問題之前，我想先拉出一條基礎定律。<br/>
-      任何有 queue 的系統，都躲不過它。
+      回答這個問題之前，先來看個公式。<br/>
+      任何有 queue 的系統都適用。
     </p>
 
     <div style="margin-top:56px;padding:40px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);">
@@ -1015,7 +1011,7 @@
       </div>
       <hr class="rule-strong"/>
       <div>
-        <div class="eyebrow" style="color:var(--accent-2);">AutoMQ 換介面 · 全解</div>
+        <div class="eyebrow" style="color:var(--accent-2);">AutoMQ 實作 S3 Storage 介面</div>
         <ul class="ed-list" style="margin-top:12px;">
           <li><span class="marker" style="color:var(--accent-2);">·</span><span>Broker stateless · spot-friendly · 秒級 rebalance。</span></li>
           <li><span class="marker" style="color:var(--accent-2);">·</span><span>S3 自帶多副本 · broker 間 zero replication。</span></li>
@@ -1329,7 +1325,7 @@
   </div>
 
   <div class="margin-note" style="margin-top:40px;">
-    Prometheus 生態不是被外部吃掉——是自己吸收 columnar / wide-event 的精華。
+    Prometheus 生態不是被外部吃掉，而是自己汲取 columnar / wide-event 的精隨。
   </div>
 </section>
 
