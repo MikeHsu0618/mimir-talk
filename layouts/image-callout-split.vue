@@ -8,6 +8,7 @@
       class="head"
       :class="{ 'head--center': $frontmatter.align === 'center' }"
     >
+      <div v-if="$frontmatter.eyebrow" class="eyebrow" v-html="$frontmatter.eyebrow" />
       <h1 v-if="$frontmatter.title" v-html="$frontmatter.title" />
       <div v-if="$frontmatter.kicker" class="kicker">{{ $frontmatter.kicker }}</div>
     </header>
@@ -77,6 +78,14 @@
 
 .head--center {
   text-align: center;
+}
+
+.head .eyebrow {
+  margin-bottom: 0.55rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #C0502E;
+  letter-spacing: 0.06em;
 }
 
 .head .kicker {

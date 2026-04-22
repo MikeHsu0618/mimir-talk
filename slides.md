@@ -1331,24 +1331,23 @@ align: center
 
 <div class="text-center w-full">
 
-<h1 class="!text-8xl !mb-6" style="color:#F26D4F;letter-spacing:-0.04em;">~49% 更便宜</h1>
-
 <div class="text-xl opacity-80 mb-8">
   3 週 AWS 帳單實測
 </div>
+<h1 class="!text-8xl !mb-6" style="color:#F26D4F;letter-spacing:-0.04em;">省 49%.</h1>
+
 
 <div class="flex items-center justify-center gap-6 text-xl opacity-90">
-  <span class="font-black" style="color:#F7A86B;">3.4× 更快</span>
+  <span class="font-black">3.4× 更快</span> 
   <span class="opacity-40">·</span>
-  <span class="font-black" style="color:#F26D4F;">~49% 更便宜</span>
+  <span class="font-black">多數場景勝出</span>
   <span class="opacity-40">·</span>
-  <span class="font-black" style="color:#F7A86B;">~6× 性價比</span>
+  <span class="font-black">~6× 性價比</span>
 </div>
 
-<!-- <div class="mt-10 text-sm opacity-60 max-w-2xl mx-auto">
-  每家環境量級不同，數字僅供參考<br/>
-  我們自己的 annual saving 大約落在 <strong>幾十萬美金</strong>量級
-</div> -->
+<div class="mt-10 text-sm opacity-60 max-w-2xl mx-auto">
+  不同環境量級，絕對數字僅供參考。Annual Saving 落在幾十萬美金量級。
+</div>
 
 </div>
 
@@ -1367,9 +1366,9 @@ chapter: "05"
 parent: Thanos → Mimir 3.0
 ---
 
-# 下一站 —<br/>可觀測性 2.0?
+# 下一站<br/>可觀測性 2.0?
 
-<div class="mt-6 opacity-60">PromCon 2025 帶回來的新東西</div>
+<div class="mt-6 opacity-60 ml-2">PromCon 2025 · 關注社群的前沿趨勢</div>
 
 <!--
 進入最後一段
@@ -1379,51 +1378,32 @@ parent: Thanos → Mimir 3.0
 
 ---
 layout: inner
-title: 可觀測性 2.0 的訊號
-kicker: "logs / traces / metrics 全部進 DataLake · 統一查詢引擎交叉分析"
-align: start
+eyebrow: 可觀測性 2.0
+title: 單一事實來源 · Wide Events
+kicker: Charity Majors · 2024 命名 · 原型是 Meta Scuba (VLDB 2013)
 ---
 
-<div class="flex flex-col gap-3 w-full h-full min-h-0">
 
-<Callout type="info" title="技術主張 · Charity Majors (Honeycomb CTO)">
-<strong>單一事實來源 = Wide Events</strong>（富語境的結構化事件） · metrics / logs / traces 全部從同一份 event 推導出來
-</Callout>
+<div class="hl-grid hl-grid--2">
 
-<div class="hl-grid hl-grid--2 min-h-0">
-
-<div class="hl-card hl-card--pos" >
+<div class="hl-card hl-card--pos" style="height:18rem;">
   <div class="hl-card__num">01</div>
-  <div class="hl-card__kicker">真正在動的勢頭</div>
-  <ul class="why-list">
-    <li style="margin-left:0.25rem;"><mdi-chart-line class="why-list__icon" /><span><strong>Honeycomb</strong> — wide events 先驅，商用化 Scuba 理念</span></li>
-    <li style="margin-left:0.25rem;"><mdi-chart-line class="why-list__icon" /><span><strong>ClickHouse / ClickStack</strong> — OTel-native，2025 上 Cloud</span></li>
-    <li style="margin-left:0.25rem;"><mdi-chart-line class="why-list__icon" /><span><strong>GreptimeDB · Pinot · DuckDB · InfluxDB IOx</strong> <br/> — OLAP 底座新玩家</span></li>
+  <div class="hl-card__kicker" style="margin-bottom:1.2rem;">主力提倡者</div>
+  <ul class="why-list" style="gap:1.2rem;">
+    <li style="margin-left:0.25rem;"><mdi-chart-line class="why-list__icon" /><span><strong>Honeycomb</strong> — wide events 先驅，把 Scuba 商用化</span></li>
+    <li style="margin-left:0.25rem;"><mdi-chart-line class="why-list__icon" /><span><strong>ClickHouse</strong> — 自家 observability 撐到 100 PB+</span></li>
     <li style="margin-left:0.25rem;"><mdi-chart-line class="why-list__icon" /><span><strong>Iceberg / Delta Lake</strong> — open lake format 成匯流點</span></li>
   </ul>
 </div>
 
-<div class="hl-card hl-card--neg">
+<div class="hl-card hl-card--neg" style="height:18rem;">
   <div class="hl-card__num">02</div>
-  <div class="hl-card__kicker">為什麼 Prom 生態沒被取代</div>
-  <ul class="why-list">
-    <li style="margin-left:0.25rem;"><mdi-alert-circle class="why-list__icon" /><span>PromQL + alerts + HPA / KEDA <strong>整個生態綁得太深</strong></span></li>
-    <li style="margin-left:0.25rem;"><mdi-alert-circle class="why-list__icon" /><span>SQL ↔ PromQL 心智差異 · 換 = <strong>所有 runbook 重寫</strong></span></li>
-    <li style="margin-left:0.25rem;"><mdi-alert-circle class="why-list__icon" /><span>OTel semantic conventions 仍在 stabilize</span></li>
-    <li style="margin-left:0.25rem;"><mdi-alert-circle class="why-list__icon" /><span>大部分團隊<strong>先解 cost，再談 paradigm</strong></span></li>
+  <div class="hl-card__kicker" style="margin-bottom:1.2rem;">為什麼 Prom 還沒被取代</div>
+  <ul class="why-list" style="gap:1.2rem;margin-top:1.2rem;">
+    <li style="margin-left:0.25rem;"><mdi-alert-circle class="why-list__icon" /><span>PromQL + Alerts + HPA / KEDA 生態深度綁定</span></li>
+    <li style="margin-left:0.25rem;"><mdi-alert-circle class="why-list__icon" /><span>OTel semantic conventions 尚沒成熟</span></li>
+    <li style="margin-left:0.25rem;"><mdi-alert-circle class="why-list__icon" /><span>新興技術，大多數團隊仍在觀望</span></li>
   </ul>
-</div>
-
-</div>
-
-<div v-click class="flex justify-center flex-shrink-0">
-  <div class="flex flex-col items-center gap-1.5 rounded-2xl px-6 py-3 w-full" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);">
-    <div class="flex items-center gap-2">
-      <mdi-compass-outline style="font-size:1.3rem;color:#C97C3A;flex-shrink:0;" />
-      <div style="font-size:1rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;">結論</div>
-    </div>
-    <div style="font-size:1rem;font-weight:600;color:#0E3F4E;">Prom 生態 <strong>內部</strong> 也在吸收 wide-event / columnar 的核心價值 </div>
-  </div>
 </div>
 
 </div>
@@ -1447,26 +1427,19 @@ align: start
 
 ---
 layout: image-callout-split
-title: PromCon 2025 · Parquet Gateway
+eyebrow: PromCon 2025
+title: Parquet Gateway · 三大專案核心成員同台
+kicker: Cortex · Thanos · Mimir maintainer 首次同台
 align: start
 ratioLeft: 5
 ratioRight: 4
-stackV: top
 ---
-
-<div class="flex flex-col gap-1 rounded-2xl px-6 py-3" style="background:rgba(82,150,184,0.07);border:1.5px solid rgba(82,150,184,0.30);">
-  <div class="flex items-center gap-2">
-    <mdi-account-group style="font-size:1.3rem;color:#2E6A87;flex-shrink:0;" />
-    <div style="font-size:1rem;font-weight:800;color:#2E6A87;letter-spacing:0.06em;">三大社群聯合發聲</div>
-  </div>
-  <div style="font-size:1rem;font-weight:600;color:#0E3F4E;"><strong>Cortex · Thanos · Mimir</strong> 核心 maintainer <strong>首次</strong>同台 — 宣告下一代 Prometheus 長期儲存共同方向</div>
-</div>
 
 ::left::
 
 <img class="pg-parquet__img" src="/parquet-gateway-speakers.png" alt="" />
 
-<div class="text-xs text-center" style="color:#6BAEBE">Grafana · Cloudflare · AWS 同台</div>
+<!-- <div class="text-xs text-center" style="color:#6BAEBE">Grafana · Cloudflare · AWS 同台</div> -->
 
 ::right::
 
@@ -1474,18 +1447,18 @@ stackV: top
   <div class="pg-artifact__kicker font-mono">prometheus-community / parquet-common</div>
   <div class="pg-artifact__title-badge">共同 Artifact</div>
   <ul class="icon-list li-lg pg-artifact__list">
-    <li><mdi-check-decagram /><span>Passes <strong>100%</strong> PromQL acceptance tests ✅</span></li>
-    <li><mdi-database-search /><span>Built-in Queryable implementation</span></li>
-    <li><mdi-swap-horizontal-variant /><span>TSDB block → Parquet schema converter</span></li>
+    <li style="margin-left:0.25rem;"><mdi-check-decagram /><span>Passes <strong>100%</strong> PromQL acceptance tests</span></li>
+    <li style="margin-left:0.25rem;"><mdi-database-search /><span>Built-in Queryable implementation</span></li>
+    <li style="margin-left:0.25rem;"><mdi-swap-horizontal-variant /><span>TSDB block → Parquet schema converter</span></li>
   </ul>
 </div>
 
 ::after::
 
-<div v-click class="pg-parquet-stats grid grid-cols-4 gap-1.5 w-full max-w-6xl mx-auto">
-  <Stat value="83.6%" label="Faster queries" accent="orange" />
-  <Stat value="89.3%" label="Less bucket GET-range" accent="blue" />
-  <Stat value="72.4%" label="Less memory" accent="sky" />
+<div v-click class="pg-parquet-stats grid grid-cols-4 gap-1.5 w-full max-w-6xl mx-auto" style="min-height: 8rem;">
+  <Stat value="83.6%" label="Faster queries" accent="red" />
+  <Stat value="89.3%" label="Less bucket GET-range" accent="ink" />
+  <Stat value="72.4%" label="Less memory" accent="red" />
   <Stat value="41.6%" label="Fewer allocations" accent="ink" />
 </div>
 
@@ -1500,7 +1473,8 @@ stackV: top
 
 ---
 layout: inner
-title: 為什麼 TSDB 不適合 Object Storage?
+kicker: 為什麼 TSDB 不該住在 S3
+title: I/O 經濟學 · 資料結構特性才是關鍵
 align: start
 ---
 
@@ -1508,58 +1482,44 @@ align: start
 
 <div class="grid grid-cols-3 gap-3 flex-shrink-0">
 
-<div class="pillar-card pillar-card--blue">
-  <div class="pillar-card__title"><mdi-flash />I/O 經濟學</div>
-  <div class="pillar-card__body">SSD random read <code>~100μs</code><br/>S3 random read <code>~10–50ms</code><br/><strong>差異 100–500×</strong></div>
+<div class="pillar-card pillar-card--blue" style="padding:1.5rem 1rem;">
+  <div class="pillar-card__title" style="margin-bottom:0.5rem;"><mdi-flash />I/O Performance</div>
+  <div class="pillar-card__body" style="line-height:2;margin-left:0.25rem;">SSD random read <code>~100μs</code><br/>S3 random read <code>~10–50ms</code><br/><strong>差異 100–500×</strong></div>
 </div>
 
-<div class="pillar-card pillar-card--red">
-  <div class="pillar-card__title"><mdi-alert-octagon />TSDB on S3</div>
-  <div class="pillar-card__note">100+ random GETs</div>
-  <div class="pillar-card__body">每個 GET 都是 HTTP round-trip</div>
+<div class="pillar-card pillar-card--red" style="padding:1.5rem 1rem;">
+  <div class="pillar-card__title" style="margin-bottom:0.5rem;"><mdi-alert-octagon />TSDB on S3</div>
+  <div class="pillar-card__body" style="line-height:2;margin-left:0.25rem;"><strong>100+</strong> random GETs <br/>每個 GET 都是 HTTP round-trip</div>
 </div>
 
-<div class="pillar-card pillar-card--blue">
-  <div class="pillar-card__title"><mdi-check-circle />Parquet on S3</div>
-  <div class="pillar-card__note">3–4 sequential reads</div>
-  <div class="pillar-card__body">Row-group index + columnar skip</div>
+<div class="pillar-card pillar-card--blue" style="padding:1.5rem 1rem;">
+  <div class="pillar-card__title" style="margin-bottom:0.5rem;"><mdi-check-circle />Parquet on S3</div>
+  <div class="pillar-card__body" style="line-height:2;margin-left:0.25rem;"><strong>3–4</strong> sequential reads <br/>Row-group index + columnar skip</div>
 </div>
 
 </div>
 
 <div v-click class="grid grid-cols-2 gap-3 flex-shrink-0">
 
-<div class="why-card why-card--ink" style="padding:0.75rem 1rem;">
+<div class="why-card why-card--ink" style="padding:1.5rem 1rem;">
   <div class="why-card__title"><mdi-alert-circle class="why-card__icon" />TSDB 的結構性不對</div>
-  <ul class="why-list" style="gap:0.2rem;">
-    <li><mdi-chevron-right class="why-list__icon" /><span>S3 本質：<strong>高 TTFB + 高 throughput</strong>，怕小塊隨讀</span></li>
-    <li><mdi-chevron-right class="why-list__icon" /><span>TSDB 強制<strong>按 timeseries sequential materialize</strong></span></li>
-    <li><mdi-chevron-right class="why-list__icon" /><span>退化成<strong>大量小 random reads</strong></span></li>
-    <li><mdi-chevron-right class="why-list__icon" /><span>Store Gateway 被迫 stateful 攤平 lookup</span></li>
+  <ul class="why-list">
+    <li><mdi-harddisk class="why-list__icon" /><span>TSDB 原本是為 <strong>本地 SSD random read</strong> 設計</span></li>
+    <li><mdi-cloud-download-outline class="why-list__icon" /><span>搬到 S3 之後，讀取模式變成<strong>大量小 random GET</strong></span></li>
   </ul>
 </div>
 
-<div class="why-card why-card--ink" style="padding:0.75rem 1rem;">
+<div class="why-card why-card--ink" style="padding:1.5rem 1rem;">
   <div class="why-card__title"><mdi-alert-circle class="why-card__icon" />Store Gateway 的連鎖代價</div>
-  <ul class="why-list" style="gap:0.2rem;">
-    <li><mdi-chevron-right class="why-list__icon" /><span>昂貴的本地 disk（index header / cache）</span></li>
-    <li><mdi-chevron-right class="why-list__icon" /><span>Sync 時間長（restart / scale 都要等）</span></li>
-    <li><mdi-chevron-right class="why-list__icon" /><span>可用性風險（disk 壞 = 查詢掛）</span></li>
-    <li><mdi-chevron-right class="why-list__icon" /><span>三家（Cortex / Thanos / Mimir）同樣的痛</span></li>
+  <ul class="why-list">
+    <li><mdi-harddisk class="why-list__icon" /><span>昂貴的本地 disk</span></li>
+    <li><mdi-clock-outline class="why-list__icon" /><span>啟動時間長</span></li>
+    <li><mdi-server-network class="why-list__icon" /><span>被迫 stateful</span></li>
   </ul>
 </div>
 
 </div>
 
-<div v-click class="flex justify-center flex-shrink-0">
-  <div class="flex flex-col items-center gap-1.5 rounded-2xl px-6 py-3 w-full" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);">
-    <div class="flex items-center gap-2">
-      <mdi-lightbulb-on style="font-size:1.3rem;color:#C97C3A;flex-shrink:0;" />
-      <div style="font-size:1rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;">Request 數量才是成本，不是 bytes 數量</div>
-    </div>
-    <div style="font-size:1rem;font-weight:600;color:#0E3F4E;">Parquet + 無狀態 querier → Store Gateway 的四項代價一次解掉</div>
-  </div>
-</div>
 
 </div>
 
