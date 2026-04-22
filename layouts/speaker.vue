@@ -35,7 +35,7 @@
           </li>
           <li>
             <span class="star">✦</span>
-            <span>Google Cloud Summit Taipei 2023 分享 GKE 成本優化</span>
+            <span>"初探 LLM 可觀測性：打造可持續擴展的 AI 系統" <span class="series">系列文</span></span>
           </li>
         </ul>
       </div>
