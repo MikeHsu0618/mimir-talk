@@ -1269,9 +1269,9 @@ chapter: "04"
 parent: Thanos → Mimir 3.0
 ---
 
-# 成本效能實戰成果
+# 數字說話
 
-<div class="mt-6 opacity-60">數字說話，數字也認清規模差異</div>
+<div class="mt-6 opacity-60 ml-2">三週生產並行 · AWS 真實帳單</div>
 
 <!--
 進入成果展示段
@@ -1280,7 +1280,8 @@ parent: Thanos → Mimir 3.0
 
 ---
 layout: inner
-title: 實測效能對比
+title: 實測
+kicker: Mimir 勝
 align: start
 ---
 
@@ -1293,34 +1294,24 @@ align: start
     <div class="section-badge" style="width:fit-content;">測試設計</div>
     <ul class="why-list li-xl">
       <li><mdi-check-circle class="why-list__icon" /><span>同一 production 環境 · 相同 tenant</span></li>
-      <li><mdi-check-circle class="why-list__icon" /><span><strong>8 種 query × 6 個時間範圍 = 48 組</strong></span></li>
-      <li><mdi-check-circle class="why-list__icon" /><span>Cache busting 排除 cache hit 誤差</span></li>
-      <li><mdi-check-circle class="why-list__icon" /><span>1h → 30d 時間範圍全覆蓋</span></li>
+      <li><mdi-check-circle class="why-list__icon" /><span>8 種 query × 6 個時間範圍 = <strong>48 組</strong></span></li>
+      <li><mdi-check-circle class="why-list__icon" /><span>Cache busting</span></li>
+      <li><mdi-check-circle class="why-list__icon" /><span>1h → 30d 全覆蓋</span></li>
     </ul>
   </div>
     <div v-click class="rounded-2xl px-5 py-4" style="background:rgba(53,115,142,0.08);border:1.5px solid rgba(53,115,142,0.30);">
-      <div style="font-size:0.78rem;font-weight:700;color:#35738E;letter-spacing:0.06em;margin-bottom:0.3rem;">Mimir 勝出</div>
+      <div style="font-size:0.78rem;font-weight:700;color:#35738E;letter-spacing:0.06em;margin-bottom:0.3rem;">結果</div>
       <div style="font-size:4rem;font-weight:900;line-height:1;letter-spacing:-0.04em;color:#35738E;">45 <span style="font-size:1.8rem;opacity:0.6;">/ 48 tests</span></div>
     </div>
   </div>
 
   <div v-click class="grid grid-cols-2 gap-3 flex-1 content-center">
-    <Stat value="3.4×" label="平均查詢加速" accent="orange" />
+    <Stat value="3.4×" label="平均查詢加速" accent="sky" />
     <Stat value="16.7×" label="Cross-metric Join 30d" accent="red" />
     <Stat value="8.4×" label="High-cardinality 1h" accent="sky" />
-    <Stat value="6.3×" label="長期 30d 查詢" accent="blue" />
+    <Stat value="6.3×" label="長期 30d 查詢" accent="red" />
   </div>
 
-</div>
-
-<div v-click class="flex justify-center flex-shrink-0">
-  <div class="flex flex-col gap-1.5 rounded-2xl px-6 py-3 w-full" style="background:rgba(82,150,184,0.07);border:1.5px solid rgba(82,150,184,0.30);">
-    <div class="flex items-center gap-2">
-      <mdi-lightbulb-on style="font-size:1.3rem;color:#2E6A87;flex-shrink:0;" />
-      <div style="font-size:0.78rem;font-weight:800;color:#2E6A87;letter-spacing:0.06em;">最反直覺的發現</div>
-    </div>
-    <div style="font-size:1rem;font-weight:600;color:#0E3F4E;"><strong>長期查詢 Mimir 優勢反而更大</strong>（30d = 6.3×）· 顛覆了「Thanos 擅長長期」的迷思</div>
-  </div>
 </div>
 
 </div>
