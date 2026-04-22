@@ -299,6 +299,86 @@ html:not(.dark) .slidev-layout .pg-artifact__list.icon-list li span {
   max-width: none !important;
 }
 
+.ingest-shift-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease,
+    filter 0.55s ease;
+}
+
+.ingest-shift-pane--legacy {
+  opacity: 1;
+  transform: translateX(0) scale(1.07);
+}
+
+.ingest-shift-pane--legacy.is-dimmed {
+  opacity: 0.46;
+  transform: translateX(-0.55rem) scale(0.85);
+  filter: saturate(0.82);
+}
+
+.ingest-shift-pane--next {
+  opacity: 0.46;
+  transform: translateX(0.55rem) scale(0.85);
+}
+
+.ingest-shift-pane--next.is-active {
+  opacity: 1;
+  transform: translateX(0) scale(1.07);
+}
+
+.ingest-shift-note {
+  margin-top: 0.2rem;
+  border-radius: 0.9rem;
+  padding: 0.85rem 0.95rem;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease,
+    border-color 0.45s ease,
+    background 0.45s ease;
+}
+
+.ingest-shift-note--legacy {
+  background: rgba(242,109,79,0.06);
+  border: 1.5px solid rgba(242,109,79,0.28);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ingest-shift-note--legacy.is-hidden {
+  opacity: 0.16;
+  transform: translateY(-0.35rem);
+}
+
+.ingest-shift-note--next {
+  background: rgba(82,150,184,0.05);
+  border: 1.5px solid rgba(82,150,184,0.18);
+  opacity: 0.6;
+  transform: translateY(0.55rem);
+}
+
+.ingest-shift-note--next.is-active {
+  background: rgba(82,150,184,0.07);
+  border-color: rgba(82,150,184,0.30);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ingest-shift-caption {
+  margin-top: 0.35rem;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(14, 63, 78, 0.76);
+}
+
+.ingest-shift-caption strong {
+  color: #2E6A87;
+}
+
 .mermaid-full svg {
   width: 100% !important;
   height: auto !important;

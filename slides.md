@@ -600,6 +600,8 @@ ratio: "1:1"
 
 ::left::
 
+<div class="ingest-shift-pane ingest-shift-pane--legacy" :class="{ 'is-dimmed': $clicks >= 1 }">
+
 <div class="section-badge section-badge--red">Classic · v2
 </div>
 
@@ -621,12 +623,16 @@ flowchart LR
 </div>
 
 
-<div v-click class="mt-2 rounded-xl p-3" style="background:rgba(242,109,79,0.06);border:1.5px solid rgba(242,109,79,0.28);">
+<div class="ingest-shift-note ingest-shift-note--legacy" :class="{ 'is-hidden': $clicks >= 1 }">
   <div style="font-size:1rem;font-weight:800;color:#C0502E;margin-bottom:0.35rem;">為什麼要 2/3 quorum？</div>
   <div style="font-size:0.92rem;line-height:1.6;color:rgba(14,63,78,0.72);"><strong>Dynamo-style 不變式：</strong> <code>R + W &gt; N</code><br/>W=2 · R=2 · N=3 → <strong>4 &gt; 3 ✓</strong> ，讀集合要跟最新寫入交集才讀得到</div>
 </div>
 
+</div>
+
 ::right::
+
+<div class="ingest-shift-pane ingest-shift-pane--next" :class="{ 'is-active': $clicks >= 1 }">
 
 <div class="section-badge">Ingest Storage · v3</div>
 
@@ -646,9 +652,11 @@ flowchart LR
 
 </div>
 
-<div class="mt-2 rounded-xl p-3" style="background:rgba(82,150,184,0.07);border:1.5px solid rgba(82,150,184,0.30);">
+<div  v-click class="ingest-shift-note ingest-shift-note--next" :class="{ 'is-active': $clicks >= 1 }">
   <div style="font-size:1rem;font-weight:800;color:#2E6A87;margin-bottom:0.35rem;">為什麼 quorum = 1 就夠？</div>
   <div style="font-size:0.92rem;line-height:1.6;color:rgba(14,63,78,0.72);"><strong>Kafka partition = linearized log</strong><br/>每個 consumer 都 replay 同一份 log · 無分歧 · 不需 overlap</div>
+</div>
+
 </div>
 
 <!--
