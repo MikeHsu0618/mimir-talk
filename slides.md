@@ -203,7 +203,7 @@ title: Prometheus 孤掌難鳴
     <li style="font-size:1.15rem!important;"><mdi-history class="why-list__icon" /><span>看上個月的 baseline。</span></li>
     <li style="font-size:1.15rem!important;"><mdi-chart-timeline-variant class="why-list__icon" /><span>熱門節日 vs. 平日。</span></li>
     <li style="font-size:1.15rem!important;"><mdi-trophy-outline class="why-list__icon" /><span>算 SLO 年度達成率。</span></li>
-    <li style="font-size:1.15rem!important;"><mdi-robot-outline class="why-list__icon" /><span>讓 AI agent 連續回溯歷史<br/>( 一個窗口可能發幾千個 PromQL )</span></li>
+    <li style="font-size:1.15rem!important;"><mdi-robot-outline class="why-list__icon" /><span>讓 AI agent 連續回溯歷史<br/>( 一個窗口可能發幾百個 PromQL )</span></li>
   </ul>
 </div>
 
@@ -364,7 +364,7 @@ kicker: "不是 Thanos 不好，只是我們踩坑踩到心力憔悴。"
     <div class="path-card__ribbon path-card__ribbon--danger">靜態 SHARDING</div>
     <div class="path-card__num">01</div>
     <div class="path-card__title">寫死在 manifest<br/>改一次要全部 block 重分配</div>
-    <div class="path-card__desc">Mimir：Hash Ring 自動 rebalance。</div>
+    <div class="path-card__desc">Mimir：Hash Ring 自動 rebalance，無過渡空窗。在 Thanos 有機會產生 partial response</div>
     <div class="path-card__foot">
       <mdi-source-branch /> 重新分配成本高
     </div>
@@ -373,10 +373,10 @@ kicker: "不是 Thanos 不好，只是我們踩坑踩到心力憔悴。"
   <div class="path-card path-card--danger">
     <div class="path-card__ribbon path-card__ribbon--danger">社群開發節奏慢</div>
     <div class="path-card__num">02</div>
-    <div class="path-card__title">Mimir 2.7 已支援<br/>Thanos 到 2026-01 才 merge</div>
-    <div class="path-card__desc">Mimir 2.7（2023-01）預設 batched streaming StoreGateway：5000 series / gRPC message。 Thanos 直到 2026-01 才 merge PR #8623 補齊 <br/><strong>我們 2025-12 做決定時，它還沒出來。</strong> </div>
+    <div class="path-card__title">開發量能單薄<br/>優化需求難以消化</div>
+    <div class="path-card__desc">Mimir 2.7（2023-01）預設 batched streaming StoreGateway：5000 series / gRPC message。 Thanos 直到 2026-01 才 merge PR #8623 補齊 <br/><strong>我們 2025-9 做決定時，它還沒出來。</strong> </div>
     <div class="path-card__foot">
-      <mdi-timeline-clock /> 多租戶保護成熟度有差
+      <mdi-timeline-clock /> Grafana 官方積極管理社群有差
     </div>
   </div>
 
@@ -400,7 +400,7 @@ kicker: "不是 Thanos 不好，只是我們踩坑踩到心力憔悴。"
 
 ---
 layout: inner
-title: 三條決策維度：開始之前，再想清楚
+title: 三個決策維度：開始之前，先想清楚
 ---
 
 <div class="w-full flex flex-col gap-5">
@@ -461,7 +461,7 @@ title: 三條決策維度：開始之前，再想清楚
 ---
 layout: inner
 kicker: 刪去法
-title: 五個排列組合，活下來一個
+title: 五個排列組合，牽一髮動全身
 ---
 
 <div class="w-full flex flex-col gap-3">
@@ -645,7 +645,7 @@ flowchart LR
 
 ```mermaid {theme: 'dark', scale: 0.68}
 flowchart LR
-    D[Distributor] ==>|ProduceSync<br/>寫 1 次| K[(Kafka API)]
+    D[Distributor] ==>|write once| K[(Kafka API)]
     K -->|consume| I[Ingester<br/>Partition consumer]
     K -->|consume| BB[Block Builder]
     BB --> S3[(S3)]
@@ -676,8 +676,8 @@ flowchart LR
 
 ---
 layout: split
-title: 讀掛了 · 寫照常
-kicker: quorum = 1
+title: 讀節點異常 · 寫節點照常
+kicker: Kafka 持久性 -> 更容錯的可用門檻
 ratio: "5:3"
 ---
 
@@ -714,7 +714,7 @@ v3：<strong>每個 partition 有 1 個消費者就算活</strong>
 
 ---
 layout: inner
-title: 可用性不一定要靠 Replication
+title: 寫入持久性：從 Ingester Quorum 到 Kafka
 align: start
 ---
 
@@ -740,8 +740,8 @@ align: start
     <tr>
       <td class="repl-table__dimension">副本決定方式</td>
       <td>RF=3（寫 3 次）</td>
-      <td>zone 數決定</td>
-      <td class="repl-table__focus" :class="{ 'is-active': $clicks >= 1 }">zone 數決定</td>
+      <td>zone 數決定（寫 1 次）</td>
+      <td class="repl-table__focus" :class="{ 'is-active': $clicks >= 1 }">zone 數決定（寫 1 次）</td>
     </tr>
     <tr>
       <td class="repl-table__dimension">實際副本數</td>
@@ -951,12 +951,14 @@ align: start
 
 <div class="grid grid-cols-2 gap-3 flex-shrink-0 max-w-8xl mx-auto">
 <div class="why-card why-card--ink">
-  <div class="why-card__title"><mdi-alert-circle class="why-card__icon" />真實踩過的坑</div>
-  <p>Ingester 卡住 → Kafka 堆積 → Distributor produce timeout → Prom queue full → 全環境噴 alert</p>
+  <div class="why-card__title"><mdi-alert-circle class="why-card__icon" />真實辛酸血淚</div>
+  <p>Ingester 卡住 → Kafka 堆積 → Distributor produce timeout → Prom queue full → Alert 派對！</p>
+  <p>這種跨元件的背壓傳遞，是 Kafka 架構的固有複雜度</p>
 </div>
 <div class="why-card why-card--ink">
   <div class="why-card__title"><mdi-lightbulb-on class="why-card__icon" />我們學到的</div>
-  <p>Kafka 不永遠低延遲。Rebalance、leader 切換、consumer lag，任一件都能把 5ms 變 5 秒。</p>
+  <p>Kafka 不永遠低延遲。Rebalance、leader 切換、consumer lag，任一件都能把 5ms 變 5 秒，一個波動背壓，足以造成全鏈路雪崩。</p>
+  <p>往好處想，你會對所有元件瞭若指掌 :)</p>
 </div>
 </div>
 
@@ -1071,7 +1073,7 @@ ratio: "5:4"
     <div class="why-card__head">
       <mdi-alert-circle class="why-card__icon" />
       <div>
-        <div class="why-card__title">物理 Kafka 三個痛</div>
+        <div class="why-card__title">傳統 Kafka 三大痛點</div>
       </div>
     </div>
     <div class="flex flex-col">
@@ -1085,7 +1087,7 @@ ratio: "5:4"
     <div class="why-card__head">
       <mdi-lightbulb-on-outline class="why-card__icon" />
       <div>
-        <div class="why-card__title">AutoMQ + S3 Storage 分流</div>
+        <div class="why-card__title">AutoMQ + S3stream 介面</div>
       </div>
     </div>
     <div class="flex flex-col">
@@ -1385,7 +1387,7 @@ parent: Thanos → Mimir 3.0
 layout: inner
 eyebrow: 可觀測性 2.0
 title: 單一事實來源 · Wide Events
-kicker: Charity Majors · 2024 命名 · 原型是 Meta Scuba (VLDB 2013)
+kicker: 把 logs / traces / metrics 全部倒進 DataWarehouse / DataLake，用統一查詢引擎交叉分析
 ---
 
 
@@ -1434,7 +1436,7 @@ kicker: Charity Majors · 2024 命名 · 原型是 Meta Scuba (VLDB 2013)
 layout: image-callout-split
 eyebrow: PromCon 2025
 title: Parquet Gateway · 三大專案核心成員同台
-kicker: Cortex · Thanos · Mimir maintainer 首次同台
+kicker: Cortex · Thanos · Mimir maintainer 齊心發力
 align: start
 ratioLeft: 5
 ratioRight: 4
@@ -1489,7 +1491,7 @@ align: start
 
 <div class="pillar-card pillar-card--blue" style="padding:1.5rem 1rem;">
   <div class="pillar-card__title" style="margin-bottom:0.5rem;"><mdi-flash />I/O Performance</div>
-  <div class="pillar-card__body" style="line-height:2;margin-left:0.25rem;">SSD random read <code>~100μs</code><br/>S3 random read <code>~10–50ms</code><br/><strong>差異 100–500×</strong></div>
+  <div class="pillar-card__body" style="line-height:2;margin-left:0.25rem;">SSD random read <code>~100μs</code><br/>S3 random read <code>~10–100ms</code><br/><strong>差異 100–1000×</strong></div>
 </div>
 
 <div class="pillar-card pillar-card--red" style="padding:1.5rem 1rem;">
