@@ -330,7 +330,7 @@ ratio: "3:2"
     <div class="mt-6 border-t" style="border-color:rgba(14,63,78,0.12);"></div>
     <div class="mt-6 text-[1rem] leading-relaxed">
       <div><strong>Prometheus</strong> 400+ GiB</div>
-      <div><strong>Sidecar</strong> 數十 GiB</div>
+      <div><strong>Sidecar</strong> 50+ GiB</div>
     </div>
     <div class="mt-auto pt-6 text-sm leading-relaxed italic opacity-75">
       Sidecar 幫短期查詢扛 remote-read buffer <br/><strong>記憶體壓力被放大。</strong>
@@ -348,45 +348,45 @@ ratio: "3:2"
 -->
 
 ---
-layout: split
+layout: inner
 eyebrow: '<span class="title-eyebrow"><span>痛點</span><span class="title-eyebrow__num">②</span><span>長期查詢</span></span>'
-title: "Store Gateway 掙扎。"
-ratio: "3:2"
+title: "Thanos 與 Mimir 查詢細節差異"
+kicker: "不是 Thanos 不好，只是我們踩坑踩到心力憔悴。"
 ---
 
-::left::
+<div class="w-full flex flex-col gap-5">
+<div class="path-grid">
+  <div class="path-card path-card--danger">
+    <div class="path-card__ribbon path-card__ribbon--danger">靜態 SHARDING</div>
+    <div class="path-card__num">01</div>
+    <div class="path-card__title">寫死在 manifest<br/>改一次要全部 block 重分配</div>
+    <div class="path-card__desc">Thanos 的 shard assignment 綁在 manifest，調整一次就要整批 block 重切。<br/>Mimir 用 Hash Ring，自動 rebalance。</div>
+    <div class="path-card__foot">
+      <mdi-source-branch /> 重新分配成本高
+    </div>
+  </div>
 
-```mermaid {theme: 'dark', scale: 0.7}
-flowchart TB
-    Q[Thanos Querier]
-    Q ==> SG1[Store GW-1]
-    Q ==> SG2[Store GW-2]
-    Q ==> SG3[Store GW-3]
-    Q ==> SGN[Store GW-N]
-    SG1 -->|全量<br/>bucket scan| S3[(S3<br/>所有 tenant 的 blocks)]
-    SG2 --> S3
-    SG3 --> S3
-    SGN --> S3
-    style Q fill:#f4680033,stroke:#f46800
-    style S3 fill:#f5222d22,stroke:#f5222d
-```
+  <div class="path-card path-card--danger">
+    <div class="path-card__ribbon path-card__ribbon--danger">佇列與資源搶奪</div>
+    <div class="path-card__num">02</div>
+    <div class="path-card__title">Mimir 2.7 已支援<br/>Thanos 到 2026-01 才 merge</div>
+    <div class="path-card__desc">Mimir 2.7（2023-10）就有 worker / queue 隔離。<br/>Thanos 要到 2026-01 才 merge PR #8623，把同一支佇列切成 per-tenant。</div>
+    <div class="path-card__foot">
+      <mdi-timeline-clock /> 多租戶保護成熟度有差
+    </div>
+  </div>
 
-::right::
-
-<div class="section-badge">結構性瓶頸</div>
-
-<ul class="icon-list">
-<li><mdi-magnify /><span>Bucket scan 是 <code>O(all_blocks)</code></span></li>
-<li><mdi-download /><span>Index header 先下載才能查</span></li>
-<li><mdi-content-cut /><span>Sharding <strong>靜態</strong>（硬切 relabel）</span></li>
-<li><mdi-tune /><span>Cache 參數多 · 難調教</span></li>
-<li><mdi-alert-octagon /><span>重度查詢 → SG 直接 <strong>OOM</strong></span></li>
-</ul>
-
-<div v-click class="quote-bar quote-bar--error">
-Store Gateway 一失守，<strong>整個長期查詢鏈路就崩</strong>
+  <div class="path-card path-card--danger">
+    <div class="path-card__ribbon path-card__ribbon--danger">單一租戶卡死</div>
+    <div class="path-card__num">03</div>
+    <div class="path-card__title">一個 heavy long-range query<br/>拖住所有 worker</div>
+    <div class="path-card__desc">單一租戶把 worker 佔滿，其他租戶全部排隊。<br/>Mimir 有 per-tenant fair queuing，用閘門隔離重查詢。</div>
+    <div class="path-card__foot">
+      <mdi-account-alert /> 單點 heavy query 會放大成全域問題
+    </div>
+  </div>
 </div>
-
+</div>
 <!--
 補充：
 - 這段不要深講 11 維度的比較，聽眾會消化不下

@@ -713,7 +713,7 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   transition: grid-template-columns 0.5s ease;
 }
 
-.path-grid:has(.is-chosen) {
+.path-grid:has(.path-card--chosen) {
   grid-template-columns: 1.25fr 1fr 1fr;
 }
 
@@ -736,14 +736,14 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
     transform 0.5s ease;
 }
 
-.path-card.is-chosen {
+.path-card--chosen {
   border-color: rgba(247, 168, 107, 0.6);
   background: linear-gradient(160deg, rgba(247, 168, 107, 0.18) 0%, rgba(247, 168, 107, 0.05) 100%);
   box-shadow: 0 10px 30px rgba(247, 168, 107, 0.22);
   transform: translateY(-6px);
 }
 
-.path-card.is-rejected {
+.path-card--muted {
   border-color: rgba(82, 150, 184, 0.15);
   background: rgba(255, 250, 247, 0.45);
   opacity: 0.55;
@@ -771,6 +771,14 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   font-weight: 600;
 }
 
+.path-card__ribbon--danger {
+  background: rgba(242, 109, 79, 0.12);
+  color: #C0502E;
+  border: 1px solid rgba(242, 109, 79, 0.28);
+  box-shadow: none;
+  font-weight: 700;
+}
+
 .path-card__num {
   font-size: 2.6rem;
   font-weight: 900;
@@ -782,11 +790,11 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   transition: color 0.5s ease;
 }
 
-.path-card.is-chosen .path-card__num {
+.path-card--chosen .path-card__num {
   color: #F7A86B;
 }
 
-.path-card.is-rejected .path-card__num {
+.path-card--muted .path-card__num {
   color: rgba(82, 150, 184, 0.5);
 }
 
@@ -799,7 +807,7 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   transition: color 0.5s ease;
 }
 
-.path-card.is-rejected .path-card__title {
+.path-card--muted .path-card__title {
   color: rgba(14, 63, 78, 0.7);
 }
 
@@ -822,7 +830,7 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   color: #F7A86B;
 }
 
-.path-card.is-rejected .path-card__foot {
+.path-card--muted .path-card__foot {
   color: rgba(82, 150, 184, 0.75);
   font-weight: 500;
 }
@@ -845,16 +853,14 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   color: #F7A86B;
 }
 
-.path-card.is-danger {
-  border-color: rgba(242, 109, 79, 0.65);
-  background: linear-gradient(160deg, rgba(242, 109, 79, 0.18) 0%, rgba(255, 250, 247, 0.55) 100%);
-  box-shadow: 0 10px 30px rgba(242, 109, 79, 0.22);
-  opacity: 1;
-  transform: translateY(-6px);
+.path-card--danger {
+  border-color: rgba(242, 109, 79, 0.32);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 2px 12px rgba(14, 63, 78, 0.05);
 }
-.path-card.is-danger .path-card__num { color: #F26D4F; }
-.path-card.is-danger .path-card__title { color: #F26D4F; }
-.path-card.is-danger .path-card__foot {
+.path-card--danger .path-card__num { color: #F26D4F; }
+.path-card--danger .path-card__title { color: #F26D4F; }
+.path-card--danger .path-card__foot {
   font-weight: 700;
   color: #F26D4F;
 }
