@@ -80,6 +80,10 @@
 .ratio-1-1 .cols { grid-template-columns: 1fr 1fr; }
 .ratio-3-2 .cols { grid-template-columns: 3fr 2fr; }
 .ratio-2-3 .cols { grid-template-columns: 2fr 3fr; }
+.ratio-4-3 .cols { grid-template-columns: 4fr 3fr; }
+.ratio-3-4 .cols { grid-template-columns: 3fr 4fr; }
+.ratio-5-3 .cols { grid-template-columns: 5fr 3fr; }
+.ratio-3-5 .cols { grid-template-columns: 3fr 5fr; }
 .ratio-5-4 .cols { grid-template-columns: 5fr 4fr; }
 .ratio-4-5 .cols { grid-template-columns: 4fr 5fr; }
 

@@ -671,8 +671,9 @@ flowchart LR
 
 ---
 layout: split
-title: Write/Read Path 完全解耦 · Quorum = 1
-ratio: "3:2"
+title: 讀掛了 · 寫照常
+kicker: quorum = 1
+ratio: "5:3"
 ---
 
 ::left::
@@ -682,14 +683,14 @@ ratio: "3:2"
 ::right::
 
 <div class="flex flex-col gap-3 justify-center h-full" style="font-size:1.15rem;">
-<Callout type="win" title="可用性翻轉">
+<Callout type="win" title="讀取可用性">
 v2：過半 zone 健康才算活<br/>
-v3：<strong>每個 partition 有 1 個消費者</strong>就算活
+v3：<strong>每個 partition 有 1 個消費者就算活</strong>
 </Callout>
 
-<Callout type="info" title="可用性變成旋鈕">
-想更高可用？<strong>把 partition 數加一倍</strong><br/>
-—— 而不是加整組 zone
+<Callout type="info" title="可用性解耦">
+熱查詢再兇，寫入只到 Kafka 就結束<br/>
+<strong>Write 永遠 HEALTHY</strong>
 </Callout>
 </div>
 
