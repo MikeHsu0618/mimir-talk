@@ -360,27 +360,27 @@ kicker: "不是 Thanos 不好，只是我們踩坑踩到心力憔悴。"
     <div class="path-card__ribbon path-card__ribbon--danger">靜態 SHARDING</div>
     <div class="path-card__num">01</div>
     <div class="path-card__title">寫死在 manifest<br/>改一次要全部 block 重分配</div>
-    <div class="path-card__desc">Thanos 的 shard assignment 綁在 manifest，調整一次就要整批 block 重切。<br/>Mimir 用 Hash Ring，自動 rebalance。</div>
+    <div class="path-card__desc">Mimir：Hash Ring 自動 rebalance。</div>
     <div class="path-card__foot">
       <mdi-source-branch /> 重新分配成本高
     </div>
   </div>
 
   <div class="path-card path-card--danger">
-    <div class="path-card__ribbon path-card__ribbon--danger">佇列與資源搶奪</div>
+    <div class="path-card__ribbon path-card__ribbon--danger">社群開發節奏慢</div>
     <div class="path-card__num">02</div>
     <div class="path-card__title">Mimir 2.7 已支援<br/>Thanos 到 2026-01 才 merge</div>
-    <div class="path-card__desc">Mimir 2.7（2023-10）就有 worker / queue 隔離。<br/>Thanos 要到 2026-01 才 merge PR #8623，把同一支佇列切成 per-tenant。</div>
+    <div class="path-card__desc">Mimir 2.7（2023-01）預設 batched streaming StoreGateway：5000 series / gRPC message。 Thanos 直到 2026-01 才 merge PR #8623 補齊 <br/><strong>我們 2025-12 做決定時，它還沒出來。</strong> </div>
     <div class="path-card__foot">
       <mdi-timeline-clock /> 多租戶保護成熟度有差
     </div>
   </div>
 
   <div class="path-card path-card--danger">
-    <div class="path-card__ribbon path-card__ribbon--danger">單一租戶卡死</div>
+    <div class="path-card__ribbon path-card__ribbon--danger">多租戶不友善</div>
     <div class="path-card__num">03</div>
-    <div class="path-card__title">一個 heavy long-range query<br/>拖住所有 worker</div>
-    <div class="path-card__desc">單一租戶把 worker 佔滿，其他租戶全部排隊。<br/>Mimir 有 per-tenant fair queuing，用閘門隔離重查詢。</div>
+    <div class="path-card__title">一個 heavy long-range 查詢佔滿所有 worker，其他租戶全部排隊</div>
+    <div class="path-card__desc">Mimir：有 per-tenant fair queuing，吵鬧鄰居影響不到其他人。</div>
     <div class="path-card__foot">
       <mdi-account-alert /> 單點 heavy query 會放大成全域問題
     </div>
@@ -396,7 +396,7 @@ kicker: "不是 Thanos 不好，只是我們踩坑踩到心力憔悴。"
 
 ---
 layout: inner
-title: 三條決策維度，我們一條一條想清楚
+title: 三條決策維度：開始之前，再想清楚
 ---
 
 <div class="w-full flex flex-col gap-5">
@@ -407,7 +407,7 @@ title: 三條決策維度，我們一條一條想清楚
   <div class="path-card__ribbon path-card__ribbon--warn">短期瓶頸</div>
   <div class="path-card__num">01</div>
   <div class="path-card__title">Sidecar<br/>vs Remote-Write</div>
-  <div class="path-card__desc">把壓縮 / index 的工作交給後端<br/>解放 Prometheus + Sidecar Pod 記憶體</div>
+  <div class="path-card__desc">把壓縮、建 index 丟給後端，<br/>緩解 Prometheus 瓶頸</div>
   <div class="path-card__foot">
     <mdi-speedometer /> 緩解短期垂直瓶頸
   </div>
@@ -417,7 +417,7 @@ title: 三條決策維度，我們一條一條想清楚
   <div class="path-card__ribbon path-card__ribbon--warn">長期瓶頸</div>
   <div class="path-card__num">02</div>
   <div class="path-card__title">Thanos<br/>vs Mimir</div>
-  <div class="path-card__desc">Mimir 的 bucket-index、動態 sharding、MQE<br/>為大規模多租戶而生</div>
+  <div class="path-card__desc">bucket-index、動態 sharding、<br/>為多租戶規模而生</div>
   <div class="path-card__foot">
     <mdi-database-search /> 解決長期查詢瓶頸
   </div>
@@ -427,7 +427,7 @@ title: 三條決策維度，我們一條一條想清楚
   <div class="path-card__ribbon path-card__ribbon--warn">採集端</div>
   <div class="path-card__num">03</div>
   <div class="path-card__title">Prom Server<br/>vs Prom Agent</div>
-  <div class="path-card__desc">砍掉 Prom Server 本地 query / alert 責任<br/>徹底消除採集端瓶頸</div>
+  <div class="path-card__desc">所有查詢只依賴統一儲存後端</div>
   <div class="path-card__foot">
     <mdi-alert-octagon /> 最激進 · 風險最高
   </div>
@@ -455,8 +455,8 @@ title: 三條決策維度，我們一條一條想清楚
 
 ---
 layout: inner
-kicker: ※ 合法性約束：Mimir 只吃 remote-write（無 Sidecar 模式）· Prom Agent 無本地 TSDB（不能配 Sidecar）
-title: 排列組合 · 一個一個刪去
+kicker: 刪去法
+title: 五個排列組合，活下來一個
 ---
 
 <div class="w-full flex flex-col gap-3">
@@ -466,35 +466,35 @@ title: 排列組合 · 一個一個刪去
 <div class="combo-row">
   <div class="combo-row__num">①</div>
   <div class="combo-row__body">
-    <div class="combo-row__title">Thanos · Sidecar · Prom Server <span class="combo-row__hint">（現況）</span></div>
-    <div class="combo-row__desc">短期 + 長期都撞牆</div>
+    <div class="combo-row__title">Sidecar · Thanos · Prom Server</div>
+    <div class="combo-row__desc">維持現況</div>
   </div>
-  <span class="tag warn">撞牆</span>
+  <span class="tag warn">？</span>
 </div>
 
 <div class="combo-row">
   <div class="combo-row__num">②</div>
   <div class="combo-row__body">
-    <div class="combo-row__title">Thanos · Remote-Write (Receiver) · Prom Server</div>
-    <div class="combo-row__desc">短期解了，長期 Store Gateway 沒解</div>
+    <div class="combo-row__title">Remote-Write · Thanos · Prom Server</div>
+    <div class="combo-row__desc">短期解了，長期查詢沒解</div>
   </div>
-  <span class="tag warn">半套</span>
+  <span class="tag warn">？</span>
 </div>
 
 <div class="combo-row">
   <div class="combo-row__num">③</div>
   <div class="combo-row__body">
-    <div class="combo-row__title">Thanos · Remote-Write · Prom Agent</div>
-    <div class="combo-row__desc">長期沒解 · 又把 alert 風險疊加</div>
+    <div class="combo-row__title">Remote-Write · Thanos · Prom Agent</div>
+    <div class="combo-row__desc">長期沒解，還疊加 alert 風險</div>
   </div>
-  <span class="tag warn">風險疊加</span>
+  <span class="tag warn">？</span>
 </div>
 
 <div class="combo-row" :class="{ 'is-chosen': $clicks >= 1 }">
   <div class="combo-row__num">④</div>
   <div class="combo-row__body">
-    <div class="combo-row__title">Mimir · Remote-Write · Prom Server</div>
-    <div class="combo-row__desc">同時解短期 + 長期 · Prom Server 保留做 alert / HPA / KEDA 的可靠來源</div>
+    <div class="combo-row__title">Remote-Write · Mimir · Prom Server</div>
+    <div class="combo-row__desc">短期緩解 + 長期解 · Prom Server 留作最後防線</div>
   </div>
   <span class="tag" :class="$clicks >= 1 ? 'good' : 'warn'">{{ $clicks >= 1 ? '選這條' : '？' }}</span>
 </div>
@@ -502,10 +502,10 @@ title: 排列組合 · 一個一個刪去
 <div class="combo-row">
   <div class="combo-row__num">⑤</div>
   <div class="combo-row__body">
-    <div class="combo-row__title">Mimir · Remote-Write · Prom Agent</div>
-    <div class="combo-row__desc">太激進 — HPA / KEDA / Alert 全綁 Mimir</div>
+    <div class="combo-row__title">Remote-Write · Mimir · Prom Agent</div>
+    <div class="combo-row__desc">HPA / KEDA / Alert 全依賴 Mimir，穩定後的終極優化</div>
   </div>
-  <span class="tag warn">激進</span>
+  <span class="tag warn">？</span>
 </div>
 
 </div>

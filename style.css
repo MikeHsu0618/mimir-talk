@@ -827,7 +827,7 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   border-top: 1px solid rgba(14, 63, 78, 0.1);
   font-size: 0.85rem;
   font-weight: 600;
-  color: #F7A86B;
+  color: #F26D4F;
 }
 
 .path-card--muted .path-card__foot {
@@ -859,7 +859,7 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   box-shadow: 0 2px 12px rgba(14, 63, 78, 0.05);
 }
 .path-card--danger .path-card__num { color: #F26D4F; }
-.path-card--danger .path-card__title { color: #F26D4F; }
+.path-card--danger .path-card__title { color: #C0502E; }
 .path-card--danger .path-card__foot {
   font-weight: 700;
   color: #F26D4F;
