@@ -9,7 +9,7 @@
     >
       <div v-if="showSidecar" class="integration-pane integration-pane--sidecar">
         <div class="integration-pane__chip">SIDECAR MODE</div>
-        <div class="integration-pane__title">我們原本的架構</div>
+        <div class="integration-pane__title">Thanos 獨有</div>
 
         <div class="flow-frame">
           <img
@@ -24,7 +24,7 @@
       <div v-if="showSidecar && showRemote" class="integration-compare__divider" aria-hidden="true" />
       <div v-if="showRemote" class="integration-pane integration-pane--remote">
         <div class="integration-pane__chip">REMOTE-WRITE MODE</div>
-        <div class="integration-pane__title">Mimir / Cortex 走這條</div>
+        <div class="integration-pane__title">Thanos / Mimir / Cortex 主流支持</div>
 
         <div class="flow-frame">
           <img
@@ -170,7 +170,7 @@ const showRemote = computed(() => props.pane === 'both' || props.pane === 'remot
 
 .flow-frame {
   /* 兩欄各自 flex 時 header/caption 高度不同會讓 flex:1 的框變不等高；統一用同一個高度 */
-  --flow-frame-height: clamp(300px, 46vh, 480px);
+  --flow-frame-height: clamp(300px, 42vh, 480px);
   box-sizing: border-box;
   flex: 0 0 var(--flow-frame-height);
   height: var(--flow-frame-height);

@@ -56,9 +56,9 @@ layout: cover-template
 layout: quote
 ---
 
-# 我們的 Metrics 後端<br/>主要使用者<br/><span v-click class="accent">已經不再是人類</span>
+# 我們 Metrics 後端的<br/>主要使用者<br/><span v-click class="accent">已經不再是人類</span>
 
-<p>觀測者，正從「人」變成「agent」</p>
+<p>觀測者從人換成 Agent， 從偶爾查到 24/7。</p>
 
 <!--
 切入動機（hook 要講得慢一點）：
@@ -71,7 +71,7 @@ layout: quote
 
 ---
 layout: inner
-title: 這不是想像 — 我們公司的 SRE Agent
+title: AI Agent 時代下，基礎設施備受考驗。
 ---
 
 <div class="w-full flex flex-col gap-5">
@@ -83,9 +83,9 @@ title: 這不是想像 — 我們公司的 SRE Agent
   <div style="position:absolute;bottom:0.75rem;right:1rem;font-size:0.75rem;opacity:0.4;">⏱ 20–30 sec budget</div>
 </div>
 <div class="grid grid-cols-3 gap-4">
-<LabelText title="現在">數個 agent 正在跑<br/>使用人數尚未飽和</LabelText>
-<LabelText title="即將到來">DB agent · Service agent<br/>Cost agent · Security agent</LabelText>
-<LabelText title="這只是開始">提前預知趨勢，才有時間把地基打好</LabelText>
+<LabelText title="現在">幾個 agent 在跑。尚未飽和。</LabelText>
+<LabelText title="即將到來">DB · Service · Cost · Security agents。</LabelText>
+<LabelText title="這只是開始">負載是現在的幾倍。地基得現在打。</LabelText>
 </div>
 </div>
 
@@ -100,39 +100,41 @@ title: 這不是想像 — 我們公司的 SRE Agent
 
 ---
 layout: inner
-title: 我們面對的量級
+title: 我們目前的規模
 ---
 
 <div class="grid grid-cols-4 gap-5 w-full">
   <Stat value="40" label="EKS Clusters" />
-  <Stat value="120M" label="Peak Active Series" accent="sky" />
-  <Stat value="8M" label="Samples / sec" accent="blue" />
-  <Stat value="365 天" label="保留週期" accent="sky" />
+  <Stat value="120M" label="Peak Active Series" accent="red" />
+  <Stat value="8M" label="Samples / sec" />
+  <Stat value="365" label="天保留週期" />
 </div>
 
-<div v-click class="grid grid-cols-5 gap-5 mt-4">
-<div class="why-card why-card--ink col-span-3">
+<div v-click class="grid grid-cols-4 gap-5 mt-4">
+<div class="why-card why-card--ink col-span-2">
   <div class="why-card__head">
-    <mdi-chart-line class="why-card__icon" />
+    <mdi-memory class="why-card__icon" />
     <div>
-      <div class="why-card__kicker">成本核心</div>
-      <div class="why-card__title">為什麼 Active Series 決定成本？</div>
+      <div class="why-card__title">為什麼訂 Active Series</div>
     </div>
   </div>
-  <div class="why-card__note">Ingester 記憶體 ≈ 8 KB × active series（Grafana 官方經驗值）</div>
-  <ul class="why-list">
-    <li><mdi-clock-outline class="why-list__icon" /><span>TSDB head chunk（近 1-2h raw samples）</span></li>
-    <li><mdi-magnify class="why-list__icon" /><span>In-memory postings index（label → series ID 倒排）</span></li>
-    <li><mdi-tune class="why-list__icon" /><span>Label set 本身（高基數會膨脹）</span></li>
+  <div class="why-card__note">常駐記憶體 ≈ 8 KB × active series</div>
+  <ul class="why-list why-list--loose">
+    <li><mdi-clock-outline class="why-list__icon" /><span>TSDB head chunk</span></li>
+    <li><mdi-magnify class="why-list__icon" /><span>In-memory postings index</span></li>
+    <li><mdi-tune class="why-list__icon" /><span>Label set 本身</span></li>
   </ul>
   <div style="border-top:1px solid rgba(14,63,78,0.08);padding-top:0.75rem;font-weight:600;color:rgba(14,63,78,0.8);">
-    120M × 8 KB ≈ <strong>960 GB RAM</strong> 跑在 ingester 層
+    120M × 8 KB ≈ <strong>960 GB RAM</strong>
   </div>
 </div>
 <div class="pain-card col-span-2">
   <div class="pain-card__num">2023 年</div>
-  <div class="pain-card__kicker">我們選 Thanos</div>
-  <div class="pain-card__body">當時最成熟的開源選項，唯一有 <strong>Sidecar Mode</strong> 可無侵入接上現有 Prometheus</div>
+  <div class="pain-card__kicker">選擇了 Thanos</div>
+  <div class="pain-card__body">當時最成熟的開源選項，唯一能無侵入掛 Sidecar。</div>
+  <div class="pain-card__foot">
+    <mdi-clock-outline /> 服役時間超過三年。
+  </div>
 </div>
 </div>
 
@@ -152,9 +154,9 @@ chapter: "01"
 parent: Thanos → Mimir 3.0
 ---
 
-# 長期指標後端<br/>架構介紹
+# 長期指標<br/>後端架構
 
-<div class="mt-6 opacity-60">兩種整合模式 · 兩種設計哲學</div>
+<div class="mt-6 opacity-60 ml-3">兩種架構 · 兩種設計哲學</div>
 
 <!--
 進入第一大段：架構介紹
@@ -164,10 +166,10 @@ parent: Thanos → Mimir 3.0
 
 ---
 layout: inner
-title: 為什麼需要長期指標後端？
+title: Prometheus 孤掌難鳴
 ---
 
-<div class="w-full flex flex-col h-full pt-22 gap-10">
+<div class="w-full flex flex-col h-full pt-20 gap-18">
 
 <div class="grid grid-cols-2 gap-6 items-stretch">
 
@@ -175,15 +177,14 @@ title: 為什麼需要長期指標後端？
   <div class="why-card__head">
     <mdi-alert-circle class="why-card__icon" />
     <div>
-      <div class="why-card__kicker">問題</div>
-      <div class="why-card__title">Prometheus 本身的限制</div>
+      <div class="why-card__title">先天限制</div>
     </div>
   </div>
-  <ul class="why-list">
-    <li><mdi-clock-alert-outline class="why-list__icon" /><span>預設本地保留 <strong>14 天</strong></span></li>
-    <li><mdi-database-off-outline class="why-list__icon" /><span>單機儲存、單點失敗</span></li>
-    <li><mdi-magnify-close class="why-list__icon" /><span>無法跨集群統一查詢</span></li>
-    <li><mdi-memory class="why-list__icon" /><span>Ingester RAM 線性 ∝ active series — <strong>垂直擴展的天花板</strong></span></li>
+  <ul class="why-list why-list--loose">
+    <li style="font-size:1.15rem!important;"><mdi-clock-alert-outline class="why-list__icon" /><span>本地留 <strong>14 天</strong>就滿。</span></li>
+    <li style="font-size:1.15rem!important;"><mdi-database-off-outline class="why-list__icon" /><span>單機儲存，單點壞掉就沒了。</span></li>
+    <li style="font-size:1.15rem!important;"><mdi-magnify-close class="why-list__icon" /><span>跨集群無法統一查詢。</span></li>
+    <li style="font-size:1.15rem!important;"><mdi-memory class="why-list__icon" /><span>記憶體用量跟著 active series 線性成長<br/>( 垂直擴展瓶頸 )</span></li>
   </ul>
 </div>
 
@@ -191,28 +192,27 @@ title: 為什麼需要長期指標後端？
   <div class="why-card__head">
     <mdi-lightbulb-on-outline class="why-card__icon" />
     <div>
-      <div class="why-card__kicker">需求</div>
-      <div class="why-card__title">工程師 & Agent 真實使用場景</div>
+      <div class="why-card__title">被要求做的事</div>
     </div>
   </div>
-  <ul class="why-list">
-    <li><mdi-history class="why-list__icon" /><span>上個月的 baseline 是什麼？</span></li>
-    <li><mdi-chart-timeline-variant class="why-list__icon" /><span>黑五 vs 平日負載對比</span></li>
-    <li><mdi-trophy-outline class="why-list__icon" /><span>SLO 的年度達成率</span></li>
-    <li><mdi-robot-outline class="why-list__icon" /><span>AI agents 的<strong>連續性</strong>歷史回溯查詢</span></li>
+  <ul class="why-list why-list--loose">
+    <li style="font-size:1.15rem!important;"><mdi-history class="why-list__icon" /><span>看上個月的 baseline。</span></li>
+    <li style="font-size:1.15rem!important;"><mdi-chart-timeline-variant class="why-list__icon" /><span>熱門節日 vs. 平日。</span></li>
+    <li style="font-size:1.15rem!important;"><mdi-trophy-outline class="why-list__icon" /><span>算 SLO 年度達成率。</span></li>
+    <li style="font-size:1.15rem!important;"><mdi-robot-outline class="why-list__icon" /><span>讓 AI agent 連續回溯歷史<br/>( 一個窗口可能發幾千個 PromQL )</span></li>
   </ul>
 </div>
 
 </div>
 
-<div v-click class="why-conclusion">
-  <span class="why-conclusion__label">需要一個</span>
-  <div class="why-conclusion__pills">
-    <span>高吞吐</span>
-    <span>低查詢延遲</span>
-    <span>便宜</span>
-  </div>
-  <span class="why-conclusion__label">且能擺脫單機天花板的後端</span>
+<div v-click class="why-conclusion why-conclusion--inline">
+  <span>要的是一個</span>
+  <span class="why-conclusion__mark">高吞吐</span>
+  <span>・</span>
+  <span class="why-conclusion__mark">低延遲</span>
+  <span>・</span>
+  <span class="why-conclusion__mark">便宜</span>
+  <span>而且能擺脫單機天花板的長期儲存後端。</span>
 </div>
 
   
@@ -248,32 +248,34 @@ ratio: "1:1"
 
 ---
 layout: inner
-title: Sidecar Mode 的巧妙之處
+title: Sidecar 的巧妙之處
+kicker: 它不重工，效率至上。
 ---
 
-<div class="flex flex-col gap-3 w-full h-full min-h-0 -mt-12">
+<div class="flex flex-col gap-3 w-full h-full min-h-0 -mt-20">
 <div class="flex-1 min-h-0 flex items-center justify-center">
   <div class="w-full max-w-6xl mx-auto">
     <img
       src="/sidecar-mode.png"
       alt="Sidecar mode flow"
       class="block w-full h-full object-contain"
-      style="max-height: 52vh;"
+      style="max-height: 46vh;"
     />
   </div>
 </div>
 
-<div v-click class="grid grid-cols-2 gap-4 flex-shrink-0 max-w-5xl mx-auto w-full">
+<div class="grid grid-cols-2 gap-4 flex-shrink-0 max-w-5xl mx-auto w-full">
 <Callout type="win" title="關鍵洞察">
 <strong>S3 上的 block 和本地 disk 完全一樣</strong><br/>
 Sidecar 不做任何運算
 </Callout>
 
 <Callout type="info" title="對比 Remote-write">
-Backend 要解 protobuf → 重新壓縮 → 建 index<br/>
-相當於把運算做了兩次
-</Callout>
+Backend 要解 protobuf、壓縮、重建 index
+<br/>
+同一份運算做了兩次。</Callout>
 </div>
+
 </div>
 
 <!--
@@ -285,9 +287,17 @@ Backend 要解 protobuf → 重新壓縮 → 建 index<br/>
 
 ---
 layout: quote
+quote_variant: pivot
 ---
 
-# 但是 ⋯<br/><span class="accent">我們撞牆了</span>
+<div class="pivot-quote">
+  <div class="pivot-quote__eyebrow">但是，三年之後</div>
+  <div class="pivot-quote__title">
+    <span class="pivot-quote__line">我們</span>
+    <span class="pivot-quote__line pivot-quote__line--accent">面臨的痛點</span>
+  </div>
+  <p class="pivot-quote__sub">Thanos Sidecar 架構下的兩處侷限。</p>
+</div>
 
 
 <!--

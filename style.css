@@ -649,6 +649,15 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
 .why-card--blue .why-list__icon   { color: #5296B8; }
 .why-card--orange .why-list__icon { color: #F7A86B; }
 
+.why-list--loose {
+  gap: 0.95rem;
+}
+
+.why-list--loose li {
+  gap: 1rem;
+  line-height: 1.65 !important;
+}
+
 .why-conclusion {
   display: flex;
   align-items: center;
@@ -673,6 +682,26 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   color: #F26D4F;
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(247, 168, 107, 0.35);
+}
+
+.why-conclusion--inline {
+  gap: 0.18rem;
+  padding: 0.35rem 0;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #3a3129;
+}
+
+.why-conclusion--inline .why-conclusion__mark {
+  display: inline-block;
+  padding: 0 0.12em;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #2f2a24;
+  background: linear-gradient(transparent 44%, rgba(247, 168, 107, 0.42) 44%);
 }
 
 /* ── Path-cards (p10 三條路選型) ── */
@@ -964,6 +993,15 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   font-size: 1rem;
   line-height: 1.65;
   color: rgba(14, 63, 78, 0.78);
+}
+
+.pain-card__foot {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: rgba(14, 63, 78, 0.78);
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(14, 63, 78, 0.08);
 }
 
 /* ── Highlight template (p30 Parquet 三家 · p31 TSDB vs Parquet)

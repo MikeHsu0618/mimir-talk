@@ -21,14 +21,14 @@ defineProps<{
 
 .label-text__title {
   font-weight: 900;
-  font-size: 1.2rem;
+  font-size: 0.75rem;
   line-height: 1.25;
   letter-spacing: -0.01em;
   color: #F26D4F;
 }
 
 .label-text__body {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.65;
   color: #0E3F4E;

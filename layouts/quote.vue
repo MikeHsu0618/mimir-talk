@@ -1,5 +1,5 @@
 <template>
-  <div class="quote-layout">
+  <div class="quote-layout" :class="$frontmatter.quote_variant ? `quote-layout--${$frontmatter.quote_variant}` : ''">
     <div class="blob-br" />
 
     <div class="pre-caption" v-if="$frontmatter.pre">{{ $frontmatter.pre }}</div>
@@ -104,5 +104,50 @@
   font-size: 1rem;
   color: rgba(14, 63, 78, 0.7);
   margin: 0.4rem 0 0;
+}
+
+.quote-layout--pivot .content {
+  max-width: 92%;
+}
+
+.quote-layout--pivot :deep(.pivot-quote) {
+  min-height: 68vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+}
+
+.quote-layout--pivot :deep(.pivot-quote__eyebrow) {
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  color: #d45a39;
+}
+
+.quote-layout--pivot :deep(.pivot-quote__title) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.92;
+}
+
+.quote-layout--pivot :deep(.pivot-quote__line) {
+  line-height: 1.1;
+  font-size: clamp(4.8rem, 9vw, 7rem);
+  font-weight: 600;
+  color: #111111;
+}
+
+.quote-layout--pivot :deep(.pivot-quote__line--accent) {
+  color: #F26D4F;
+}
+
+.quote-layout--pivot :deep(.pivot-quote__sub) {
+  margin: 0.6rem 0 0;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: rgba(58, 49, 41, 0.82);
 }
 </style>
