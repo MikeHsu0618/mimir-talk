@@ -49,6 +49,9 @@
           @error="avatarLoadFailed = true"
         />
         <div v-else class="avatar avatar--fallback">Mike Hsu</div>
+        <div class="qr-code">
+          <img src="/qr-code.png" alt="QR Code" />
+        </div>
       </div>
     </div>
   </div>
@@ -106,8 +109,9 @@ const avatarLoadFailed = ref(false)
 .right-col {
   width: 280px;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   padding-top: 0.5rem;
 }
 
@@ -175,7 +179,7 @@ const avatarLoadFailed = ref(false)
   display: flex;
   align-items: baseline;
   gap: 0.75rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: #0E3F4E;
   line-height: 1.55;
   padding: 0;
@@ -216,5 +220,13 @@ const avatarLoadFailed = ref(false)
   background:
     radial-gradient(circle at 30% 25%, rgba(162, 206, 230, 0.42) 0%, transparent 46%),
     rgba(228, 216, 200, 0.46);
+}
+
+.qr-code {
+  width: 220px;
+  height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 1rem;
 }
 </style>
