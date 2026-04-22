@@ -709,28 +709,72 @@ v3：<strong>每個 partition 有 1 個消費者就算活</strong>
 
 ---
 layout: inner
-title: 副本數學 — 成本最大的砍刀
+title: 可用性不一定要靠 Replication
 align: start
 ---
 
-<table style="width:100%;font-size:1rem;">
-<thead>
-<tr style="font-size:1rem;letter-spacing:0.06em;color:#0E3F4E;border-bottom:2px solid #C9BDA9;">
-<th style="text-align:left;padding:0.55rem 0.9rem;">維度</th>
-<th style="text-align:center;padding:0.55rem 0.9rem;">Classic RF=3 + 3 zones</th>
-<th style="text-align:center;padding:0.55rem 0.9rem;">Ingest Storage + 3 zones</th>
-<th style="text-align:center;padding:0.55rem 0.9rem;color:#35738E;font-weight:800;">Ingest Storage + 2 zones ✦</th>
-</tr>
-</thead>
-<tbody>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">副本決定方式</td><td style="text-align:center;">RF=3（寫 3 次）</td><td style="text-align:center;">zone 數決定</td><td style="text-align:center;">zone 數決定</td></tr>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">實際副本數</td><td style="text-align:center;color:#F26D4F;font-weight:700;">3×</td><td style="text-align:center;">3×</td><td style="text-align:center;color:#35738E;font-weight:800;">2×</td></tr>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Write 容錯</td><td style="text-align:center;">1 zone (2/3 quorum)</td><td style="text-align:center;">Kafka 負責</td><td style="text-align:center;">Kafka 負責</td></tr>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Read quorum</td><td style="text-align:center;color:#F26D4F;font-weight:700;">2/3</td><td style="text-align:center;color:#35738E;">1/3</td><td style="text-align:center;color:#35738E;font-weight:700;">1/2</td></tr>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Read 容錯</td><td style="text-align:center;">1 zone</td><td style="text-align:center;color:#35738E;font-weight:800;">2 zones</td><td style="text-align:center;">1 zone</td></tr>
-<tr style="border-bottom:1px solid #E4D8C8;"><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">Ingester 成本</td><td style="text-align:center;color:#F26D4F;font-weight:700;">3×</td><td style="text-align:center;">3×</td><td style="text-align:center;color:#35738E;font-weight:800;">2×</td></tr>
-<tr><td style="padding:0.45rem 0.9rem;color:#000;font-size:0.88rem;font-weight:600;">額外成本</td><td style="text-align:center;opacity:0.45;">—</td><td style="text-align:center;">Kafka</td><td style="text-align:center;">Kafka</td></tr>
-</tbody>
+<table class="repl-table">
+  <thead>
+    <tr>
+      <th class="repl-table__dimension">維度</th>
+      <th>
+        <span class="repl-table__head-top">Classic</span>
+        <span class="repl-table__head-main">RF=3 + 3 ZONES</span>
+      </th>
+      <th>
+        <span class="repl-table__head-top">Ingest</span>
+        <span class="repl-table__head-main">3 ZONES</span>
+      </th>
+      <th class="repl-table__focus" :class="{ 'is-active': $clicks >= 1 }">
+        <span class="repl-table__head-top">Ingest</span>
+        <span class="repl-table__head-main">2 ZONES ✦</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="repl-table__dimension">副本決定方式</td>
+      <td>RF=3（寫 3 次）</td>
+      <td>zone 數決定</td>
+      <td class="repl-table__focus" :class="{ 'is-active': $clicks >= 1 }">zone 數決定</td>
+    </tr>
+    <tr>
+      <td class="repl-table__dimension">實際副本數</td>
+      <td class="repl-table__metric repl-table__metric--neg">3×</td>
+      <td>3×</td>
+      <td class="repl-table__focus repl-table__metric repl-table__metric--pos" :class="{ 'is-active': $clicks >= 1 }">2×</td>
+    </tr>
+    <tr>
+      <td class="repl-table__dimension">Write 容錯</td>
+      <td>1 zone (2/3 quorum)</td>
+      <td>Kafka 負責</td>
+      <td class="repl-table__focus" :class="{ 'is-active': $clicks >= 1 }">Kafka 負責</td>
+    </tr>
+    <tr>
+      <td class="repl-table__dimension">Read quorum</td>
+      <td class="repl-table__metric repl-table__metric--neg">2/3</td>
+      <td class="repl-table__metric repl-table__metric--info">1/3</td>
+      <td class="repl-table__focus repl-table__metric repl-table__metric--pos" :class="{ 'is-active': $clicks >= 1 }">1/2</td>
+    </tr>
+    <tr>
+      <td class="repl-table__dimension">Read 容錯</td>
+      <td>1 zone</td>
+      <td class="repl-table__metric repl-table__metric--info">2 zones</td>
+      <td class="repl-table__focus" :class="{ 'is-active': $clicks >= 1 }">1 zone</td>
+    </tr>
+    <tr>
+      <td class="repl-table__dimension">Ingester 成本</td>
+      <td class="repl-table__metric repl-table__metric--neg">3×</td>
+      <td>3×</td>
+      <td class="repl-table__focus repl-table__metric repl-table__metric--pos" :class="{ 'is-active': $clicks >= 1 }">2×</td>
+    </tr>
+    <tr>
+      <td class="repl-table__dimension">額外成本</td>
+      <td class="repl-table__muted">—</td>
+      <td>Kafka</td>
+      <td class="repl-table__focus" :class="{ 'is-active': $clicks >= 1 }">Kafka</td>
+    </tr>
+  </tbody>
 </table>
 
 <div v-click class="flex justify-center mt-4">
@@ -738,9 +782,8 @@ align: start
     <div class="flex flex-col items-center gap-1.5">
       <div class="flex items-center gap-2">
         <mdi-trophy-outline style="font-size:1rem;color:#C97C3A;flex-shrink:0;" />
-        <div style="font-size:1rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;">我們的選擇</div>
       </div>
-      <div style="font-size:1.25rem;font-weight:600;color:#0E3F4E;line-height:1.5;"><strong>RF=2 + 2 zones</strong> — 把可用性從「RF 堆出來」換成「Kafka 保證 + partition 調整」</div>
+      <div style="font-size:1.25rem;font-weight:600;color:#0E3F4E;line-height:1.5;">把可用性從「RF 堆出來」換成「Kafka 保證 + partition 調整」</div>
     </div>
   </div>
 </div>

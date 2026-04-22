@@ -379,6 +379,131 @@ html:not(.dark) .slidev-layout .pg-artifact__list.icon-list li span {
   color: #2E6A87;
 }
 
+.repl-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.96rem;
+}
+
+.repl-table thead tr {
+  border-bottom: 1.6px solid rgba(58, 49, 41, 0.85);
+}
+
+.repl-table tbody tr {
+  border-bottom: 1px solid rgba(201, 189, 169, 0.68);
+}
+
+.repl-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+html:not(.dark) .slidev-layout .repl-table th,
+html:not(.dark) .slidev-layout .repl-table td {
+  padding: 0.8rem 0.9rem;
+  text-align: center;
+  color: #2E2620;
+  vertical-align: middle;
+  transition:
+    background-color 0.45s ease,
+    color 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+html:not(.dark) .slidev-layout .repl-table th {
+  padding: 0.5rem 0.5rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.repl-table__dimension {
+  width: 20%;
+  text-align: left !important;
+  padding-left: 0 !important;
+  font-weight: 600;
+  color: #1F1A17 !important;
+}
+
+.repl-table__head-top,
+.repl-table__head-main {
+  display: block;
+}
+
+.repl-table__head-top {
+  margin-bottom: 0.15rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  color: rgba(58, 49, 41, 0.72);
+}
+
+.repl-table__head-main {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: #3A3129;
+}
+
+.repl-table__metric--neg {
+  color: #F26D4F !important;
+  font-weight: 700;
+}
+
+.repl-table__metric--info {
+  color: #35738E !important;
+  font-weight: 700;
+}
+
+.repl-table__metric--pos {
+  color: #2E6A87 !important;
+  font-weight: 800;
+}
+
+.repl-table__muted {
+  color: rgba(58, 49, 41, 0.36) !important;
+}
+
+.repl-table__focus {
+  background: transparent;
+}
+
+.repl-table__focus.is-active {
+  background: rgba(242, 109, 79, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(242, 109, 79, 0.08);
+}
+
+.repl-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1.35rem;
+  padding: 0.95rem 1.4rem;
+  border-radius: 18px;
+  background: rgba(247, 168, 107, 0.1);
+  border: 1.5px solid rgba(247, 168, 107, 0.4);
+}
+
+.repl-choice__label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #C97C3A;
+}
+
+.repl-choice__label svg {
+  font-size: 1rem;
+}
+
+.repl-choice__body {
+  text-align: center;
+  font-size: 1.18rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #0E3F4E;
+}
+
 .mermaid-full svg {
   width: 100% !important;
   height: auto !important;
