@@ -111,7 +111,7 @@
 }
 
 .quote-layout--pivot :deep(.pivot-quote) {
-  min-height: 68vh;
+  min-height: min(68vh, 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -149,5 +149,26 @@
   font-size: 1.2rem;
   line-height: 1.6;
   color: rgba(58, 49, 41, 0.82);
+}
+
+@media (min-aspect-ratio: 21/9) {
+  .quote-layout--pivot .content {
+    max-width: 84%;
+  }
+
+  .quote-layout--pivot :deep(.pivot-quote) {
+    min-height: min(58vh, 100%);
+    gap: 1.25rem;
+  }
+
+  .quote-layout--pivot :deep(.pivot-quote__line) {
+    font-size: clamp(3rem, 5.6vw, 4.2rem);
+    line-height: 1.05;
+  }
+
+  .quote-layout--pivot :deep(.pivot-quote__sub) {
+    font-size: 1.05rem;
+    line-height: 1.45;
+  }
 }
 </style>

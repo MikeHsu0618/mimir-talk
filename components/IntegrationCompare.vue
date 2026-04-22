@@ -172,7 +172,7 @@ const showRemote = computed(() => props.pane === 'both' || props.pane === 'remot
   /* 兩欄各自 flex 時 header/caption 高度不同會讓 flex:1 的框變不等高；統一用同一個高度 */
   --flow-frame-height: clamp(300px, 42vh, 480px);
   box-sizing: border-box;
-  flex: 0 0 var(--flow-frame-height);
+  flex: 0 0 380px;
   height: var(--flow-frame-height);
   min-height: 0;
   border: 1px solid rgba(228, 216, 200, 0.78);
@@ -215,5 +215,11 @@ const showRemote = computed(() => props.pane === 'both' || props.pane === 'remot
   line-height: 1.45;
   color: rgba(132, 115, 92, 0.92);
   font-style: italic;
+}
+
+@media (min-aspect-ratio: 21/9) {
+  .flow-frame {
+    --flow-frame-height: clamp(240px, 34vh, 360px);
+  }
 }
 </style>
