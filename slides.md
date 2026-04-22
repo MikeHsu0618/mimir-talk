@@ -535,9 +535,9 @@ chapter: "02"
 parent: Thanos → Mimir 3.0
 ---
 
-# Mimir 3.0 架構
+# Mimir 3.0 架構<br/>的新地基
 
-<div class="mt-6 opacity-60">為什麼 Mimir 3.0 是這次遷移的臨門一腳</div>
+<div class="mt-6 opacity-60">為什麼偏偏現在換</div>
 
 <!--
 進入 Mimir 3.0 介紹段
@@ -545,69 +545,8 @@ parent: Thanos → Mimir 3.0
 -->
 
 ---
-layout: inner
-title: 為什麼偏偏挑這個時間點？
----
-
-<div class="w-full flex flex-col gap-4">
-
-<div class="grid grid-cols-2 gap-5 items-stretch">
-
-<div class="why-card why-card--orange">
-  <div class="why-card__head">
-    <mdi-rocket-launch class="why-card__icon" />
-    <div>
-      <div class="why-card__kicker">版本時機</div>
-      <div class="why-card__title">Mimir 3.0 剛好到位</div>
-    </div>
-  </div>
-  <ul class="why-list">
-    <li><mdi-calendar-check class="why-list__icon" /><span>2025 下半年推出 · 三大主題 <strong>Reliability · Performance · Cost</strong></span></li>
-    <li><mdi-swap-horizontal class="why-list__icon" /><span><strong>Ingest Storage</strong> — Kafka-API 寫讀解耦</span></li>
-    <li><mdi-flash class="why-list__icon" /><span><strong>Mimir Query Engine</strong> — streaming + optimization</span></li>
-    <li><mdi-chart-line-variant class="why-list__icon" /><span>Grafana Cloud dogfood · <strong>~25% TCO ↓</strong></span></li>
-  </ul>
-</div>
-
-<div class="why-card why-card--blue">
-  <div class="why-card__head">
-    <mdi-trending-up class="why-card__icon" />
-    <div>
-      <div class="why-card__kicker">生態走勢</div>
-      <div class="why-card__title">Grafana vs Thanos 社群態勢</div>
-    </div>
-  </div>
-  <ul class="why-list">
-    <li><mdi-fire class="why-list__icon" /><span>Grafana Labs 對 <strong>LGTM</strong> 集中火力投資</span></li>
-    <li><mdi-rocket-launch-outline class="why-list__icon" /><span>Mimir <strong>每個 minor</strong> 都在重大升級</span></li>
-    <li><mdi-turtle class="why-list__icon" /><span>Thanos 社群節奏<strong>不快</strong>（個人營運經驗）</span></li>
-    <li><mdi-file-document-alert-outline class="why-list__icon" /><span>文件<strong>不齊</strong> · 深度問題大多得翻 source code 才有答案</span></li>
-    <li><mdi-account-group class="why-list__icon" /><span>下一代儲存 <strong>Parquet Gateway</strong> 由三家社群共同推 — 未來紅利 Thanos 也分得到</span></li>
-  </ul>
-</div>
-
-</div>
-
-<!-- <div v-click>
-<Callout type="win" title="選型的風向判斷">
-Thanos 是可靠的老兵，但 <strong>Mimir 正站在浪尖</strong> — 選方向比選當下更重要
-</Callout>
-</div> -->
-
-</div>
-
-<!--
-- Mimir 3.0 剛好在我們評估的時間點推出
-- 社群態勢是我自己營運 3 年的第一手經驗，不是引用外部報告
-- Thanos 節奏不算快（相對 Mimir 的更新密度）
-- 文件不齊全，深度問題（sharding 行為、cache key、memory behavior）大多得翻 source code
-- 下一代儲存 Parquet Gateway 三家社群共同推（後面 Slide 會展開）
-- 我們選 Mimir 的理由不是「Thanos 要死了」，而是「Mimir 現在就有 Ingest Storage + MQE 可以兌現」
--->
-
----
 layout: split
-title: Mimir 3.0 的三大支柱
+title: Mimir 3.0 剛好到位
 ratio: "1:1"
 ---
 
@@ -622,19 +561,19 @@ ratio: "1:1"
 <div class="pillar-card pillar-card--orange">
   <div class="pillar-card__title"><mdi-check-circle />Reliability</div>
   <div class="pillar-card__note">寫讀徹底解耦</div>
-  <div class="pillar-card__body">Kafka 中繼 · 讀端掛了寫依然健康 · quorum 從 2/3 降到 1</div>
+  <div class="pillar-card__body">Kafka 當中繼實現持久性 · 讀掛掉寫照常 · quorum 從 2/3 降到 1</div>
 </div>
 
 <div class="pillar-card pillar-card--blue">
   <div class="pillar-card__title"><mdi-chart-line />Performance</div>
-  <div class="pillar-card__note">Mimir Query Engine</div>
-  <div class="pillar-card__body">Streaming 取代全量載入 · Peak CPU ↓80% · Peak Mem ↓3×</div>
+  <div class="pillar-card__note">MQE streaming</div>
+  <div class="pillar-card__body">Peak CPU ↓80% · Peak Mem ↓3×</div>
 </div>
 
 <div class="pillar-card pillar-card--red">
   <div class="pillar-card__title"><mdi-content-cut />Cost</div>
-  <div class="pillar-card__note">Ingester 減半</div>
-  <div class="pillar-card__body">Zones 從 3 降到 2 · 副本不靠 RF=3 · ~25% TCO ↓</div>
+  <div class="pillar-card__note">Querier / Ingester 使用量減半</div>
+  <div class="pillar-card__body">不再靠 RF=3 · ~25% TCO ↓</div>
 </div>
 
 </div>
@@ -655,13 +594,14 @@ ratio: "1:1"
 ---
 layout: split
 title: "Ingest Storage"
-kicker: "從「3 副本寫入」到「1 次 Kafka produce」"
+kicker: "寫 3 次 → 寫 1 次"
 ratio: "1:1"
 ---
 
 ::left::
 
-<div class="section-badge section-badge--red">Mimir v2 · Classic</div>
+<div class="section-badge section-badge--red">Classic · v2
+</div>
 
 <div class="mermaid-eq">
 
@@ -680,19 +620,15 @@ flowchart LR
 
 </div>
 
-<ul>
-  <li><strong>寫 3 次</strong> gRPC Push · Querier 讀 2/3 才算成功</li>
-  <li>Ingester 身兼寫入、查詢、建 block、上傳 S3</li>
-</ul>
 
 <div v-click class="mt-2 rounded-xl p-3" style="background:rgba(242,109,79,0.06);border:1.5px solid rgba(242,109,79,0.28);">
   <div style="font-size:1rem;font-weight:800;color:#C0502E;margin-bottom:0.35rem;">為什麼要 2/3 quorum？</div>
-  <div style="font-size:0.92rem;line-height:1.6;color:rgba(14,63,78,0.72);"><strong>Dynamo-style 不變式：</strong> <code>R + W &gt; N</code><br/>W=2 · R=2 · N=3 → <strong>4 &gt; 3 ✓</strong>　讀集合與最新寫入必交集</div>
+  <div style="font-size:0.92rem;line-height:1.6;color:rgba(14,63,78,0.72);"><strong>Dynamo-style 不變式：</strong> <code>R + W &gt; N</code><br/>W=2 · R=2 · N=3 → <strong>4 &gt; 3 ✓</strong> ，讀集合要跟最新寫入交集才讀得到</div>
 </div>
 
 ::right::
 
-<div class="section-badge">Mimir 3.0 · Ingest Storage</div>
+<div class="section-badge">Ingest Storage · v3</div>
 
 <div class="mermaid-eq">
 
@@ -710,14 +646,9 @@ flowchart LR
 
 </div>
 
-<ul>
-  <li><strong>寫 1 次</strong> · Querier 讀 <strong>1 個</strong> 健康 consumer 就夠</li>
-  <li>Block Builder 獨立元件 · Ingester 純 consume</li>
-</ul>
-
-<div v-click class="mt-2 rounded-xl p-3" style="background:rgba(82,150,184,0.07);border:1.5px solid rgba(82,150,184,0.30);">
+<div class="mt-2 rounded-xl p-3" style="background:rgba(82,150,184,0.07);border:1.5px solid rgba(82,150,184,0.30);">
   <div style="font-size:1rem;font-weight:800;color:#2E6A87;margin-bottom:0.35rem;">為什麼 quorum = 1 就夠？</div>
-  <div style="font-size:0.92rem;line-height:1.6;color:rgba(14,63,78,0.72);"><strong>Kafka partition = linearized log</strong><br/>每個 consumer 都是同一 log 完整 replay · 無分歧狀態 · 不需 overlap</div>
+  <div style="font-size:0.92rem;line-height:1.6;color:rgba(14,63,78,0.72);"><strong>Kafka partition = linearized log</strong><br/>每個 consumer 都 replay 同一份 log · 無分歧 · 不需 overlap</div>
 </div>
 
 <!--
