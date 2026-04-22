@@ -53,6 +53,16 @@ layout: cover-template
 -->
 
 ---
+layout: speaker
+---
+
+<!--
+作者介紹頁
+- DevOps 經歷 + GitHub handle
+- 代表文章與過往分享
+-->
+
+---
 layout: quote
 ---
 
@@ -553,6 +563,7 @@ parent: Thanos → Mimir 3.0
 layout: split
 title: Mimir 3.0 剛好到位
 ratio: "1:1"
+reference: "https://www.youtube.com/watch?v=yabtVakeqc8"
 ---
 
 ::left::
@@ -662,6 +673,7 @@ layout: split
 title: 讀節點異常 · 寫節點照常
 kicker: Kafka 持久性 -> 更容錯的可用門檻
 ratio: "5:3"
+reference: "https://www.youtube.com/watch?v=yabtVakeqc8"
 ---
 
 ::left::
@@ -789,6 +801,7 @@ layout: split
 title: 無痛升級
 kicker: Mimir Query Engine
 ratio: "3:2"
+reference: "https://www.youtube.com/watch?v=yabtVakeqc8"
 ---
 
 ::left::
@@ -816,6 +829,7 @@ ratio: "3:2"
 ---
 layout: inner
 title: 遷移後 · 寫讀兩端資源同時下降
+reference: "https://www.youtube.com/watch?v=yabtVakeqc8"
 align: start
 ---
 
@@ -1042,6 +1056,7 @@ ratio: "4:5"
 ---
 layout: split
 title: AutoMQ · 最小改動的 Diskless Kafka 分支
+reference: "https://docs.automq.com/"
 ratio: "5:2"
 ---
 
@@ -1093,6 +1108,7 @@ layout: split
 title: 跨 AZ 流量 · 傳統 Kafka 的黑洞
 ratio: "3:2"
 footnote: "AutAutoMQ 官方：大叢集跨 AZ 流量占 <strong style='color:#F26D4F'>60–70% </strong>的 Kafka 總成本，不是花在業務，是花在跨區網路傳輸。"
+reference: "https://docs.automq.com/"
 ---
 
 ::left::
@@ -1135,7 +1151,7 @@ layout: split
 title: AutoMQ 的解法 · Zero-Zone Router
 ratio: "3:2"
 footnote: "AWS 同 region S3<strong style='color:#F26D4F'>免費</strong>，把 60–70% 的 Kafka 帳單直接歸零"
-
+reference: "https://docs.automq.com/"
 ---
 
 ::left::
@@ -1172,6 +1188,7 @@ Zero-Zone Router 分步講解：
 layout: split
 title: 容量與彈性 · 從「預留」到「按用量」
 ratio: "5:4"
+reference: "https://docs.automq.com/"
 ---
 
 ::left::

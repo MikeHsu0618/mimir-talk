@@ -41,11 +41,25 @@
       </div>
 
       <div class="right-col">
-        <img src="/mike-hsu.jpg" class="avatar" alt="Mike Hsu" />
+        <img
+          v-if="!avatarLoadFailed"
+          :src="avatarSrc"
+          class="avatar"
+          alt="Mike Hsu"
+          @error="avatarLoadFailed = true"
+        />
+        <div v-else class="avatar avatar--fallback">Mike Hsu</div>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const avatarSrc = '/mike-hsu.jpg'
+const avatarLoadFailed = ref(false)
+</script>
 
 <style scoped>
 .speaker-layout {
@@ -55,7 +69,7 @@
   background-color: #FFFAF7;
   color: #0E3F4E;
   overflow: hidden;
-  padding: 3rem 3.5rem 5rem;
+  padding: 3rem 5rem 5rem 5rem;
 }
 
 .blob-tr {
@@ -101,6 +115,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  margin-top: 6rem;
 }
 
 .name {
@@ -113,7 +128,7 @@
 }
 
 .name-rule {
-  width: 14rem;
+  width: 11rem;
   height: 3px;
   background-color: #0E3F4E;
   border-radius: 2px;
@@ -121,6 +136,7 @@
 
 .icons-row {
   display: flex;
+  margin-top: 8rem;
   gap: 2.5rem;
   align-items: center;
 }
@@ -139,7 +155,7 @@
 }
 
 .icon-label {
-  font-size: 1.2rem;
+  font-size: 2.2rem;
   font-weight: 700;
   color: #0E3F4E;
   letter-spacing: -0.01em;
@@ -151,16 +167,17 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.9rem;
+  margin-top: auto;
 }
 
 .creds li {
   display: flex;
   align-items: baseline;
   gap: 0.75rem;
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   color: #0E3F4E;
-  line-height: 1.4;
+  line-height: 1.55;
   padding: 0;
 }
 
@@ -170,7 +187,7 @@
 
 .star {
   color: #5296B8;
-  font-size: 1rem;
+  font-size: 1.25rem;
   flex-shrink: 0;
 }
 
@@ -185,5 +202,19 @@
   border-radius: 50%;
   object-fit: cover;
   background-color: #E4D8C8;
+}
+
+.avatar--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(14, 63, 78, 0.7);
+  border: 1.5px solid rgba(82, 150, 184, 0.28);
+  background:
+    radial-gradient(circle at 30% 25%, rgba(162, 206, 230, 0.42) 0%, transparent 46%),
+    rgba(228, 216, 200, 0.46);
 }
 </style>

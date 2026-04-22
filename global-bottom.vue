@@ -1,9 +1,24 @@
 <template>
   <footer class="slide-footer">
     <span class="footer-title">Observability Day 2026 <span class="footer-dot">·</span> <strong>Mike Hsu</strong></span>
+    <span v-if="slideReference" class="footer-reference">reference: {{ slideReference }}</span>
     <span class="footer-page">{{ $nav.currentPage }} / {{ $nav.total }}</span>
   </footer>
 </template>
+
+<script setup>
+import { computed } from 'vue'
+import { useNav } from '@slidev/client'
+
+const nav = useNav()
+
+const slideReference = computed(() => {
+  const refValue = nav.currentSlideRoute.value?.meta?.slide?.frontmatter?.reference
+  if (Array.isArray(refValue))
+    return refValue.join(' · ')
+  return typeof refValue === 'string' ? refValue : ''
+})
+</script>
 
 <style scoped>
 .slide-footer {
@@ -35,6 +50,12 @@
   font-size: 1.2em;
 }
 .footer-page {
+  opacity: 0.50;
+  font-weight: 500;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.footer-reference {
   opacity: 0.50;
   font-weight: 500;
   flex-shrink: 0;
