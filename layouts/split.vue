@@ -86,6 +86,8 @@
 .ratio-3-5 .cols { grid-template-columns: 3fr 5fr; }
 .ratio-5-4 .cols { grid-template-columns: 5fr 4fr; }
 .ratio-4-5 .cols { grid-template-columns: 4fr 5fr; }
+.ratio-5-2 .cols { grid-template-columns: 5fr 2fr; }
+.ratio-2-5 .cols { grid-template-columns: 2fr 5fr; }
 
 .col {
   min-width: 0;

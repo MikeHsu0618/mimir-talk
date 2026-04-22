@@ -1059,7 +1059,7 @@ ratio: "4:5"
 ---
 layout: split
 title: AutoMQ · 最小改動的 Diskless Kafka 分支
-ratio: "5:4"
+ratio: "5:2"
 ---
 
 ::left::
@@ -1071,29 +1071,29 @@ ratio: "5:4"
 <div class="flex flex-col gap-4">
   <div class="why-card why-card--red" style="padding:1rem 1.15rem;">
     <div class="why-card__head">
-      <mdi-alert-circle class="why-card__icon" />
+      <mdi-alert-circle class="why-card__icon" style="font-size:1.25rem"/>
       <div>
-        <div class="why-card__title">傳統 Kafka 三大痛點</div>
+        <div class="why-card__title" style="font-size:1.25rem">傳統 Kafka 三大痛點</div>
       </div>
     </div>
     <div class="flex flex-col">
-      <div style="padding:0.3rem 0;font-size:0.98rem;line-height:1.6;color:#2E2620;">Broker 有狀態，每次重啟都搬資料。</div>
-      <div style="padding:0.3rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.98rem;line-height:1.6;color:#2E2620;">Rebalance storm，加縮 broker 網段大遷移。</div>
-      <div style="padding:0.3rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.98rem;line-height:1.6;color:#2E2620;">跨 AZ 流量吃掉 60–70% 成本。</div>
+      <div style="padding:0.2rem 0;font-size:0.8rem;line-height:1.6;color:#2E2620;">Broker 有狀態，每次重啟都搬資料。</div>
+      <div style="padding:0.2rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.8rem;line-height:1.6;color:#2E2620;">Rebalance storm，加縮 broker 網段大遷移。</div>
+      <div style="padding:0.2rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.8rem;line-height:1.6;color:#2E2620;">跨 AZ 流量吃掉 60–70% 成本。</div>
     </div>
   </div>
 
   <div class="why-card why-card--blue" style="padding:1rem 1.15rem;">
     <div class="why-card__head">
-      <mdi-lightbulb-on-outline class="why-card__icon" />
+      <mdi-lightbulb-on-outline class="why-card__icon" style="font-size:1.25rem"/>
       <div>
-        <div class="why-card__title">AutoMQ + S3stream 介面</div>
+        <div class="why-card__title" style="font-size:1.25rem">AutoMQ + S3stream 介面</div>
       </div>
     </div>
     <div class="flex flex-col">
-      <div style="padding:0.3rem 0;font-size:0.98rem;line-height:1.6;color:#2E2620;">Broker stateless，spot-friendly，秒級 rebalance。</div>
-      <div style="padding:0.3rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.98rem;line-height:1.6;color:#2E2620;">S3 自帶多副本，broker 間 zero replication。</div>
-      <div style="padding:0.3rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.98rem;line-height:1.6;color:#2E2620;">100% Kafka API，Producer/Consumer 0 改動。</div>
+      <div style="padding:0.2rem 0;font-size:0.8rem;line-height:1.6;color:#2E2620;">Broker stateless，spot-friendly，秒級 rebalance</div>
+      <div style="padding:0.2rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.8rem;line-height:1.6;color:#2E2620;">S3 自帶多副本，broker 間 zero replication</div>
+      <div style="padding:0.2rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.8rem;line-height:1.6;color:#2E2620;">100% Kafka API，Producer/Consumer 0 改動</div>
     </div>
   </div>
 </div>
@@ -1230,16 +1230,16 @@ title: 那缺點呢？
 <div class="flex flex-col gap-2">
   <div class="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full" style="color:#5296B8;border:1.5px solid #5296B8;width:fit-content;">Traditional Kafka · EBS</div>
   <div class="rounded-xl p-4 text-center flex flex-col justify-center" style="min-height:220px;background:rgba(82,150,184,0.1);border:1px solid rgba(82,150,184,0.3);">
-    <div class="text-5xl font-black" style="color:#5296B8;">5–50<span class="text-xl">ms</span></div>
-    <div style="font-size:1rem;opacity:0.65;margin-top:0.25rem;">Produce ACK P99</div>
+    <div class="text-7xl font-black" style="color:#5296B8;">5–50ms</div>
+    <div style="font-size:1rem;opacity:0.65;margin-top:1rem;">Produce ACK P99</div>
   </div>
 </div>
 
 <div class="flex flex-col gap-2">
   <div class="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full" style="color:#C0502E;border:1.5px solid #F26D4F;width:fit-content;">AutoMQ · S3Stream</div>
   <div class="rounded-xl p-4 text-center flex flex-col justify-center" style="min-height:220px;background:rgba(242,109,79,0.1);border:1px solid rgba(242,109,79,0.35);">
-    <div class="text-5xl font-black" style="color:#F26D4F;">500ms<span class="text-5xl"> –1s</span></div>
-    <div style="font-size:1rem;opacity:0.65;margin-top:0.25rem;">Produce ACK P99（10× 的差距）極端情況 ~30 秒才能在 Mimir 讀取</div>
+    <div class="text-7xl font-black" style="color:#F26D4F;">500ms –1s</div>
+    <div style="font-size:1rem;opacity:0.65;margin-top:1rem;">Produce ACK P99（10× 的差距）極端情況 ~30 秒才能在 Mimir 讀取</div>
   </div>
 </div>
 
