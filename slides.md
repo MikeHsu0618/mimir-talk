@@ -798,8 +798,8 @@ align: start
 
 ---
 layout: split
-title: Mimir Query Engine · 讀端同步省下來
-kicker: MQE 在 Mimir 3.0 是 default · 升級後自動拿到 · 覆蓋 100% 穩定 PromQL
+title: 無痛升級
+kicker: Mimir Query Engine
 ratio: "3:2"
 ---
 
@@ -810,10 +810,10 @@ ratio: "3:2"
 ::right::
 
 <div class="grid grid-cols-2 gap-3">
-  <Stat value="92%" label="Less memory vs Prometheus" accent="orange" />
-  <Stat value="38%" label="Faster execution" accent="blue" />
-  <Stat value="3×" label="Querier peak mem ↓" accent="sky" />
-  <Stat value="80%" label="Querier peak CPU ↓" accent="orange" />
+  <Stat value="92%" label="less memory vs Prom engine" accent="orange" />
+  <Stat value="38%" label="faster execution" accent="blue" />
+  <Stat value="3×" label="Querier peak mem ↓" accent="orange" />
+  <Stat value="80%" label="Querier peak CPU ↓" accent="blue" />
 </div>
 
 <!--
@@ -835,11 +835,11 @@ align: start
 
 <div class="grid grid-cols-2 gap-2 w-full flex-1 min-h-0">
 <div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(247,168,107,0.06);border:1px solid rgba(247,168,107,0.25);">
-  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#F7A86B;text-align:center;font-weight:700;margin-bottom:0.3rem;">Ingester · CPU</div>
+  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#F26D4F;text-align:center;font-weight:700;margin-bottom:0.3rem;">Ingester · CPU</div>
   <img src="/mimir3-ingester-cpu.png" class="rounded flex-1 min-h-0 w-full object-contain" />
 </div>
 <div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(247,168,107,0.06);border:1px solid rgba(247,168,107,0.25);">
-  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#F7A86B;text-align:center;font-weight:700;margin-bottom:0.3rem;">Ingester · Memory</div>
+  <div style="font-size:0.65rem;letter-spacing:0.1em;color:#F26D4F;text-align:center;font-weight:700;margin-bottom:0.3rem;">Ingester · Memory</div>
   <img src="/mimir3-ingester-memory.png" class="rounded flex-1 min-h-0 w-full object-contain" />
 </div>
 <div class="rounded-lg p-2 flex flex-col min-h-0" style="background:rgba(82,150,184,0.06);border:1px solid rgba(82,150,184,0.25);">
@@ -850,16 +850,6 @@ align: start
   <div style="font-size:0.65rem;letter-spacing:0.1em;color:#5296B8;text-align:center;font-weight:700;margin-bottom:0.3rem;">Querier · Memory</div>
   <img src="/mimir3-querier-memory.png" class="rounded flex-1 min-h-0 w-full object-contain" />
 </div>
-</div>
-
-<div v-click class="flex justify-center flex-shrink-0">
-  <div class="flex flex-col items-center gap-1.5 rounded-2xl px-6 py-3" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);width:100%;">
-    <div class="flex items-center gap-2">
-      <mdi-chart-line style="font-size:1.2rem;color:#C97C3A;flex-shrink:0;" />
-      <div style="font-size:1rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;">寫（Ingester）+ 讀（Querier）同時兌現 · 同一生產集群 · 升級前後</div>
-    </div>
-    <div style="font-size:1rem;font-weight:600;color:#0E3F4E;line-height:1.5;">RF=3→2 + Ingest Storage → <strong>Ingester</strong> CPU/Mem 雙降 · MQE → <strong>Querier</strong> CPU/Mem 雙降</div>
-  </div>
 </div>
 
 </div>
@@ -884,7 +874,7 @@ parent: Thanos → Mimir 3.0
 
 # Kafka 選型
 
-<div class="mt-6 opacity-60">多了一個元件 · 我們是不是在自己給自己找死？</div>
+<div class="mt-6 opacity-60">多了一個元件 · 我們是不是在自找麻煩？</div>
 
 <!--
 進入 Kafka / AutoMQ 章節 — 整場演講的重頭戲
@@ -898,12 +888,12 @@ clicks: 2
 ---
 
 <div class="p17-wrap" :class="{ 'p17-wrap--on': $clicks >= 1 }">
-  <h1 class="p17-title">等等，加 Kafka不就更複雜嗎？</h1>
+  <h1 class="p17-title">多加一個 Kafka 是不是把事情搞更複雜？</h1>
   <div class="p17-quote-block" :class="{ 'p17-visible': $clicks >= 1 }">
-    <div class="p17-quote-text">原本一個長期指標系統就夠複雜了，<strong>現在還要多一個 Kafka？</strong></div>
+    <div class="p17-quote-text">回答這個問題之前，先來看個公式，任何有 queue 的系統都適用</div>
   </div>
   <div class="p17-formula-block" :class="{ 'p17-visible': $clicks >= 2 }">
-    <div style="font-size:4.5rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:#F7A86B;letter-spacing:-0.02em;margin-top:1.75rem;">L = λ · W</div>
+    <div style="font-size:4.5rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:#F26D4F;letter-spacing:-0.02em;">L = λ · W</div>
     <div class="text-xs uppercase tracking-widest opacity-50" style="margin-top:0.5rem;">Little's Law · 李式定理</div>
     <div class="grid grid-cols-3 gap-5 w-full max-w-2xl mx-auto" style="margin-top:1.25rem;">
       <div class="flex flex-col items-center gap-2 rounded-2xl p-5" style="background:rgba(82,150,184,0.08);">
@@ -911,13 +901,17 @@ clicks: 2
         <div class="text-sm opacity-65 leading-snug">Queue 中的<br/>平均任務數</div>
       </div>
       <div class="flex flex-col items-center gap-2 rounded-2xl p-5" style="background:rgba(247,168,107,0.10);">
-        <div class="text-3xl font-black font-mono" style="color:#F7A86B;">λ</div>
+        <div class="text-3xl font-black font-mono" style="color:#F26D4F;">λ</div>
         <div class="text-sm opacity-65 leading-snug">系統吞吐率<br/>(samples/s)</div>
       </div>
       <div class="flex flex-col items-center gap-2 rounded-2xl p-5" style="background:rgba(82,150,184,0.08);">
         <div class="text-3xl font-black font-mono" style="color:#5296B8;">W</div>
-        <div class="text-sm opacity-65 leading-snug">每個任務的<br/>平均等待時間</div>
+        <div class="text-sm opacity-65 leading-snug">每件事花的<br/>處理時間</div>
       </div>
+    </div>
+    <div style="margin-top:1.35rem;text-align:center;font-size:1.02rem;line-height:1.8;color:rgba(46,38,32,0.88);font-style:italic;">
+      <span>L 堆積 = 流入（停不住）× 處理時間（下游拖慢）</span><br/>
+      <span style="color:#F26D4F;font-weight:700;">這就是背壓的來源</span>
     </div>
   </div>
 </div>
@@ -932,7 +926,7 @@ clicks: 2
 
 ---
 layout: inner
-title: 現實中的 Kafka —— 分散式回堵噩夢
+title: 整條鏈路，牽一髮，動全身
 align: start
 ---
 
@@ -949,16 +943,15 @@ align: start
   </div>
 </div>
 
-<div class="text-center text-xs opacity-70" >虛線 = 回堵方向 · 任何一環節的 W 變大都會一路反噬到最上游</div>
 
-<div class="grid grid-cols-2 gap-3 flex-shrink-0 max-w-5xl mx-auto">
+<div class="grid grid-cols-2 gap-3 flex-shrink-0 max-w-8xl mx-auto">
 <div class="why-card why-card--ink">
-  <div class="why-card__title"><mdi-alert-circle class="why-card__icon" />Kafka 不永遠低延遲</div>
-  <p><strong>Rebalance</strong> · <strong>Leader 切換</strong> · <strong>Consumer lag</strong><br/>任一件事都能把 5ms 變成 5 秒</p>
+  <div class="why-card__title"><mdi-alert-circle class="why-card__icon" />真實踩過的坑</div>
+  <p>Ingester 卡住 → Kafka 堆積 → Distributor produce timeout → Prom queue full → 全環境噴 alert</p>
 </div>
 <div class="why-card why-card--ink">
   <div class="why-card__title"><mdi-lightbulb-on class="why-card__icon" />我們學到的</div>
-  <p>加 Kafka 不是免費的午餐<br/>你接受這個複雜度，換來上層解耦<br/><strong>選型要算清楚這筆帳</strong></p>
+  <p>Kafka 不永遠低延遲。Rebalance、leader 切換、consumer lag，任一件都能把 5ms 變 5 秒。</p>
 </div>
 </div>
 
