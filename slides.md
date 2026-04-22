@@ -107,7 +107,7 @@ title: 我們目前的規模
   <Stat value="40" label="EKS Clusters" />
   <Stat value="120M" label="Peak Active Series" accent="red" />
   <Stat value="8M" label="Samples / sec" />
-  <Stat value="365" label="天保留週期" />
+  <Stat value="365" label="retention period" />
 </div>
 
 <div v-click class="grid grid-cols-4 gap-5 mt-4">
