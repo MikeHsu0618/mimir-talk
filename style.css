@@ -1546,3 +1546,12 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
 .end-dark .end-page__contact svg { color: #7DC4E0 !important; }
 .end-dark .end-page__contact code { color: #7DC4E0 !important; }
 
+.fade-up-reveal {
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.fade-up-reveal.slidev-vclick-hidden {
+  opacity: 0 !important;
+  transform: translateY(12px);
+}
+

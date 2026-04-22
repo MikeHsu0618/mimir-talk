@@ -56,7 +56,9 @@ layout: cover-template
 layout: quote
 ---
 
-# 我們 Metrics 後端的<br/>主要使用者<br/><span v-click class="accent">已經不再是人類</span>
+<span v-click class="hidden" />
+
+# 我們 Metrics 後端的<br/>主要使用者<br/><span :class="{ accent: $clicks >= 1 }">已經不再是人類</span>
 
 <p>觀測者從人換成 Agent， 從偶爾查到 24/7。</p>
 
@@ -110,7 +112,7 @@ title: 我們目前的規模
   <Stat value="365" label="retention period" />
 </div>
 
-<div v-click class="grid grid-cols-4 gap-5 mt-4">
+<div v-click class="grid grid-cols-4 gap-5 mt-4 fade-up-reveal">
 <div class="why-card why-card--ink col-span-2">
   <div class="why-card__head">
     <mdi-memory class="why-card__icon" />
