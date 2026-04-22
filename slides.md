@@ -1043,7 +1043,7 @@ ratio: "4:5"
 
 <div class="flex justify-center items-start">
   <div class="rounded-lg overflow-hidden shadow-lg" style="border:1px solid rgba(14,63,78,0.12);">
-    <img src="/kip1150-xiaohongshu.png" style="max-height:540px;" />
+    <img src="/kip1150-xiaohongshu.png" style="max-height:600px;" />
   </div>
 </div>
 
