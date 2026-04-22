@@ -77,18 +77,20 @@ title: AI Agent 時代下，基礎設施備受考驗。
 ---
 
 <div class="w-full flex flex-col gap-5">
-<div class="flex justify-center items-center rounded-2xl relative" style="border:1.5px dashed rgba(82,150,184,0.4);background:rgba(82,150,184,0.04);height:400px;">
-  <div class="text-center" style="opacity:0.5;">
-    <div class="text-xs uppercase tracking-widest mb-2">Reserved for Live Demo</div>
-    <div class="text-base">▶ SRE Agent Videos</div>
-  </div>
-  <div style="position:absolute;bottom:0.75rem;right:1rem;font-size:0.75rem;opacity:0.4;">⏱ 20–30 sec budget</div>
+<div class="flex justify-center items-center rounded-2xl overflow-hidden" style="border:1.5px solid rgba(82,150,184,0.35);background:#000;height:540px;">
+  <video
+    src="/0422.mp4"
+    controls
+    preload="metadata"
+    playsinline
+    style="width:100%;height:100%;object-fit:contain;"
+  ></video>
 </div>
-<div class="grid grid-cols-3 gap-4">
+<!-- <div class="grid grid-cols-3 gap-4">
 <LabelText title="現在">幾個 agent 在跑。尚未飽和。</LabelText>
 <LabelText title="即將到來">DB · Service · Cost · Security agents。</LabelText>
 <LabelText title="這只是開始">負載是現在的幾倍。地基得現在打。</LabelText>
-</div>
+</div> -->
 </div>
 
 <!--
@@ -318,9 +320,9 @@ ratio: "3:2"
 
 ::left::
 
-<img src="/thanos-query-architecture.png" alt="Thanos query architecture" class="w-full" style="border:none;box-shadow:none;border-radius:0;height:420px;max-height:none;width:100%;object-fit:contain;object-position:center;" />
+<img src="/thanos-query-architecture.png" alt="Thanos query architecture" class="w-full" style="border:none;box-shadow:none;border-radius:0;height:500px;max-height:none;width:100%;object-fit:contain;object-position:center;" />
 
-<p v-click class="text-center text-md opacity-70">繼續走，只剩兩條路：<strong class="text-red-400">買更大的機器，或換架構</strong></p>
+<p v-click class="text-center text-md opacity-70" style="margin-top:-2rem">繼續走，只剩兩條路：<strong class="text-red-400">買更大的機器，或換架構</strong></p>
 
 ::right::
 
