@@ -63,12 +63,12 @@
 
 .quote-layout :deep(h1),
 .quote-layout :deep(.q-headline) {
-  font-size: 4.2rem !important;
+  font-size: clamp(3.6rem, 9vw, 5rem);
   font-weight: 900 !important;
   line-height: 1.2 !important;
   color: #111111 !important;
   margin: 0 !important;
-}
+}image.png
 
 /* 關鍵字強調：顏色從 #111 → #F26D4F，由 v-click 觸發 */
 .quote-layout :deep(h1 .accent),
@@ -135,7 +135,7 @@
 
 .quote-layout--pivot :deep(.pivot-quote__line) {
   line-height: 1.1;
-  font-size: clamp(4.8rem, 9vw, 7rem);
+  font-size: clamp(3.6rem, 9vw, 5rem);
   font-weight: 600;
   color: #111111;
 }

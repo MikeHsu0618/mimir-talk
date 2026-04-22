@@ -967,25 +967,18 @@ align: start
 -->
 
 ---
-layout: inner
-align: center
+layout: quote
+quote_variant: pivot
 ---
 
-<div class="text-center w-full max-w-4xl mx-auto">
-
-# 但如果只是這樣<br/><span class="text-orange-400">我們不會貿然踏上這條不歸路</span>
-
-<div class="mt-8 text-base opacity-75 max-w-3xl mx-auto leading-relaxed">
-  Kafka 是許多 on-call 工程師的<strong class="text-red-400">噩夢</strong> —<br/>
-  那我們為什麼還是選它？
-</div>
-
-<div v-click class="mt-12">
-  <div class="text-lg opacity-70">因為我們賭的</div>
-  <div class="mt-2 text-3xl font-black">不是「今天的 Kafka」</div>
-  <div class="mt-3 text-5xl font-black text-orange-400">是「明天的 Kafka」</div>
-</div>
-
+<div class="pivot-quote">
+  <div class="pivot-quote__eyebrow">但我們還是選了它</div>
+  <div class="pivot-quote__title">
+    <span class="pivot-quote__line">因為我們賭的</span>
+    <span class="pivot-quote__line">不是<span style="color:#C9BDA9;">今天的 Kafka</span></span>
+    <span v-click class="pivot-quote__line pivot-quote__line--accent">是明天的</span>
+  </div>
+  <p class="pivot-quote__sub">如果只是要解耦，我們不會跳進這個坑<br/>社群這兩年悄悄決定了 Kafka 的未來</p>
 </div>
 
 <!--
@@ -998,7 +991,7 @@ align: center
 
 ---
 layout: split
-title: Kafka 的下一個十年 · Diskless Wars
+title: 下一個十年 · Diskless Kafka
 ratio: "4:5"
 ---
 
@@ -1029,13 +1022,13 @@ ratio: "4:5"
   <div style="font-family:monospace;font-size:1rem;width:5rem;color:#5296B8;opacity:0.65;flex-shrink:0;">Nov 2025</div>
   <div style="font-size:1rem;">Redpanda 發表 Cloud Topics</div>
 </div>
-<div v-click="1" class="flex items-center gap-3 mt-1 rounded-xl px-3 py-2" style="background:rgba(242,109,79,0.07);border:1.5px solid rgba(242,109,79,0.30);transition:all 0.5s ease;">
-  <div style="font-family:monospace;font-size:1rem;width:5rem;color:#C0502E;flex-shrink:0;font-weight:800;">Mar 2026</div>
-  <div style="font-size:1rem;font-weight:700;color:#0E3F4E;">KIP-1150 正式通過 — Apache Kafka 擁抱 diskless</div>
-</div>
-<div v-click="2" class="flex items-center gap-2 mt-1 rounded-xl px-3 py-2" style="background:rgba(247,168,107,0.09);border:1.5px solid rgba(247,168,107,0.35);transition:all 0.5s ease;">
-  <mdi-check-circle style="font-size:1.2rem;color:#C97C3A;flex-shrink:0;" />
-  <div style="font-size:1rem;font-weight:600;color:#0E3F4E;"><strong>社群共識已成形</strong><br/>stateless broker · object storage 為 source of truth</div>
+<div v-click="1" class="diskless-milestone">
+  <div class="diskless-milestone__dot"></div>
+  <div class="diskless-milestone__date">Mar 2026</div>
+  <div class="diskless-milestone__body">
+    <div class="diskless-milestone__eyebrow">Apache Kafka</div>
+    <div class="diskless-milestone__title">KIP-1150 正式通過，社群正式擁抱 diskless</div>
+  </div>
 </div>
 </div>
 
@@ -1058,36 +1051,44 @@ ratio: "4:5"
 
 ---
 layout: split
-title: AutoMQ · 重新設計的 Kafka
+title: AutoMQ · 最小改動的 Diskless Kafka 分支
 ratio: "5:4"
 ---
 
 ::left::
 
-<img src="/automq-architecture.png" class="w-full h-full object-contain" style="border:none;box-shadow:none;background:transparent;" />
+<img src="/kafka-vs-automq.png" class="w-full h-full object-contain" style="border:none;box-shadow:none;background:transparent;" />
 
 ::right::
 
-<div class="flex flex-col gap-3">
+<div class="flex flex-col gap-4">
+  <div class="why-card why-card--red" style="padding:1rem 1.15rem;">
+    <div class="why-card__head">
+      <mdi-alert-circle class="why-card__icon" />
+      <div>
+        <div class="why-card__title">物理 Kafka 三個痛</div>
+      </div>
+    </div>
+    <div class="flex flex-col">
+      <div style="padding:0.3rem 0;font-size:0.98rem;line-height:1.6;color:#2E2620;">Broker 有狀態，每次重啟都搬資料。</div>
+      <div style="padding:0.3rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.98rem;line-height:1.6;color:#2E2620;">Rebalance storm，加縮 broker 網段大遷移。</div>
+      <div style="padding:0.3rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.98rem;line-height:1.6;color:#2E2620;">跨 AZ 流量吃掉 60–70% 成本。</div>
+    </div>
+  </div>
 
-<div class="pillar-card pillar-card--blue">
-  <div class="pillar-card__title"><mdi-database-sync />Storage / Compute 分離</div>
-  <div class="pillar-card__note">Broker stateless</div>
-  <div class="pillar-card__body">Broker 本地不存 partition data · 全部寫 S3</div>
-</div>
-
-<div class="pillar-card pillar-card--orange">
-  <div class="pillar-card__title"><mdi-content-cut />Zero Partition Replication</div>
-  <div class="pillar-card__note">replication 流量歸零</div>
-  <div class="pillar-card__body">S3 本身多副本 · 不用 broker 之間互相 copy</div>
-</div>
-
-<div class="pillar-card pillar-card--red">
-  <div class="pillar-card__title"><mdi-swap-horizontal />100% Kafka API</div>
-  <div class="pillar-card__note">切換零遷移成本</div>
-  <div class="pillar-card__body">Protocol 原生支援 · 現有 Producer / Consumer 不用改</div>
-</div>
-
+  <div class="why-card why-card--blue" style="padding:1rem 1.15rem;">
+    <div class="why-card__head">
+      <mdi-lightbulb-on-outline class="why-card__icon" />
+      <div>
+        <div class="why-card__title">AutoMQ + S3 Storage 分流</div>
+      </div>
+    </div>
+    <div class="flex flex-col">
+      <div style="padding:0.3rem 0;font-size:0.98rem;line-height:1.6;color:#2E2620;">Broker stateless，spot-friendly，秒級 rebalance。</div>
+      <div style="padding:0.3rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.98rem;line-height:1.6;color:#2E2620;">S3 自帶多副本，broker 間 zero replication。</div>
+      <div style="padding:0.3rem 0;border-top:1px solid rgba(201,189,169,0.58);font-size:0.98rem;line-height:1.6;color:#2E2620;">100% Kafka API，Producer/Consumer 0 改動。</div>
+    </div>
+  </div>
 </div>
 
 <!--
@@ -1101,7 +1102,7 @@ ratio: "5:4"
 layout: split
 title: 跨 AZ 流量 · 傳統 Kafka 的黑洞
 ratio: "3:2"
-footnote: "AutoMQ 官方數據：大叢集裡 <strong style='color:#F26D4F'>跨 AZ 流量佔 Kafka 總成本的 60–70%</strong> · 這筆錢不是花在你業務上，是花在 AWS 網路上"
+footnote: "AutAutoMQ 官方：大叢集跨 AZ 流量占 <strong style='color:#F26D4F'>60–70% </strong>的 Kafka 總成本，不是花在業務，是花在跨區網路傳輸。"
 ---
 
 ::left::
@@ -1114,12 +1115,12 @@ footnote: "AutoMQ 官方數據：大叢集裡 <strong style='color:#F26D4F'>跨 
 
 <div class="pillar-card pillar-card--blue">
   <div class="pillar-card__title">① Producer → Broker</div>
-  <div class="pillar-card__body">寫入可能 hit 到其他 AZ 的 leader</div>
+  <div class="pillar-card__body">寫入可能 hit 其他 AZ 的 leader</div>
 </div>
 
 <div class="pillar-card pillar-card--blue">
   <div class="pillar-card__title">② Broker ↔ Broker Replication</div>
-  <div class="pillar-card__body">副本機制本質上<strong>幾乎必定跨 AZ</strong></div>
+  <div class="pillar-card__body">Replication 幾乎必定跨 AZ</div>
 </div>
 
 <div class="pillar-card pillar-card--blue">
@@ -1143,6 +1144,8 @@ footnote: "AutoMQ 官方數據：大叢集裡 <strong style='color:#F26D4F'>跨 
 layout: split
 title: AutoMQ 的解法 · Zero-Zone Router
 ratio: "3:2"
+footnote: "AWS 同 region S3<strong style='color:#F26D4F'>免費</strong>，把 60–70% 的 Kafka 帳單直接歸零"
+
 ---
 
 ::left::
@@ -1162,9 +1165,6 @@ ratio: "3:2"
   <li><mdi-download /><span>Consumer 從<strong>本地 AZ</strong> 的 readonly replica 讀取</span></li>
 </ul>
 
-<div v-click class="quote-bar quote-bar--warn">
-唯一跨 AZ 流量：<strong>broker ↔ S3</strong> · AWS 同 region S3 免費
-</div>
 
 <!--
 Zero-Zone Router 分步講解：
@@ -1195,13 +1195,13 @@ ratio: "5:4"
 <div class="flex flex-col gap-3">
 <div class="pillar-card pillar-card--red" style="padding:1.8rem 1.5rem;">
   <div class="pillar-card__title"><mdi-alert-circle />Apache Kafka</div>
-  <div class="pillar-card__note">Fixed Capacity · Wasted &gt; 50%</div>
-  <div class="pillar-card__body">Local disk 必須預先配足 peak 空間 · 平均使用率低 · scaling 以「小時」計</div>
+  <div class="pillar-card__note">Fixed · Wasted &gt; 50%</div>
+  <div class="pillar-card__body">Local disk 預配足 peak · scaling 以「小時」計</div>
 </div>
 <div class="pillar-card pillar-card--blue" style="padding:1.8rem 1.5rem;">
   <div class="pillar-card__title"><mdi-chart-line />AutoMQ</div>
-  <div class="pillar-card__note">Elastic Capacity · Pay-as-you-go</div>
-  <div class="pillar-card__body">S3 近乎無限 · partition 搬移以「秒」計 · Broker 可用 spot · <strong>真正的 auto-scaling</strong></div>
+  <div class="pillar-card__note">Pay-as-you-go</div>
+  <div class="pillar-card__body">S3 近乎無限 · partition 搬移以「秒」計 · Broker 可跑 spot</div>
 </div>
 </div>
 
@@ -1214,51 +1214,37 @@ ratio: "5:4"
 
 ---
 layout: inner
-title: 但延遲呢？— 整條鏈路才是重點
+eyebrow: 優點都說完了
+title: 那缺點呢？
 ---
 
 <div class="grid grid-cols-2 gap-4">
 
 <div class="flex flex-col gap-2">
   <div class="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full" style="color:#5296B8;border:1.5px solid #5296B8;width:fit-content;">Traditional Kafka · EBS</div>
-  <div class="rounded-xl p-4 text-center" style="background:rgba(82,150,184,0.1);border:1px solid rgba(82,150,184,0.3);">
+  <div class="rounded-xl p-4 text-center flex flex-col justify-center" style="min-height:220px;background:rgba(82,150,184,0.1);border:1px solid rgba(82,150,184,0.3);">
     <div class="text-5xl font-black" style="color:#5296B8;">5–50<span class="text-xl">ms</span></div>
     <div style="font-size:1rem;opacity:0.65;margin-top:0.25rem;">Produce ACK P99</div>
   </div>
 </div>
 
 <div class="flex flex-col gap-2">
-  <div class="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full" style="color:#C97C3A;border:1.5px solid #F7A86B;width:fit-content;">AutoMQ · S3Stream</div>
-  <div class="rounded-xl p-4 text-center" style="background:rgba(247,168,107,0.1);border:1px solid rgba(247,168,107,0.35);">
-    <div class="text-5xl font-black" style="color:#F7A86B;">500ms<span class="text-xl">–2s</span></div>
-    <div style="font-size:1rem;opacity:0.65;margin-top:0.25rem;">Produce ACK P99</div>
+  <div class="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full" style="color:#C0502E;border:1.5px solid #F26D4F;width:fit-content;">AutoMQ · S3Stream</div>
+  <div class="rounded-xl p-4 text-center flex flex-col justify-center" style="min-height:220px;background:rgba(242,109,79,0.1);border:1px solid rgba(242,109,79,0.35);">
+    <div class="text-5xl font-black" style="color:#F26D4F;">500ms<span class="text-5xl"> –1s</span></div>
+    <div style="font-size:1rem;opacity:0.65;margin-top:0.25rem;">Produce ACK P99（10× 的差距）極端情況 ~30 秒才能在 Mimir 讀取</div>
   </div>
 </div>
 
 </div>
 
-```mermaid {theme: 'dark', scale: 0.72}
-flowchart LR
-    P[Prometheus<br/>scrape] -->|remote_write| D[Distributor]
-    D -->|produce| K[Kafka]
-    K -->|consume| I[Ingester]
-    I -->|可查詢| Q[Querier]
-    P -.->|短期查詢直接走 Prom| Q2[Prom Query]
-    style K fill:#a78bfa33,stroke:#a78bfa
-    style Q2 fill:#52c41a33,stroke:#52c41a
-```
-
-<div style="font-size:1rem;text-align:center;color:rgba(14,63,78,0.60);margin-top:0.25rem;">
-  scrape → distributor → kafka → ingester → 可讀 · 加上長尾抖動 · <strong>最慢可能 30s 才能查到</strong>
-</div>
-
 <div v-click class="flex justify-center">
-  <div class="flex flex-col gap-1.5 rounded-2xl px-6 py-3 w-full" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);">
-    <div class="flex items-center gap-2">
+  <div class="flex flex-col justify-center items-center gap-1.5 rounded-2xl px-6 py-3 w-full" style="background:rgba(247,168,107,0.10);border:1.5px solid rgba(247,168,107,0.40);">
+    <div class="flex items-center justify-center gap-2">
       <mdi-lightbulb-on style="font-size:1.3rem;color:#C97C3A;flex-shrink:0;" />
-      <div style="font-size:0.78rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;">為什麼我們敢接受 10× 延遲</div>
+      <div style="font-size:0.78rem;font-weight:800;color:#C97C3A;letter-spacing:0.06em;">划算的取捨</div>
     </div>
-    <div style="font-size:1rem;font-weight:600;color:#0E3F4E;line-height:1.6;">Alert / HPA / KEDA <strong>繼續走 Prom Server</strong>（毫秒級）· Mimir 是「秒級」長期後端 · <strong>這是前面保留 Prom Server 的回報</strong></div>
+    <div style="font-size:1rem;font-weight:600;color:#0E3F4E;line-height:1.6;">Alert · HPA · KEDA 繼續走 Prom Server（毫秒） / Mimir 是「秒級」長期後端，業務不受影響</div>
   </div>
 </div>
 
