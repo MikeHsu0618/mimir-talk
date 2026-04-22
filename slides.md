@@ -1598,7 +1598,7 @@ class: end-dark
   <mdi-email-outline />
   <span>Mike Hsu</span>
   <span class="end-page__dot">·</span>
-  <code>mike.hsu@opennet.tw</code>
+  <code>mikehsu0618@gmail.com</code>
 </div>
 
 </div>
