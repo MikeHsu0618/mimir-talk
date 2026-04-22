@@ -3,9 +3,10 @@
     class="split-layout slidev-layout"
     :class="[`ratio-${String($frontmatter.ratio ?? '1-1').replace(':', '-')}`]"
   >
-    <header v-if="$frontmatter.title || $frontmatter.kicker" class="head">
+    <header v-if="$frontmatter.eyebrow || $frontmatter.title || $frontmatter.kicker" class="head">
+      <div v-if="$frontmatter.eyebrow" class="eyebrow" v-html="$frontmatter.eyebrow" />
       <h1 v-if="$frontmatter.title" v-html="$frontmatter.title" />
-      <div v-if="$frontmatter.kicker" class="kicker">{{ $frontmatter.kicker }}</div>
+      <div v-if="$frontmatter.kicker" class="kicker" v-html="$frontmatter.kicker" />
     </header>
 
     <div class="cols">
@@ -37,10 +38,34 @@
   margin: 0 0 0.8rem;
 }
 
+.head .eyebrow {
+  margin-bottom: 0.55rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #F26D4F;
+  letter-spacing: 0.06em;
+}
+
 .head .kicker {
   font-size: 1.5rem;
   font-weight: 500;
   color: #5296B8;
+}
+
+.head .eyebrow :deep(.title-eyebrow) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  line-height: 1;
+}
+
+.head .eyebrow :deep(.title-eyebrow__num) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 0.95em;
+  transform: translateY(0.03em);
 }
 
 .cols {

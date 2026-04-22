@@ -309,28 +309,20 @@ quote_variant: pivot
 
 ---
 layout: split
-title: "痛點 ① — 短期查詢放大 Prometheus 垂直瓶頸"
+eyebrow: '<span class="title-eyebrow"><span>痛點</span><span class="title-eyebrow__num">①</span><span>短期查詢</span></span>'
+title: "垂直擴展瓶頸被 Sidecar 放大"
 ratio: "3:2"
 ---
 
 ::left::
 
-```mermaid {theme: 'dark', scale: 0.75}
-flowchart LR
-    G[Grafana<br/>Dashboard] ==>|query| TQ[Thanos<br/>Querier]
-    TQ ==>|短期資料| SC[Sidecar]
-    SC -.-|同 Pod| P[💥 Prometheus]
-    TQ -->|長期資料| SG[Store<br/>Gateway]
-    SG --> S3[(S3)]
-    style P fill:#f5222d55,stroke:#f5222d,stroke-width:3px,color:#fff
-    style SC fill:#f4680033,stroke:#f46800
-```
+<img src="/thanos-query-architecture.png" alt="Thanos query architecture" class="w-full" style="border:none;box-shadow:none;border-radius:0;height:420px;max-height:none;width:100%;object-fit:contain;object-position:center;" />
 
-<p class="text-center text-sm opacity-70">短期查詢壓力<strong class="text-red-400">全部打回 Prometheus</strong></p>
+<p v-click class="text-center text-md opacity-70">繼續走，只剩兩條路：<strong class="text-red-400">買更大的機器，或換架構</strong></p>
 
 ::right::
 
-<div v-click class="h-full">
+<div  class="h-full">
   <div class="h-full rounded-[18px] px-8 pt-8 pb-7 flex flex-col" style="background:linear-gradient(160deg,rgba(242,109,79,0.10) 0%,rgba(255,250,247,0.55) 100%);border:1.5px solid rgba(242,109,79,0.30);color:#0E3F4E;box-shadow:0 4px 20px rgba(14,63,78,0.06);">
     <div class="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full w-fit" style="color:#C0502E;border:1.5px solid #C0502E;">Single Prometheus Pod</div>
     <div class="mt-8 text-[9rem] leading-[0.86] font-black" style="color:#F26D4F;letter-spacing:-0.03em;">512</div>
@@ -341,7 +333,7 @@ flowchart LR
       <div><strong>Sidecar</strong> 數十 GiB</div>
     </div>
     <div class="mt-auto pt-6 text-sm leading-relaxed italic opacity-75">
-      Sidecar 幫短期查詢扛 remote-read buffer，<strong>記憶體壓力被放大。</strong>
+      Sidecar 幫短期查詢扛 remote-read buffer <br/><strong>記憶體壓力被放大。</strong>
     </div>
   </div>
 </div>
@@ -357,7 +349,8 @@ flowchart LR
 
 ---
 layout: split
-title: "痛點 ② — 長期查詢 Store Gateway 掙扎"
+eyebrow: '<span class="title-eyebrow"><span>痛點</span><span class="title-eyebrow__num">②</span><span>長期查詢</span></span>'
+title: "Store Gateway 掙扎。"
 ratio: "3:2"
 ---
 
