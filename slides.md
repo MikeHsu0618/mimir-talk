@@ -607,24 +607,15 @@ ratio: "1:1"
 
 <div class="ingest-shift-pane ingest-shift-pane--legacy" :class="{ 'is-dimmed': $clicks >= 1 }">
 
-<div class="section-badge section-badge--red">Classic · v2
+<div class="section-badge section-badge--red" style="margin-bottom:unset">Classic · v2
 </div>
 
 <div class="mermaid-eq">
-
-```mermaid {theme: 'dark', scale: 0.68}
-flowchart LR
-    D[Distributor] ==>|RF=3<br/>gRPC Push| I1[Ingester-a]
-    D ==> I2[Ingester-b]
-    D ==> I3[Ingester-c]
-    I1 -->|2/3 quorum| Q[Querier]
-    I2 --> Q
-    I3 --> Q
-    style I1 fill:#ff8c3c33,stroke:#ff8c3c
-    style I2 fill:#ff8c3c33,stroke:#ff8c3c
-    style I3 fill:#ff8c3c33,stroke:#ff8c3c
-```
-
+  <img
+    src="/mimir-v2.png"
+    alt="Classic v2 ingest flow"
+    style="width:100%;height:100%;object-fit:contain;border-radius:0;box-shadow:none;"
+  />
 </div>
 
 
@@ -639,22 +630,14 @@ flowchart LR
 
 <div class="ingest-shift-pane ingest-shift-pane--next" :class="{ 'is-active': $clicks >= 1 }">
 
-<div class="section-badge">Ingest Storage · v3</div>
+<div class="section-badge" style="margin-bottom:unset">Ingest Storage · v3</div>
 
 <div class="mermaid-eq">
-
-```mermaid {theme: 'dark', scale: 0.68}
-flowchart LR
-    D[Distributor] ==>|write once| K[(Kafka API)]
-    K -->|consume| I[Ingester<br/>Partition consumer]
-    K -->|consume| BB[Block Builder]
-    BB --> S3[(S3)]
-    Q[Querier] -->|quorum = 1| I
-    style K fill:#a78bfa22,stroke:#a78bfa
-    style I fill:#ff8c3c33,stroke:#ff8c3c
-    style BB fill:#5296B822,stroke:#5296B8
-```
-
+  <img
+    src="/mimir-v3.png"
+    alt="Ingest Storage v3 flow"
+    style="width:100%;height:100%;object-fit:contain;border-radius:0;box-shadow:none;"
+  />
 </div>
 
 <div  v-click class="ingest-shift-note ingest-shift-note--next" :class="{ 'is-active': $clicks >= 1 }">
