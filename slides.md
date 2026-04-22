@@ -935,9 +935,9 @@ title: 整條鏈路，牽一髮，動全身
 align: start
 ---
 
-<div class="flex flex-col gap-4 w-full h-full min-h-0">
+<div class="flex flex-col gap-2 w-full ">
 
-<div class="flex-1 min-h-0 flex items-center">
+<div class="flex-1 flex items-center">
   <div class="w-full max-w-8xl mx-auto">
     <img
       src="/kafka-backpressure-flow.png"
