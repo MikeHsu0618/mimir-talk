@@ -1439,6 +1439,70 @@ html:not(.dark) .slidev-layout .bg-slate-800 {
   font-size: 0.95rem !important;
 }
 .end-page__dot { opacity: 0.4; }
+.end-page {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.end-page__journey {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(1100px, 92%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  transition: top 0.55s ease, transform 0.55s ease;
+  z-index: 3;
+}
+.end-page__journey--docked {
+  top: 8.3rem;
+  transform: translateX(-50%);
+}
+.end-page__journey-line {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  color: rgba(245,240,235,0.8);
+}
+.end-page__journey-line--main {
+  font-size: 2.65rem;
+  transition: font-size 0.45s ease, line-height 0.45s ease, letter-spacing 0.45s ease;
+}
+.end-page__journey-line--sub {
+  font-size: 1.8rem !important;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.end-page__content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.end-page__content--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.end-page__content > .text-center > div {
+  display: none;
+}
+.end-page__motto-text {
+  font-size: 1.02rem;
+}
+.end-page__motto--active {
+  box-shadow: 0 0 0 1px rgba(247,168,107,0.22), 0 0 28px rgba(247,168,107,0.18);
+}
+.end-page__motto--active .end-page__motto-text,
+.end-page__motto--active .hl-banner__icon {
+  color: #F7A86B !important;
+}
 
 /* ── Dark end page (最後一頁深色版) ── */
 .end-dark,

@@ -437,8 +437,9 @@ title: 三條決策維度：開始之前，再想清楚
 
 <!-- <div v-click="1" class="path-conclusion">
   <mdi-lightbulb-on class="path-conclusion__icon" />
-  <div>
+  <div style="font-size:0;">
     三個維度互相<strong style="color:#F26D4F">獨立</strong> · 下一頁把排列組合攤開，一個一個刪去
+    <span style="font-size:1.02rem;">保持好奇 · 保持懷疑 · 保持實驗</span>
   </div>
 </div> -->
 
@@ -1541,44 +1542,49 @@ align: center
 class: end-dark
 ---
 
-<div class="end-page w-full flex flex-col items-center gap-8">
+<div class="end-page w-full">
 
-<div class="text-center">
-  <h1 class="!text-7xl !font-black !mb-3" style="letter-spacing:-0.04em;color:#F5F0EB;">Thank you</h1>
-  <div class="text-lg font-mono tracking-wide" style="color:rgba(245,240,235,0.72);">
+<span v-click class="hidden" />
+<span v-click class="hidden" />
+
+<div class="end-page__journey" :class="{ 'end-page__journey--docked': $clicks >= 1 }">
+  <div class="end-page__journey-line end-page__journey-line--main" :class="{ 'end-page__journey-line--sub': $clicks >= 1 }">
     Thanos → Mimir 3.0 → AutoMQ → <span class="font-bold" style="color:#F7A86B;">Parquet Gateway</span>
   </div>
 </div>
 
-<div class="hl-grid hl-grid--3 w-full max-w-5xl">
+<div class="end-page__content" :class="{ 'end-page__content--visible': $clicks >= 1 }">
+
+<div class="text-center">
+  <h1 class="!text-7xl !font-black" style="letter-spacing:-0.04em;color:#F5F0EB;" v-if="$clicks >= 1">Thank you</h1>
+</div>
+
+<div class="hl-grid hl-grid--3 w-full max-w-5xl mt-10">
 
 <div class="hl-card">
   <div class="hl-card__num">01</div>
-  <div class="hl-card__kicker">選型</div>
-  <div class="hl-card__title">理解瓶頸</div>
+  <div class="hl-card__title">選型</div>
   <div class="hl-card__sub">理解瓶頸在哪裡<br/>比追新技術更重要</div>
 </div>
 
 <div class="hl-card">
   <div class="hl-card__num">02</div>
-  <div class="hl-card__kicker">架構</div>
-  <div class="hl-card__title">Stateless First</div>
+  <div class="hl-card__title">架構</div>
   <div class="hl-card__sub">Stateless 是<br/>運維自由的基礎</div>
 </div>
 
 <div class="hl-card hl-card--neg">
   <div class="hl-card__num">03</div>
-  <div class="hl-card__kicker">心態</div>
-  <div class="hl-card__title">Time-Sensitive</div>
-  <div class="hl-card__sub">今天的最優解<br/>可能是明天的 legacy</div>
+  <div class="hl-card__title">心態</div>
+  <div class="hl-card__sub">技術選型永遠是<br/>time-sensitive</div>
 </div>
 
 </div>
 
-<div class="hl-banner w-full max-w-4xl flex items-center justify-center">
+<div class="hl-banner w-full max-w-4xl flex items-center justify-center" :class="{ 'end-page__motto--active': $clicks >= 2 }">
   <mdi-compass-outline class="hl-banner__icon" />
   <div>
-    技術選型永遠是 <strong>time-sensitive</strong> — 保持好奇、保持懷疑、保持實驗
+    <span class="end-page__motto-text">保持好奇 · 保持懷疑 · 保持實驗</span>
   </div>
 </div>
 
@@ -1587,6 +1593,8 @@ class: end-dark
   <span>Mike Hsu</span>
   <span class="end-page__dot">·</span>
   <code>mike.hsu@opennet.tw</code>
+</div>
+
 </div>
 
 </div>
